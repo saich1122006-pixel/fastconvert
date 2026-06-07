@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FastConvert — Free Online Image & PDF Tools | Convert, Compress, Merge</title>
+  <meta name="description" content="Convert images (PNG, JPG, WebP, HEIC) & work with PDFs (merge, split, compress, images-to-PDF) — all free, all private. 100% in-browser processing." />
+  <meta name="keywords" content="image converter, png to jpg, webp to png, jpg to webp, heic to jpg, compress image, reduce file size, 20kb, 50kb, government portal photo, free converter, client-side" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="FastConvert — Free Online Image Converter" />
+  <meta property="og:description" content="Convert PNG, JPG, WebP, and HEIC images instantly. Compress photos to 20KB/50KB for exam portals. 100% private — files never leave your device." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#4f6df5" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+
+  <!-- Google tag (gtag.js) - Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z21HFSG8NK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-Z21HFSG8NK');
+  </script>
+</head>
+<body>
+
+  <!-- ============================================
+       HEADER
+       ============================================ -->
+  <header class="site-header" role="banner">
+    <div class="logo" data-page="page-home" role="button" tabindex="0" aria-label="Go to homepage">
+      <span class="logo-icon" aria-hidden="true">⚡</span>
+      fastconvert
+    </div>
+    <div class="header-actions">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
+    </div>
+  </header>
+
+  <!-- ============================================
+       MAIN LAYOUT (3 Columns)
+       ============================================ -->
+  <main class="main-layout" role="main">
+
+    <!-- Left Sidebar Ad -->
+    <aside class="ad-sidebar" aria-label="Advertisement">
+      <!-- Google AdSense Sidebar Ad Container -->
+      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-left">
+        Ad Space
+      </div>
+    </aside>
+
+    <!-- ==========================================
+         CENTER CONTENT AREA
+         ========================================== -->
+    <div class="content-center">
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           PAGE: HOME (Converter Tool)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <section class="page-view active" id="page-home" aria-label="Image Converter Tool">
+
+        <!-- Hero -->
+        <div class="converter-hero">
+          <h1>Convert, Compress & Transform Files Instantly</h1>
+          <p>Image formats, PDF tools — convert, compress, merge & more. 100% in your browser. Zero uploads.</p>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="category-tabs" id="category-tabs">
+          <button class="category-tab active" data-category="image" id="cat-tab-image">🖼️ Image Tools</button>
+          <button class="category-tab" data-category="pdf" id="cat-tab-pdf">📄 PDF Utilities</button>
+        </div>
+
+        <!-- ====== IMAGE TOOLS PANEL ====== -->
+        <div class="category-panel active" id="panel-image">
+
+        <!-- Conversion Type Cards -->
+        <div class="conversions-section">
+          <p class="conversions-section-title">Choose a Conversion</p>
+          <div class="conversions-grid" id="conversions-grid">
+            <button class="conversion-card" data-output="jpeg" data-accept-hint="webp" id="card-webp-jpg">
+              <div class="conversion-card-arrows" aria-hidden="true">🌐 → 📷</div>
+              <h3>WebP to JPG</h3>
+              <p>Turn web graphics into standard photos anyone can open.</p>
+            </button>
+            <button class="conversion-card" data-output="png" data-accept-hint="webp" id="card-webp-png">
+              <div class="conversion-card-arrows" aria-hidden="true">🌐 → 🎨</div>
+              <h3>WebP to PNG</h3>
+              <p>Preserve image transparency for web development projects.</p>
+            </button>
+            <button class="conversion-card" data-output="jpeg" data-accept-hint="heic" id="card-heic-jpg">
+              <div class="conversion-card-arrows" aria-hidden="true">📱 → 📷</div>
+              <h3>HEIC to JPG</h3>
+              <p>Open iPhone photos on any Windows computer instantly.</p>
+            </button>
+            <button class="conversion-card" data-output="png" data-accept-hint="jpeg" id="card-jpg-png">
+              <div class="conversion-card-arrows" aria-hidden="true">📷 → 🎨</div>
+              <h3>JPG to PNG</h3>
+              <p>Get lossless quality for professional design editing.</p>
+            </button>
+            <button class="conversion-card" data-output="jpeg" data-accept-hint="png" id="card-png-jpg">
+              <div class="conversion-card-arrows" aria-hidden="true">🎨 → 📷</div>
+              <h3>PNG to JPG</h3>
+              <p>Reduce heavy file sizes to make sharing documents easier.</p>
+            </button>
+            <button class="conversion-card" data-output="webp" data-accept-hint="jpeg,png" id="card-to-webp">
+              <div class="conversion-card-arrows" aria-hidden="true">📷 → 🌐</div>
+              <h3>JPG / PNG to WebP</h3>
+              <p>Speed up your website with modern, lighter image formats.</p>
+            </button>
+            <button class="conversion-card compress-highlight" data-mode="compress" id="card-compress">
+              <div class="conversion-card-arrows" aria-hidden="true">📐</div>
+              <h3>Compress to 20KB / 50KB</h3>
+              <p>For uploading photos to government portals & exam forms.</p>
+            </button>
+          </div>
+        </div>
+
+        <!-- Dropzone -->
+        <div class="dropzone-wrapper" id="dropzone" tabindex="0" role="button" aria-label="Click or drag and drop an image to upload">
+          <input type="file" id="file-input" class="sr-only" accept=".png,.jpg,.jpeg,.webp,.heic,.heif,image/png,image/jpeg,image/webp,image/heic,image/heif" />
+
+          <div id="dropzone-default">
+            <span class="dropzone-icon" aria-hidden="true">📁</span>
+            <p class="dropzone-text">Drag & drop your image here</p>
+            <p class="dropzone-hint">or click to browse</p>
+            <div class="format-badges">
+              <span class="format-badge">PNG</span>
+              <span class="format-badge">JPG</span>
+              <span class="format-badge">WebP</span>
+              <span class="format-badge heic">HEIC</span>
+            </div>
+          </div>
+
+          <div class="dropzone-file-info" id="dropzone-file-info">
+            <span class="file-icon" aria-hidden="true">🖼️</span>
+            <div>
+              <p class="file-name" id="file-name"></p>
+              <p class="file-size" id="file-size"></p>
+            </div>
+            <button class="remove-file" id="remove-file" aria-label="Remove file" title="Remove file">✕</button>
+          </div>
+        </div>
+
+        <!-- Image Preview -->
+        <div class="image-preview-container" id="image-preview">
+          <img id="preview-img" alt="Image preview" />
+        </div>
+
+        <!-- Mode Tabs -->
+        <div class="mode-tabs" id="mode-tabs">
+          <button class="mode-tab active" data-mode="convert" id="tab-convert">Convert Format</button>
+          <button class="mode-tab" data-mode="compress" id="tab-compress">Compress to Size</button>
+        </div>
+
+        <!-- Convert Mode Controls -->
+        <div class="controls-bar" id="convert-controls">
+          <div class="format-selector">
+            <label for="format-select">Convert to:</label>
+            <select id="format-select">
+              <option value="png">PNG</option>
+              <option value="jpeg">JPG</option>
+              <option value="webp" selected>WebP</option>
+            </select>
+          </div>
+
+          <div class="quality-control" id="quality-control">
+            <label for="quality-slider">Quality:</label>
+            <input type="range" id="quality-slider" min="10" max="100" value="90" step="5" />
+            <span class="quality-value" id="quality-value">90%</span>
+          </div>
+
+          <button class="btn-convert" id="convert-btn" disabled>
+            <span class="spinner" aria-hidden="true"></span>
+            <span class="btn-text">Convert Now</span>
+            <span class="btn-loading-text">Converting…</span>
+          </button>
+        </div>
+
+        <!-- Compress Mode Controls -->
+        <div class="compress-controls" id="compress-controls">
+          <label>Target size:</label>
+          <div class="size-pills" id="size-pills">
+            <button class="size-pill" data-size="20480">Under 20 KB</button>
+            <button class="size-pill active" data-size="51200">Under 50 KB</button>
+            <button class="size-pill" data-size="102400">Under 100 KB</button>
+            <button class="size-pill" data-size="204800">Under 200 KB</button>
+          </div>
+          <button class="btn-convert" id="compress-btn" disabled>
+            <span class="spinner" aria-hidden="true"></span>
+            <span class="btn-text">Compress Now</span>
+            <span class="btn-loading-text">Compressing…</span>
+          </button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-wrapper" id="progress-wrapper">
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progress-fill"></div>
+          </div>
+          <p class="progress-label" id="progress-label">Optimizing…</p>
+        </div>
+
+        <!-- Result / Download -->
+        <div class="result-area" id="result-area">
+          <div class="result-card">
+            <div class="result-success-icon" aria-hidden="true">✅</div>
+            <h3 id="result-title">Conversion Complete!</h3>
+            <p class="result-meta">
+              Format: <span id="result-format">—</span> · Size: <span id="result-size">—</span>
+            </p>
+            <div class="result-stats" id="result-stats" style="display:none;">
+              <div class="result-stat">
+                <span class="stat-label">Original</span>
+                <span class="stat-value" id="stat-original">—</span>
+              </div>
+              <div class="result-stat">
+                <span class="stat-label">Compressed</span>
+                <span class="stat-value" id="stat-compressed">—</span>
+              </div>
+              <div class="result-stat">
+                <span class="stat-label">Saved</span>
+                <span class="stat-value savings" id="stat-savings">—</span>
+              </div>
+            </div>
+            <a href="#" class="btn-download" id="download-btn">
+              ⬇️ Download Converted File
+            </a>
+          </div>
+        </div>
+
+        <!-- Google AdSense Banner Ad Container -->
+        <div class="ad-placeholder ad-placeholder-banner" id="ad-banner-bottom">
+          Ad Space
+        </div>
+
+        <!-- Trust Badge -->
+        <div class="trust-badge">
+          <span class="shield-icon" aria-hidden="true">🛡️</span>
+          <p>100% Private: Your files never leave your device. All processing happens locally.</p>
+        </div>
+
+        <!-- How To Use -->
+        <div class="how-to-section">
+          <h2>How to Use</h2>
+          <div class="steps-grid">
+            <div class="step-card">
+              <div class="step-number">1</div>
+              <div class="step-icon" aria-hidden="true">📤</div>
+              <h3>Upload Your Image</h3>
+              <p>Drag & drop or click to select any PNG, JPG, WebP, or HEIC image from your device.</p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">2</div>
+              <div class="step-icon" aria-hidden="true">🎨</div>
+              <h3>Convert or Compress</h3>
+              <p>Pick a format to convert, or set a target file size like 20KB or 50KB.</p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">3</div>
+              <div class="step-icon" aria-hidden="true">⬇️</div>
+              <h3>Download Instantly</h3>
+              <p>One click to download your converted or compressed file. Completely local and private.</p>
+            </div>
+          </div>
+        </div>
+
+        </div><!-- /#panel-image -->
+
+        <!-- ====== PDF UTILITIES PANEL ====== -->
+        <div class="category-panel" id="panel-pdf">
+
+          <!-- PDF Tool Cards -->
+          <div class="pdf-tools-section">
+            <p class="conversions-section-title">Choose a PDF Tool</p>
+            <div class="pdf-tools-grid" id="pdf-tools-grid">
+              <button class="pdf-tool-card" data-pdf-tool="merge" id="pdf-card-merge">
+                <span class="pdf-tool-icon" aria-hidden="true">🔗</span>
+                <h3>Merge PDFs</h3>
+                <p>Combine multiple PDF files into a single document.</p>
+              </button>
+              <button class="pdf-tool-card" data-pdf-tool="split" id="pdf-card-split">
+                <span class="pdf-tool-icon" aria-hidden="true">✂️</span>
+                <h3>Split PDF</h3>
+                <p>Extract specific pages or split into separate files.</p>
+              </button>
+              <button class="pdf-tool-card" data-pdf-tool="compress" id="pdf-card-compress">
+                <span class="pdf-tool-icon" aria-hidden="true">📐</span>
+                <h3>Compress PDF</h3>
+                <p>Reduce PDF file size while preserving quality.</p>
+              </button>
+              <button class="pdf-tool-card" data-pdf-tool="img2pdf" id="pdf-card-img2pdf">
+                <span class="pdf-tool-icon" aria-hidden="true">🖼️</span>
+                <h3>Images to PDF</h3>
+                <p>Convert JPG, PNG, or WebP images into a PDF document.</p>
+              </button>
+            </div>
+          </div>
+
+          <!-- PDF Workspace -->
+          <div class="pdf-workspace" id="pdf-workspace">
+            <p class="pdf-workspace-title" id="pdf-workspace-title">Merge PDFs</p>
+            <p class="pdf-workspace-subtitle" id="pdf-workspace-subtitle">Add your PDF files below</p>
+
+            <!-- PDF Dropzone -->
+            <div class="pdf-dropzone" id="pdf-dropzone" tabindex="0" role="button" aria-label="Click or drag and drop PDF files to upload">
+              <input type="file" id="pdf-file-input" class="sr-only" multiple accept=".pdf,application/pdf" />
+              <span class="dropzone-icon" aria-hidden="true">📁</span>
+              <p class="dropzone-text" id="pdf-dropzone-text">Drag & drop your PDF files here</p>
+              <p class="dropzone-hint" id="pdf-dropzone-hint">or click to browse · Multiple files supported</p>
+              <div class="format-badges">
+                <span class="pdf-format-badge">PDF</span>
+              </div>
+            </div>
+
+            <!-- PDF File List -->
+            <div class="pdf-file-list" id="pdf-file-list"></div>
+            <p class="pdf-file-count" id="pdf-file-count"></p>
+
+            <!-- Split PDF Controls -->
+            <div class="pdf-tool-controls" id="pdf-split-controls">
+              <div class="split-controls">
+                <p class="page-info" id="pdf-page-info"></p>
+                <div class="split-mode-pills" id="split-mode-pills">
+                  <button class="split-pill active" data-split-mode="all" id="split-all">Extract All Pages</button>
+                  <button class="split-pill" data-split-mode="range" id="split-range">Custom Range</button>
+                </div>
+                <div class="page-range-input" id="page-range-wrapper" style="display:none;">
+                  <label for="page-range">Pages:</label>
+                  <input type="text" id="page-range" placeholder="e.g. 1-3, 5, 7-10" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Compress PDF Controls -->
+            <div class="pdf-tool-controls" id="pdf-compress-controls">
+              <div class="compress-pdf-quality">
+                <label for="pdf-compress-level">Compression:</label>
+                <select id="pdf-compress-level">
+                  <option value="low">Low (best quality)</option>
+                  <option value="medium" selected>Medium (balanced)</option>
+                  <option value="high">High (smallest size)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Images to PDF Controls -->
+            <div class="pdf-tool-controls" id="pdf-img2pdf-controls">
+              <div class="img2pdf-options">
+                <div>
+                  <label for="img2pdf-page-size">Page Size:</label>
+                  <select id="img2pdf-page-size">
+                    <option value="a4" selected>A4</option>
+                    <option value="letter">Letter</option>
+                    <option value="fit">Fit to Image</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="img2pdf-orientation">Orientation:</label>
+                  <select id="img2pdf-orientation">
+                    <option value="portrait" selected>Portrait</option>
+                    <option value="landscape">Landscape</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- PDF Action Button -->
+            <button class="btn-pdf-action" id="pdf-action-btn" disabled>
+              <span class="spinner" aria-hidden="true"></span>
+              <span class="btn-text" id="pdf-action-text">Merge PDFs</span>
+              <span class="btn-loading-text">Processing…</span>
+            </button>
+
+            <!-- PDF Progress -->
+            <div class="pdf-progress-wrapper" id="pdf-progress-wrapper">
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="pdf-progress-fill"></div>
+              </div>
+              <p class="progress-label" id="pdf-progress-label">Processing…</p>
+            </div>
+
+            <!-- PDF Result -->
+            <div class="pdf-result-area" id="pdf-result-area">
+              <div class="pdf-result-card">
+                <div class="result-success-icon" aria-hidden="true">✅</div>
+                <h3 id="pdf-result-title">Done!</h3>
+                <p class="result-meta" id="pdf-result-meta"></p>
+                <div class="pdf-result-downloads" id="pdf-result-downloads"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Google AdSense Banner Ad Container -->
+          <div class="ad-placeholder ad-placeholder-banner" id="ad-banner-pdf">
+            Ad Space
+          </div>
+
+          <!-- Trust Badge -->
+          <div class="trust-badge">
+            <span class="shield-icon" aria-hidden="true">🛡️</span>
+            <p>100% Private: Your files never leave your device. All processing happens locally.</p>
+          </div>
+
+          <!-- PDF How To Use -->
+          <div class="pdf-how-to-section">
+            <h2>How to Use PDF Tools</h2>
+            <div class="steps-grid">
+              <div class="step-card">
+                <div class="step-number">1</div>
+                <div class="step-icon" aria-hidden="true">📄</div>
+                <h3>Select a Tool</h3>
+                <p>Pick from Merge, Split, Compress, or Images to PDF above.</p>
+              </div>
+              <div class="step-card">
+                <div class="step-number">2</div>
+                <div class="step-icon" aria-hidden="true">📤</div>
+                <h3>Upload Files</h3>
+                <p>Drag & drop or click to add your PDF or image files.</p>
+              </div>
+              <div class="step-card">
+                <div class="step-number">3</div>
+                <div class="step-icon" aria-hidden="true">⬇️</div>
+                <h3>Download Result</h3>
+                <p>Get your processed PDF instantly — all done in your browser.</p>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /#panel-pdf -->
+
+      </section>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           PAGE: ABOUT US
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <section class="page-view" id="page-about" aria-label="About Us">
+        <div class="page-content-card">
+          <h1>About Us</h1>
+          <p>
+            FastConvert is built by a small, passionate team of utility-software engineers who believe powerful tools should be free, fast, and private. We started this project with a simple mission: give everyone access to professional-grade image conversion without the bloatware, paywalls, or privacy invasions.
+          </p>
+
+          <h2>Our Philosophy</h2>
+          <p>
+            Every file you convert stays on your device — period. We don't run servers that touch your data, we don't store anything, and we never will. Our tool runs entirely in your browser using modern web standards like the HTML5 Canvas API. It's fast, it's secure, and it respects your privacy by design.
+          </p>
+
+          <h2>Meet the Team</h2>
+          <div class="team-grid">
+            <div class="team-member">
+              <div class="team-avatar">👨‍💻</div>
+              <h3>Sai Chadarasipalli</h3>
+              <span class="role">Full-Stack Developer</span>
+            </div>
+            <div class="team-member">
+              <div class="team-avatar">👩‍💻</div>
+              <h3>Sahithya</h3>
+              <span class="role">UI/UX Designer</span>
+            </div>
+          </div>
+
+          <h2>Open Source Spirit</h2>
+          <p>
+            We're committed to transparency. FastConvert's entire front-end runs client-side, meaning you can inspect every line of code right in your browser's developer tools. What you see is exactly what runs — no hidden calls, no tracking scripts, no surprises.
+          </p>
+        </div>
+      </section>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           PAGE: PRIVACY POLICY
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <section class="page-view" id="page-privacy" aria-label="Privacy Policy">
+        <div class="page-content-card">
+          <h1>Privacy Policy</h1>
+          <span class="policy-date">Last updated: June 7, 2026</span>
+
+          <p>
+            FastConvert ("we", "us", or "our") is committed to protecting and respecting your privacy. This Privacy Policy explains how we handle information when you visit and use our website.
+          </p>
+
+          <h2>1. No Data Collection on File Processing</h2>
+          <p>
+            All image conversion performed on FastConvert happens <strong>entirely within your web browser</strong> using client-side JavaScript and the HTML5 Canvas API. Your files are <strong>never uploaded to any server</strong>. We do not collect, store, transmit, or have access to any files you process using our tool. Once you close or refresh your browser tab, all file data is permanently discarded from memory.
+          </p>
+
+          <h2>2. Information We Do Not Collect</h2>
+          <ul>
+            <li>We do <strong>not</strong> collect personal identification information (name, email, address) unless voluntarily submitted via our Contact Us form.</li>
+            <li>We do <strong>not</strong> collect, store, or transmit your uploaded images or converted files.</li>
+            <li>We do <strong>not</strong> use server-side processing for file conversions.</li>
+          </ul>
+
+          <h2>3. Local Storage for User Preferences</h2>
+          <p>
+            We use your browser's local storage strictly to remember your user interface preferences, such as your choice of light or dark theme. We do not use local storage or first-party cookies to track your behavior across the website.
+          </p>
+
+          <h2>4. Google AdSense & Cookies</h2>
+          <p>
+            We use Google AdSense to display advertisements on our website. Google AdSense and its partners may use cookies, web beacons, and similar technologies to serve ads based on your prior visits to this website or other websites on the Internet.
+          </p>
+          <p>
+            Google's use of advertising cookies enables it and its partners to serve ads to you based on your visit to our site and/or other sites on the Internet. You may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a>. Alternatively, you can opt out of third-party vendor cookies for personalized advertising by visiting <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">www.aboutads.info</a>.
+          </p>
+
+          <h2>5. Third-Party Services</h2>
+          <p>
+            Apart from Google AdSense, we may use the following third-party services:
+          </p>
+          <ul>
+            <li><strong>Google Analytics:</strong> We use Google Analytics to understand how visitors engage with our site. Google Analytics may use cookies to track visitor interactions. For more information, see <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>.</li>
+            <li><strong>Google Fonts:</strong> We load fonts from Google's servers, which may log standard web request data (IP address, browser type). See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>.</li>
+          </ul>
+
+          <h2>6. Log Data</h2>
+          <p>
+            Our hosting provider may collect standard server log information, including IP addresses, browser type, referring/exit pages, and timestamps. This data is used solely for website maintenance and security and is not linked to any personally identifiable information.
+          </p>
+
+          <h2>7. Contact Form Data</h2>
+          <p>
+            If you choose to reach out via our Contact Us page or email us directly, any information you provide (name, email, message) will be used solely to respond to your inquiry. We do not sell, share, or use this information for marketing purposes.
+          </p>
+
+          <h2>8. Children's Privacy</h2>
+          <p>
+            Our service is not directed to individuals under the age of 13. We do not knowingly collect personal information from children under 13.
+          </p>
+
+          <h2>9. Changes to This Privacy Policy</h2>
+          <p>
+            We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated revision date. Your continued use of the website after any changes constitutes acceptance of the new Privacy Policy.
+          </p>
+
+          <h2>10. Your Consent</h2>
+          <p>
+            By using our website, you consent to our Privacy Policy and agree to its terms.
+          </p>
+
+          <h2>11. Contact Us</h2>
+          <p>
+            If you have any questions about this Privacy Policy, please contact us via the <a href="#page-contact" data-page="page-contact">Contact Us</a> page or email us directly at <a href="mailto:support.paniapp@gmail.com">support.paniapp@gmail.com</a>.
+          </p>
+        </div>
+      </section>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           PAGE: CONTACT US
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <section class="page-view" id="page-contact" aria-label="Contact Us">
+        <div class="page-content-card">
+          <h1>Contact Us</h1>
+          <p>
+            Have questions, feedback, or a feature request? We'd love to hear from you. Email us directly at <a href="mailto:support.paniapp@gmail.com">support.paniapp@gmail.com</a> and we'll get back to you as soon as possible.
+          </p>
+        </div>
+      </section>
+
+    </div><!-- /.content-center -->
+
+    <!-- Right Sidebar Ad -->
+    <aside class="ad-sidebar" aria-label="Advertisement">
+      <!-- Google AdSense Sidebar Ad Container -->
+      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-right">
+        Ad Space
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo">
+          <span class="logo-icon" aria-hidden="true">⚡</span>
+          fastconvert
+        </div>
+        <p>Free, fast, and private image conversion — powered entirely by your browser.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <div class="footer-nav-col">
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="#page-home" data-page="page-home">Home</a></li>
+            <li><a href="#page-about" data-page="page-about">About Us</a></li>
+            <li><a href="#page-privacy" data-page="page-privacy">Privacy Policy</a></li>
+            <li><a href="#page-contact" data-page="page-contact">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-col">
+          <h4>Conversions</h4>
+          <ul>
+            <li><a href="#page-home" data-page="page-home">WebP to JPG</a></li>
+            <li><a href="#page-home" data-page="page-home">HEIC to JPG</a></li>
+            <li><a href="#page-home" data-page="page-home">PNG to JPG</a></li>
+            <li><a href="#page-home" data-page="page-home">Compress to 20KB</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-col">
+          <h4>PDF Tools</h4>
+          <ul>
+            <li><a href="#page-home" data-page="page-home" data-pdf-nav="merge">Merge PDFs</a></li>
+            <li><a href="#page-home" data-page="page-home" data-pdf-nav="split">Split PDF</a></li>
+            <li><a href="#page-home" data-page="page-home" data-pdf-nav="compress">Compress PDF</a></li>
+            <li><a href="#page-home" data-page="page-home" data-pdf-nav="img2pdf">Images to PDF</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 FastConvert. All rights reserved. Built with ❤️ for the open web.</p>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>
