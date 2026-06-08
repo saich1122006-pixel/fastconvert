@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Code Generator — FastConvert</title>
+  <meta name="description" content="Generate QR codes for URLs, text, and contacts instantly. Free and client-side." />
+  <meta name="theme-color" content="#4f6df5" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <style>
+    .qr-input-group {
+      margin-bottom: 20px;
+    }
+    .qr-input-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: var(--text-color);
+    }
+    .qr-input-group input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--card-bg);
+      color: var(--text-color);
+      font-size: 16px;
+    }
+    .qr-preview {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 12px;
+      margin: 20px 0;
+      border: 2px dashed var(--border-color);
+    }
+    html[data-theme="dark"] .qr-preview {
+      background: #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <a href="../../index.html" class="logo" role="button" tabindex="0" aria-label="Go to homepage" style="text-decoration:none;">
+      <span class="logo-icon" aria-hidden="true">⚡</span>
+      fastconvert
+    </a>
+    <div class="header-actions">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
+    </div>
+  </header>
+
+  <main class="main-layout" role="main">
+    <aside class="ad-sidebar" aria-label="Advertisement">
+      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-left">Ad Space</div>
+    </aside>
+
+    <div class="content-center">
+      <section class="page-view active" aria-label="QR Generator Tool">
+        <div class="converter-hero">
+          <h1>QR Code Generator</h1>
+          <p>Generate high-quality QR codes for URLs, text, and more instantly.</p>
+        </div>
+
+        <div class="category-panel active">
+          
+          <div class="qr-input-group">
+            <label for="qr-text">Enter text or URL:</label>
+            <input type="text" id="qr-text" placeholder="https://example.com" />
+          </div>
+
+          <button class="btn-convert" id="generate-btn">
+            <span class="btn-text">Generate QR Code</span>
+          </button>
+
+          <!-- Result / Download -->
+          <div class="result-area" id="result-area" style="display:none; margin-top: 24px;">
+            <div class="result-card">
+              <div class="result-success-icon" aria-hidden="true">✅</div>
+              <h3 id="result-title">QR Code Ready!</h3>
+              
+              <div class="qr-preview">
+                <canvas id="qr-canvas"></canvas>
+              </div>
+
+              <a href="#" class="btn-download" id="download-btn">⬇️ Download QR Code (PNG)</a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+
+    <aside class="ad-sidebar" aria-label="Advertisement">
+      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-right">Ad Space</div>
+    </aside>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-bottom">
+      <p>&copy; 2026 FastConvert. Built with ❤️ for the open web.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <script src="../../js/shared.js"></script>
+  <script src="qr-generator.js"></script>
+</body>
+</html>

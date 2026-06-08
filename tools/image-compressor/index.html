@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Compressor — FastConvert</title>
+  <meta name="description" content="Compress images to 20KB or 50KB for government portals and exam forms. 100% in-browser processing." />
+  <meta name="theme-color" content="#4f6df5" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <a href="../../index.html" class="logo" role="button" tabindex="0" aria-label="Go to homepage" style="text-decoration:none;">
+      <span class="logo-icon" aria-hidden="true">⚡</span>
+      fastconvert
+    </a>
+    <div class="header-actions">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
+    </div>
+  </header>
+
+  <main class="main-layout" role="main">
+    <aside class="ad-sidebar" aria-label="Advertisement">
+      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-left">Ad Space</div>
+    </aside>
+
+    <div class="content-center">
+      <section class="page-view active" aria-label="Image Compressor Tool">
+        <div class="converter-hero">
+          <h1>Image Compressor</h1>
+          <p>Compress photos to 20KB/50KB for exam portals. Completely private and instant.</p>
+        </div>
+
+        <div class="category-panel active">
+          <!-- Dropzone -->
+          <div class="dropzone-wrapper" id="dropzone" tabindex="0" role="button" aria-label="Click or drag and drop an image to upload">
+            <input type="file" id="file-input" class="sr-only" accept=".png,.jpg,.jpeg,.webp,.heic,.heif,image/png,image/jpeg,image/webp,image/heic,image/heif" />
+
+            <div id="dropzone-default">
+              <span class="dropzone-icon" aria-hidden="true">📁</span>
+              <p class="dropzone-text">Drag & drop your image here</p>
+              <p class="dropzone-hint">or click to browse</p>
+              <div class="format-badges">
+                <span class="format-badge">PNG</span>
+                <span class="format-badge">JPG</span>
+                <span class="format-badge">WebP</span>
+                <span class="format-badge heic">HEIC</span>
+              </div>
+            </div>
+
+            <div class="dropzone-file-info" id="dropzone-file-info" style="display:none;">
+              <span class="file-icon" aria-hidden="true">🖼️</span>
+              <div>
+                <p class="file-name" id="file-name"></p>
+                <p class="file-size" id="file-size"></p>
+              </div>
+              <button class="remove-file" id="remove-file" aria-label="Remove file" title="Remove file">✕</button>
+            </div>
+          </div>
+
+          <!-- Image Preview -->
+          <div class="image-preview-container" id="image-preview" style="display:none;">
+            <img id="preview-img" alt="Image preview" />
+          </div>
+
+          <!-- Compress Mode Controls -->
+          <div class="compress-controls visible" id="compress-controls">
+            <label>Target size:</label>
+            <div class="size-pills" id="size-pills">
+              <button class="size-pill" data-size="20480">Under 20 KB</button>
+              <button class="size-pill active" data-size="51200">Under 50 KB</button>
+              <button class="size-pill" data-size="102400">Under 100 KB</button>
+              <button class="size-pill" data-size="204800">Under 200 KB</button>
+            </div>
+            <button class="btn-convert" id="compress-btn" disabled>
+              <span class="spinner" aria-hidden="true"></span>
+              <span class="btn-text">Compress Now</span>
+              <span class="btn-loading-text">Compressing…</span>
+            </button>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="progress-wrapper" id="progress-wrapper">
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" id="progress-fill"></div>
+            </div>
+            <p class="progress-label" id="progress-label">Optimizing…</p>
+          </div>
+
+          <!-- Result / Download -->
+          <div class="result-area" id="result-area" style="display:none;">
+            <div class="result-card">
+              <div class="result-success-icon" aria-hidden="true">✅</div>
+              <h3 id="result-title">Compression Complete!</h3>
+              <p class="result-meta">
+                Format: <span id="result-format">JPG</span> · Size: <span id="result-size">—</span>
+              </p>
+              <div class="result-stats" id="result-stats">
+                <div class="result-stat">
+                  <span class="stat-label">Original</span>
+                  <span class="stat-value" id="stat-original">—</span>
+                </div>
+                <div class="result-stat">
+                  <span class="stat-label">Compressed</span>
+                  <span class="stat-value" id="stat-compressed">—</span>
+                </div>
+                <div class="result-stat">
+                  <span class="stat-label">Saved</span>
+                  <span class="stat-value savings" id="stat-savings">—</span>
+                </div>
+              </div>
+              <a href="#" class="btn-download" id="download-btn">⬇️ Download Compressed File</a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+
+    <aside class="ad-sidebar" aria-label="Advertisement">
+      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-right">Ad Space</div>
+    </aside>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-bottom">
+      <p>&copy; 2026 FastConvert. Built with ❤️ for the open web.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <script src="../../js/shared.js"></script>
+  <script src="image-compressor.js"></script>
+</body>
+</html>

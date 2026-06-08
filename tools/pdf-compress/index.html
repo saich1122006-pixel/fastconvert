@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compress PDF — FastConvert</title>
+  <meta name="description" content="Reduce PDF file size while preserving quality. Free and client-side." />
+  <meta name="theme-color" content="#4f6df5" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <a href="../../index.html" class="logo" role="button" tabindex="0" aria-label="Go to homepage" style="text-decoration:none;">
+      <span class="logo-icon" aria-hidden="true">⚡</span>
+      fastconvert
+    </a>
+    <div class="header-actions">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
+    </div>
+  </header>
+
+  <main class="main-layout" role="main">
+    <aside class="ad-sidebar" aria-label="Advertisement">
+      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-left">Ad Space</div>
+    </aside>
+
+    <div class="content-center">
+      <section class="page-view active" aria-label="Compress PDF Tool">
+        <div class="converter-hero">
+          <h1>Compress PDF</h1>
+          <p>Reduce PDF file size while preserving quality.</p>
+        </div>
+
+        <div class="category-panel active">
+          <!-- PDF Workspace -->
+          <div class="pdf-workspace visible" id="pdf-workspace" data-tool="compress">
+            <p class="pdf-workspace-title" id="pdf-workspace-title">Compress PDF</p>
+            <p class="pdf-workspace-subtitle" id="pdf-workspace-subtitle">Add a PDF file to reduce its size</p>
+
+            <!-- PDF Dropzone -->
+            <div class="pdf-dropzone" id="pdf-dropzone" tabindex="0" role="button" aria-label="Click or drag and drop PDF file to upload">
+              <input type="file" id="pdf-file-input" class="sr-only" accept=".pdf,application/pdf" />
+              <span class="dropzone-icon" aria-hidden="true">📁</span>
+              <p class="dropzone-text" id="pdf-dropzone-text">Drag & drop your PDF file here</p>
+              <p class="dropzone-hint" id="pdf-dropzone-hint">or click to browse · Single PDF</p>
+              <div class="format-badges">
+                <span class="pdf-format-badge">PDF</span>
+              </div>
+            </div>
+
+            <!-- PDF File List -->
+            <div class="pdf-file-list" id="pdf-file-list"></div>
+            <p class="pdf-file-count" id="pdf-file-count"></p>
+
+            <!-- Compress PDF Controls -->
+            <div class="pdf-tool-controls visible" id="pdf-compress-controls">
+              <div class="compress-pdf-quality">
+                <label for="pdf-compress-level">Compression:</label>
+                <select id="pdf-compress-level">
+                  <option value="low">Low (best quality)</option>
+                  <option value="medium" selected>Medium (balanced)</option>
+                  <option value="high">High (smallest size)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- PDF Action Button -->
+            <button class="btn-pdf-action" id="pdf-action-btn" disabled>
+              <span class="spinner" aria-hidden="true"></span>
+              <span class="btn-text" id="pdf-action-text">Compress PDF</span>
+              <span class="btn-loading-text">Processing…</span>
+            </button>
+
+            <!-- PDF Progress -->
+            <div class="pdf-progress-wrapper" id="pdf-progress-wrapper">
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="pdf-progress-fill"></div>
+              </div>
+              <p class="progress-label" id="pdf-progress-label">Processing…</p>
+            </div>
+
+            <!-- PDF Result -->
+            <div class="pdf-result-area" id="pdf-result-area">
+              <div class="pdf-result-card">
+                <div class="result-success-icon" aria-hidden="true">✅</div>
+                <h3 id="pdf-result-title">Done!</h3>
+                <p class="result-meta" id="pdf-result-meta"></p>
+                <div class="pdf-result-downloads" id="pdf-result-downloads"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="ad-sidebar" aria-label="Advertisement">
+      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-right">Ad Space</div>
+    </aside>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-bottom">
+      <p>&copy; 2026 FastConvert. Built with ❤️ for the open web.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <script src="../../js/shared.js"></script>
+  <script src="../../js/pdf-tools.js"></script>
+</body>
+</html>

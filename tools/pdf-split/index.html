@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Split PDF — FastConvert</title>
+  <meta name="description" content="Extract specific pages or split your PDF into separate files. Free and client-side." />
+  <meta name="theme-color" content="#4f6df5" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <a href="../../index.html" class="logo" role="button" tabindex="0" aria-label="Go to homepage" style="text-decoration:none;">
+      <span class="logo-icon" aria-hidden="true">⚡</span>
+      fastconvert
+    </a>
+    <div class="header-actions">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
+    </div>
+  </header>
+
+  <main class="main-layout" role="main">
+    <aside class="ad-sidebar" aria-label="Advertisement">
+      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-left">Ad Space</div>
+    </aside>
+
+    <div class="content-center">
+      <section class="page-view active" aria-label="Split PDF Tool">
+        <div class="converter-hero">
+          <h1>Split PDF</h1>
+          <p>Extract specific pages or split into separate files.</p>
+        </div>
+
+        <div class="category-panel active">
+          <!-- PDF Workspace -->
+          <div class="pdf-workspace visible" id="pdf-workspace" data-tool="split">
+            <p class="pdf-workspace-title" id="pdf-workspace-title">Split PDF</p>
+            <p class="pdf-workspace-subtitle" id="pdf-workspace-subtitle">Add a PDF file to extract pages from</p>
+
+            <!-- PDF Dropzone -->
+            <div class="pdf-dropzone" id="pdf-dropzone" tabindex="0" role="button" aria-label="Click or drag and drop PDF file to upload">
+              <input type="file" id="pdf-file-input" class="sr-only" accept=".pdf,application/pdf" />
+              <span class="dropzone-icon" aria-hidden="true">📁</span>
+              <p class="dropzone-text" id="pdf-dropzone-text">Drag & drop your PDF file here</p>
+              <p class="dropzone-hint" id="pdf-dropzone-hint">or click to browse · Single PDF</p>
+              <div class="format-badges">
+                <span class="pdf-format-badge">PDF</span>
+              </div>
+            </div>
+
+            <!-- PDF File List -->
+            <div class="pdf-file-list" id="pdf-file-list"></div>
+            <p class="pdf-file-count" id="pdf-file-count"></p>
+
+            <!-- Split PDF Controls -->
+            <div class="pdf-tool-controls visible" id="pdf-split-controls">
+              <div class="split-controls">
+                <p class="page-info" id="pdf-page-info"></p>
+                <div class="split-mode-pills" id="split-mode-pills">
+                  <button class="split-pill active" data-split-mode="all" id="split-all">Extract All Pages</button>
+                  <button class="split-pill" data-split-mode="range" id="split-range">Custom Range</button>
+                </div>
+                <div class="page-range-input" id="page-range-wrapper" style="display:none;">
+                  <label for="page-range">Pages:</label>
+                  <input type="text" id="page-range" placeholder="e.g. 1-3, 5, 7-10" />
+                </div>
+              </div>
+            </div>
+
+            <!-- PDF Action Button -->
+            <button class="btn-pdf-action" id="pdf-action-btn" disabled>
+              <span class="spinner" aria-hidden="true"></span>
+              <span class="btn-text" id="pdf-action-text">Split PDF</span>
+              <span class="btn-loading-text">Processing…</span>
+            </button>
+
+            <!-- PDF Progress -->
+            <div class="pdf-progress-wrapper" id="pdf-progress-wrapper">
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="pdf-progress-fill"></div>
+              </div>
+              <p class="progress-label" id="pdf-progress-label">Processing…</p>
+            </div>
+
+            <!-- PDF Result -->
+            <div class="pdf-result-area" id="pdf-result-area">
+              <div class="pdf-result-card">
+                <div class="result-success-icon" aria-hidden="true">✅</div>
+                <h3 id="pdf-result-title">Done!</h3>
+                <p class="result-meta" id="pdf-result-meta"></p>
+                <div class="pdf-result-downloads" id="pdf-result-downloads"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="ad-sidebar" aria-label="Advertisement">
+      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-right">Ad Space</div>
+    </aside>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-bottom">
+      <p>&copy; 2026 FastConvert. Built with ❤️ for the open web.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <script src="../../js/shared.js"></script>
+  <script src="../../js/pdf-tools.js"></script>
+</body>
+</html>

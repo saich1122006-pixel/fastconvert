@@ -203,6 +203,35 @@ input, textarea, select {
   gap: 8px;
 }
 
+/* Header Navigation Links */
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.header-nav-link {
+  padding: 7px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--clr-text-secondary);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  letter-spacing: 0.1px;
+}
+
+.header-nav-link:hover {
+  background: var(--clr-surface-hover);
+  color: var(--clr-accent);
+}
+
+.header-nav-link.active {
+  background: var(--clr-accent-subtle);
+  color: var(--clr-accent);
+  font-weight: 600;
+}
+
 /* Theme Toggle */
 .theme-toggle {
   width: 44px;
@@ -2054,9 +2083,81 @@ input, textarea, select {
 }
 
 /* ============================================
-   PDF Utilities — Responsive
+   COMPREHENSIVE RESPONSIVE LAYOUT
    ============================================ */
-@media (max-width: 640px) {
+
+/* ── 1024px: Hide sidebars, single column ── */
+@media (max-width: 1024px) {
+  .ad-sidebar {
+    display: none;
+  }
+
+  .main-layout {
+    grid-template-columns: 1fr;
+    padding: 24px clamp(16px, 4vw, 32px);
+    gap: 0;
+  }
+}
+
+/* ── 768px: Tablet ── */
+@media (max-width: 768px) {
+  .site-header {
+    padding: 0 16px;
+    gap: 8px;
+  }
+
+  .header-nav {
+    gap: 2px;
+  }
+
+  .header-nav-link {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .logo {
+    font-size: 1.3rem;
+  }
+
+  .logo-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 0.95rem;
+  }
+
+  .main-layout {
+    padding: 20px 16px;
+  }
+
+  .conversions-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .conversion-card {
+    padding: 20px 14px;
+  }
+
+  .conversion-card h3 {
+    font-size: 0.9rem;
+  }
+
+  .conversion-card p {
+    font-size: 0.78rem;
+  }
+
+  .pdf-tools-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .pdf-tool-card {
+    padding: 18px 12px;
+  }
+  .pdf-tool-card .pdf-tool-icon { font-size: 1.6rem; }
+  .pdf-tool-card h3 { font-size: 0.85rem; }
+  .pdf-tool-card p { font-size: 0.72rem; }
+
   .category-tabs {
     width: 100%;
     max-width: 360px;
@@ -2068,16 +2169,88 @@ input, textarea, select {
     justify-content: center;
   }
 
-  .pdf-tools-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+  .steps-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
   }
-  .pdf-tool-card {
-    padding: 18px 12px;
+
+  .step-card:not(:last-child)::after {
+    display: none;
   }
-  .pdf-tool-card .pdf-tool-icon { font-size: 1.6rem; }
-  .pdf-tool-card h3 { font-size: 0.85rem; }
-  .pdf-tool-card p { font-size: 0.72rem; }
+
+  .controls-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .format-selector {
+    justify-content: center;
+  }
+
+  .quality-control {
+    justify-content: center;
+  }
+
+  .btn-convert {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .compress-controls {
+    align-items: stretch;
+  }
+
+  .size-pills {
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .size-pill {
+    flex: 1 1 calc(50% - 8px);
+    text-align: center;
+  }
+
+  .result-stats {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    gap: 28px;
+    text-align: center;
+  }
+
+  .footer-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .footer-nav-col {
+    min-width: 140px;
+    text-align: left;
+  }
+
+  .trust-badge {
+    flex-direction: column;
+    text-align: center;
+    gap: 6px;
+    border-radius: var(--radius-lg);
+    padding: 16px 20px;
+  }
+
+  .page-content-card {
+    padding: 24px 18px;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
 
   .pdf-dropzone {
     padding: 28px 16px;
@@ -2107,10 +2280,164 @@ input, textarea, select {
     padding: 7px 14px;
     font-size: 0.8rem;
   }
+
+  .compress-pdf-quality {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
 }
 
-@media (max-width: 380px) {
+/* ── 480px: Small phones ── */
+@media (max-width: 480px) {
+  .header-nav {
+    display: none;
+  }
+
+  .site-header {
+    height: 60px;
+  }
+
+  :root {
+    --header-height: 60px;
+  }
+
+  .logo {
+    font-size: 1.2rem;
+  }
+
+  .conversions-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .conversion-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 14px;
+    text-align: left;
+  }
+
+  .conversion-card-arrows {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    margin-bottom: 0;
+  }
+
+  .conversion-card h3 {
+    margin-bottom: 2px;
+    font-size: 0.88rem;
+  }
+
+  .conversion-card p {
+    font-size: 0.76rem;
+  }
+
   .pdf-tools-grid {
     grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .pdf-tool-card {
+    flex-direction: row;
+    text-align: left;
+    padding: 14px 14px;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .pdf-tool-card .pdf-tool-icon {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+  }
+
+  .pdf-tool-card p {
+    display: none;
+  }
+
+  .converter-hero {
+    margin-bottom: 24px;
+  }
+
+  .converter-hero h1 {
+    font-size: 1.4rem;
+  }
+
+  .converter-hero p {
+    font-size: 0.88rem;
+  }
+
+  .dropzone-wrapper {
+    padding: 32px 16px;
+  }
+
+  .dropzone-icon {
+    font-size: 2.2rem;
+  }
+
+  .mode-tab {
+    flex: 1;
+    text-align: center;
+    font-size: 0.82rem;
+    padding: 9px 10px;
+  }
+
+  .size-pill {
+    flex: 1 1 100%;
+  }
+
+  .btn-download {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 20px;
+  }
+
+  .how-to-section {
+    margin-top: 32px;
+  }
+
+  .ad-placeholder-banner {
+    min-height: 72px;
+  }
+
+  .footer-nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .footer-nav-col {
+    width: 100%;
+    text-align: center;
+  }
+
+  .footer-nav-col ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+  }
+
+  .footer-bottom p {
+    font-size: 0.78rem;
+  }
+
+  .conversions-section-title {
+    font-size: 0.78rem;
+  }
+
+  .btn-pdf-download {
+    width: 100%;
+    justify-content: center;
+    padding: 13px 20px;
+  }
+
+  .result-stat {
+    min-width: 80px;
   }
 }

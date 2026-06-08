@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Converter — FastConvert</title>
+  <meta name="description" content="Convert images between PNG, JPG, WebP, and HEIC for free. 100% in-browser processing." />
+  <meta name="theme-color" content="#4f6df5" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <a href="../../index.html" class="logo" role="button" tabindex="0" aria-label="Go to homepage" style="text-decoration:none;">
+      <span class="logo-icon" aria-hidden="true">⚡</span>
+      fastconvert
+    </a>
+    <div class="header-actions">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
+    </div>
+  </header>
+
+  <main class="main-layout" role="main">
+    <aside class="ad-sidebar" aria-label="Advertisement">
+      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-left">Ad Space</div>
+    </aside>
+
+    <div class="content-center">
+      <section class="page-view active" aria-label="Image Converter Tool">
+        <div class="converter-hero">
+          <h1>Image Converter</h1>
+          <p>Convert your photos between PNG, JPG, WebP, and HEIC instantly. Zero uploads.</p>
+        </div>
+
+        <div class="category-panel active">
+          <!-- Dropzone -->
+          <div class="dropzone-wrapper" id="dropzone" tabindex="0" role="button" aria-label="Click or drag and drop an image to upload">
+            <input type="file" id="file-input" class="sr-only" accept=".png,.jpg,.jpeg,.webp,.heic,.heif,image/png,image/jpeg,image/webp,image/heic,image/heif" />
+
+            <div id="dropzone-default">
+              <span class="dropzone-icon" aria-hidden="true">📁</span>
+              <p class="dropzone-text">Drag & drop your image here</p>
+              <p class="dropzone-hint">or click to browse</p>
+              <div class="format-badges">
+                <span class="format-badge">PNG</span>
+                <span class="format-badge">JPG</span>
+                <span class="format-badge">WebP</span>
+                <span class="format-badge heic">HEIC</span>
+              </div>
+            </div>
+
+            <div class="dropzone-file-info" id="dropzone-file-info" style="display:none;">
+              <span class="file-icon" aria-hidden="true">🖼️</span>
+              <div>
+                <p class="file-name" id="file-name"></p>
+                <p class="file-size" id="file-size"></p>
+              </div>
+              <button class="remove-file" id="remove-file" aria-label="Remove file" title="Remove file">✕</button>
+            </div>
+          </div>
+
+          <!-- Image Preview -->
+          <div class="image-preview-container" id="image-preview" style="display:none;">
+            <img id="preview-img" alt="Image preview" />
+          </div>
+
+          <!-- Convert Mode Controls -->
+          <div class="controls-bar" id="convert-controls">
+            <div class="format-selector">
+              <label for="format-select">Convert to:</label>
+              <select id="format-select">
+                <option value="png">PNG</option>
+                <option value="jpeg">JPG</option>
+                <option value="webp" selected>WebP</option>
+              </select>
+            </div>
+
+            <div class="quality-control" id="quality-control">
+              <label for="quality-slider">Quality:</label>
+              <input type="range" id="quality-slider" min="10" max="100" value="90" step="5" />
+              <span class="quality-value" id="quality-value">90%</span>
+            </div>
+
+            <button class="btn-convert" id="convert-btn" disabled>
+              <span class="spinner" aria-hidden="true"></span>
+              <span class="btn-text">Convert Now</span>
+              <span class="btn-loading-text">Converting…</span>
+            </button>
+          </div>
+
+          <!-- Result / Download -->
+          <div class="result-area" id="result-area" style="display:none;">
+            <div class="result-card">
+              <div class="result-success-icon" aria-hidden="true">✅</div>
+              <h3 id="result-title">Conversion Complete!</h3>
+              <p class="result-meta">
+                Format: <span id="result-format">—</span> · Size: <span id="result-size">—</span>
+              </p>
+              <a href="#" class="btn-download" id="download-btn">⬇️ Download Converted File</a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+
+    <aside class="ad-sidebar" aria-label="Advertisement">
+      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-right">Ad Space</div>
+    </aside>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-bottom">
+      <p>&copy; 2026 FastConvert. Built with ❤️ for the open web.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <script src="../../js/shared.js"></script>
+  <script src="image-converter.js"></script>
+</body>
+</html>
