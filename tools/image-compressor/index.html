@@ -6,18 +6,51 @@
   <title>Image Compressor — FastConvert</title>
   <meta name="description" content="Compress images to 20KB or 50KB for government portals and exam forms. 100% in-browser processing." />
   <meta name="theme-color" content="#4f6df5" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234f46e5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polygon points='13 19 22 12 13 5 13 19'/><polygon points='2 19 11 12 2 5 2 19'/></svg>" />
   <link rel="stylesheet" href="../../styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
 </head>
 <body>
   <header class="site-header" role="banner">
     <a href="../../index.html" class="logo" role="button" tabindex="0" aria-label="Go to homepage" style="text-decoration:none;">
-      <span class="logo-icon" aria-hidden="true">⚡</span>
-      fastconvert
+      <svg class="logo-icon-svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#logo-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; filter: drop-shadow(0 2px 4px rgba(79, 70, 229, 0.3));">
+        <defs>
+          <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#4f46e5" />
+            <stop offset="100%" stop-color="#0ea5e9" />
+          </linearGradient>
+        </defs>
+        <polygon points="13 19 22 12 13 5 13 19"/>
+        <polygon points="2 19 11 12 2 5 2 19"/>
+      </svg>
+      <span style="color: var(--clr-text-primary); font-weight: 800; font-size: 1.4rem; letter-spacing: -0.02em;"><span style="color: #4f46e5;">Fast</span>Convert</span>
     </a>
     <nav class="header-nav" aria-label="Primary navigation">
       <a class="header-nav-link" href="../../index.html#page-home">Home</a>
+      <!-- Tools Dropdown -->
+      <div class="nav-dropdown">
+        <button class="header-nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false" style="display:flex; align-items:center; gap:4px; background:none; outline:none; border:none; font-family:inherit;">
+          Tools
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="dropdown-menu">
+          <div class="dropdown-group">
+            <span class="dropdown-header">Image</span>
+            <a href="../../tools/image-converter/index.html">Image Converter</a>
+            <a href="../../tools/image-compressor/index.html">Image Compressor</a>
+            <a href="../../tools/resize-image/index.html">Resize Image</a>
+            <a href="../../tools/crop-image/index.html">Crop Image</a>
+          </div>
+          <div class="dropdown-group">
+            <span class="dropdown-header">PDF</span>
+            <a href="../../tools/pdf-merge/index.html">Merge PDF</a>
+            <a href="../../tools/pdf-split/index.html">Split PDF</a>
+            <a href="../../tools/pdf-compress/index.html">Compress PDF</a>
+            <a href="../../tools/image-to-pdf/index.html">Image to PDF</a>
+            <a href="../../tools/rotate-pdf/index.html">Rotate PDF</a>
+          </div>
+        </div>
+      </div>
       <a class="header-nav-link" href="../../index.html#page-about">About</a>
       <a class="header-nav-link" href="../../index.html#page-privacy">Privacy</a>
       <a class="header-nav-link" href="../../index.html#page-contact">Contact</a>

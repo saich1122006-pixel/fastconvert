@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rotate PDF — FastConvert</title>
+  <meta name="description" content="Rotate PDF pages easily. Turn your PDF documents 90 degrees left, right or 180 degrees directly in your browser." />
+  <meta name="theme-color" content="#4f6df5" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234f46e5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polygon points='13 19 22 12 13 5 13 19'/><polygon points='2 19 11 12 2 5 2 19'/></svg>" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <!-- pdf-lib for PDF manipulation -->
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <a href="../../index.html" class="logo" role="button" tabindex="0" aria-label="Go to homepage" style="text-decoration:none;">
+      <svg class="logo-icon-svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#logo-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; filter: drop-shadow(0 2px 4px rgba(79, 70, 229, 0.3));">
+        <defs>
+          <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#4f46e5" />
+            <stop offset="100%" stop-color="#0ea5e9" />
+          </linearGradient>
+        </defs>
+        <polygon points="13 19 22 12 13 5 13 19"/>
+        <polygon points="2 19 11 12 2 5 2 19"/>
+      </svg>
+      <span style="color: var(--clr-text-primary); font-weight: 800; font-size: 1.4rem; letter-spacing: -0.02em;"><span style="color: #4f46e5;">Fast</span>Convert</span>
+    </a>
+    <nav class="header-nav" aria-label="Primary navigation">
+      <a class="header-nav-link" href="../../index.html#page-home">Home</a>
+      <!-- Tools Dropdown -->
+      <div class="nav-dropdown">
+        <button class="header-nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false" style="display:flex; align-items:center; gap:4px; background:none; outline:none; border:none; font-family:inherit;">
+          Tools
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="dropdown-menu">
+          <div class="dropdown-group">
+            <span class="dropdown-header">Image</span>
+            <a href="../../tools/image-converter/index.html">Image Converter</a>
+            <a href="../../tools/image-compressor/index.html">Image Compressor</a>
+            <a href="../../tools/resize-image/index.html">Resize Image</a>
+            <a href="../../tools/crop-image/index.html">Crop Image</a>
+          </div>
+          <div class="dropdown-group">
+            <span class="dropdown-header">PDF</span>
+            <a href="../../tools/pdf-merge/index.html">Merge PDF</a>
+            <a href="../../tools/pdf-split/index.html">Split PDF</a>
+            <a href="../../tools/pdf-compress/index.html">Compress PDF</a>
+            <a href="../../tools/image-to-pdf/index.html">Image to PDF</a>
+            <a href="../../tools/rotate-pdf/index.html">Rotate PDF</a>
+          </div>
+        </div>
+      </div>
+      <a class="header-nav-link" href="../../index.html#page-about">About</a>
+      <a class="header-nav-link" href="../../index.html#page-privacy">Privacy</a>
+      <a class="header-nav-link" href="../../index.html#page-contact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="main-layout" role="main">
+    <div class="content-center">
+      <section class="page-view active" aria-label="Rotate PDF Tool">
+        <div class="converter-hero">
+          <h1>Rotate PDF</h1>
+          <p>Instantly rotate PDF documents in your browser. 100% private and secure.</p>
+        </div>
+
+        <div class="category-panel active">
+          <!-- Dropzone -->
+          <div class="dropzone-wrapper" id="dropzone" tabindex="0" role="button" aria-label="Click or drag and drop a PDF to upload">
+            <input type="file" id="file-input" class="sr-only" accept="application/pdf,.pdf" />
+
+            <div id="dropzone-default">
+              <span class="dropzone-icon" aria-hidden="true">📄</span>
+              <p class="dropzone-text">Drag & drop your PDF here</p>
+              <p class="dropzone-hint">or click to browse</p>
+              <div class="format-badges">
+                <span class="format-badge" style="background:#ef4444; color:white; border-color:#ef4444;">PDF</span>
+              </div>
+            </div>
+
+            <div class="dropzone-file-info" id="dropzone-file-info" style="display:none;">
+              <span class="file-icon" aria-hidden="true">📄</span>
+              <div>
+                <p class="file-name" id="file-name"></p>
+                <p class="file-size" id="file-size"></p>
+              </div>
+              <button class="remove-file" id="remove-file" aria-label="Remove file" title="Remove file">✕</button>
+            </div>
+          </div>
+
+          <!-- Rotate Controls -->
+          <div class="compress-controls" id="rotate-controls" style="display: none; flex-direction: column; gap: 16px; align-items: center;">
+            <p style="font-weight: 600; color: var(--clr-text-secondary); margin: 0;">Rotation Direction:</p>
+            <div style="display: flex; gap: 16px;">
+              <button class="size-pill active" id="rotate-left" data-degrees="-90">↺ Left (-90°)</button>
+              <button class="size-pill" id="rotate-right" data-degrees="90">↻ Right (+90°)</button>
+              <button class="size-pill" id="rotate-180" data-degrees="180">↕ 180°</button>
+            </div>
+            
+            <button class="btn-convert" id="apply-btn" style="margin-top: 16px;">
+              <span class="spinner" aria-hidden="true"></span>
+              <span class="btn-text">Apply Rotation</span>
+            </button>
+          </div>
+
+          <!-- Result / Download -->
+          <div class="result-area" id="result-area" style="display:none;">
+            <div class="result-card">
+              <div class="result-success-icon" aria-hidden="true">✅</div>
+              <h3 id="result-title">PDF Rotated!</h3>
+              <p class="result-meta">
+                All pages have been rotated.
+              </p>
+              <a href="#" class="btn-download" id="download-btn">⬇️ Download Rotated PDF</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEO Content for AdSense -->
+      <div class="tool-seo-content">
+        <div class="tool-how-to">
+          <h2>How to Rotate PDF Pages</h2>
+          <p class="section-subtitle">Fix upside down or sideways PDF documents instantly.</p>
+          <div class="tool-steps-grid">
+            <div class="tool-step">
+              <div class="step-num">1</div>
+              <h3>Upload PDF</h3>
+              <p>Drag and drop your PDF document.</p>
+            </div>
+            <div class="tool-step">
+              <div class="step-num">2</div>
+              <h3>Select Rotation</h3>
+              <p>Choose to rotate left, right, or upside down.</p>
+            </div>
+            <div class="tool-step">
+              <div class="step-num">3</div>
+              <h3>Save Document</h3>
+              <p>Download the corrected PDF file immediately.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-bottom">
+      <p>&copy; 2026 FastConvert. Built with ❤️ for the open web.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <script src="../../js/shared.js"></script>
+  <script src="rotate-pdf.js"></script>
+</body>
+</html>

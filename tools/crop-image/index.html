@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crop Image — FastConvert</title>
+  <meta name="description" content="Crop images online for free. Adjust aspect ratios or trim unwanted edges from JPG, PNG, and WebP." />
+  <meta name="theme-color" content="#4f6df5" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234f46e5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polygon points='13 19 22 12 13 5 13 19'/><polygon points='2 19 11 12 2 5 2 19'/></svg>" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <a href="../../index.html" class="logo" role="button" tabindex="0" aria-label="Go to homepage" style="text-decoration:none;">
+      <svg class="logo-icon-svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#logo-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; filter: drop-shadow(0 2px 4px rgba(79, 70, 229, 0.3));">
+        <defs>
+          <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#4f46e5" />
+            <stop offset="100%" stop-color="#0ea5e9" />
+          </linearGradient>
+        </defs>
+        <polygon points="13 19 22 12 13 5 13 19"/>
+        <polygon points="2 19 11 12 2 5 2 19"/>
+      </svg>
+      <span style="color: var(--clr-text-primary); font-weight: 800; font-size: 1.4rem; letter-spacing: -0.02em;"><span style="color: #4f46e5;">Fast</span>Convert</span>
+    </a>
+    <nav class="header-nav" aria-label="Primary navigation">
+      <a class="header-nav-link" href="../../index.html#page-home">Home</a>
+      <!-- Tools Dropdown -->
+      <div class="nav-dropdown">
+        <button class="header-nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false" style="display:flex; align-items:center; gap:4px; background:none; outline:none; border:none; font-family:inherit;">
+          Tools
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="dropdown-menu">
+          <div class="dropdown-group">
+            <span class="dropdown-header">Image</span>
+            <a href="../../tools/image-converter/index.html">Image Converter</a>
+            <a href="../../tools/image-compressor/index.html">Image Compressor</a>
+            <a href="../../tools/resize-image/index.html">Resize Image</a>
+            <a href="../../tools/crop-image/index.html">Crop Image</a>
+          </div>
+          <div class="dropdown-group">
+            <span class="dropdown-header">PDF</span>
+            <a href="../../tools/pdf-merge/index.html">Merge PDF</a>
+            <a href="../../tools/pdf-split/index.html">Split PDF</a>
+            <a href="../../tools/pdf-compress/index.html">Compress PDF</a>
+            <a href="../../tools/image-to-pdf/index.html">Image to PDF</a>
+            <a href="../../tools/rotate-pdf/index.html">Rotate PDF</a>
+          </div>
+        </div>
+      </div>
+      <a class="header-nav-link" href="../../index.html#page-about">About</a>
+      <a class="header-nav-link" href="../../index.html#page-privacy">Privacy</a>
+      <a class="header-nav-link" href="../../index.html#page-contact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="main-layout" role="main">
+    <div class="content-center">
+      <section class="page-view active" aria-label="Crop Image Tool">
+        <div class="converter-hero">
+          <h1>Crop Image</h1>
+          <p>Trim out the edges of your photo or adjust its aspect ratio perfectly.</p>
+        </div>
+
+        <div class="category-panel active">
+          <!-- Dropzone -->
+          <div class="dropzone-wrapper" id="dropzone" tabindex="0" role="button" aria-label="Click or drag and drop an image to upload">
+            <input type="file" id="file-input" class="sr-only" accept=".png,.jpg,.jpeg,.webp,.heic,.heif,image/png,image/jpeg,image/webp,image/heic,image/heif" />
+
+            <div id="dropzone-default">
+              <span class="dropzone-icon" aria-hidden="true">📁</span>
+              <p class="dropzone-text">Drag & drop your image here</p>
+              <p class="dropzone-hint">or click to browse</p>
+              <div class="format-badges">
+                <span class="format-badge">PNG</span>
+                <span class="format-badge">JPG</span>
+                <span class="format-badge">WebP</span>
+              </div>
+            </div>
+
+            <div class="dropzone-file-info" id="dropzone-file-info" style="display:none;">
+              <span class="file-icon" aria-hidden="true">🖼️</span>
+              <div>
+                <p class="file-name" id="file-name"></p>
+                <p class="file-size" id="file-size"></p>
+              </div>
+              <button class="remove-file" id="remove-file" aria-label="Remove file" title="Remove file">✕</button>
+            </div>
+          </div>
+
+          <!-- Image Cropper Container -->
+          <div class="image-preview-container" id="image-preview" style="display:none; max-height: 500px;">
+            <img id="preview-img" alt="Image to crop" style="display:block; max-width:100%;" />
+          </div>
+
+          <!-- Crop Controls -->
+          <div class="compress-controls" id="crop-controls" style="display: none; flex-direction: column; gap: 16px;">
+            <p style="font-weight: 600; color: var(--clr-text-secondary); margin: 0;">Aspect Ratio:</p>
+            <div class="size-pills" id="ratio-pills" style="justify-content: center;">
+              <button class="size-pill active" data-ratio="NaN">Free</button>
+              <button class="size-pill" data-ratio="1">1:1 (Square)</button>
+              <button class="size-pill" data-ratio="1.3333333333333333">4:3</button>
+              <button class="size-pill" data-ratio="1.7777777777777777">16:9</button>
+              <button class="size-pill" data-ratio="0.5625">9:16 (Story)</button>
+            </div>
+            
+            <button class="btn-convert" id="crop-btn" style="align-self: center; margin-top: 10px;">
+              <span class="btn-text">Crop Image</span>
+            </button>
+          </div>
+
+          <!-- Result / Download -->
+          <div class="result-area" id="result-area" style="display:none;">
+            <div class="result-card">
+              <div class="result-success-icon" aria-hidden="true">✅</div>
+              <h3 id="result-title">Crop Complete!</h3>
+              <p class="result-meta">
+                Your image has been cropped successfully.
+              </p>
+              <a href="#" class="btn-download" id="download-btn">⬇️ Download Cropped Image</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEO Content for AdSense -->
+      <div class="tool-seo-content">
+        <div class="tool-how-to">
+          <h2>How to Crop an Image Online</h2>
+          <p class="section-subtitle">Easily cut out unwanted edges or frame your photo for social media.</p>
+          <div class="tool-steps-grid">
+            <div class="tool-step">
+              <div class="step-num">1</div>
+              <h3>Upload Image</h3>
+              <p>Drag and drop any photo into the box above.</p>
+            </div>
+            <div class="tool-step">
+              <div class="step-num">2</div>
+              <h3>Adjust the Box</h3>
+              <p>Drag the corners of the crop box or select an aspect ratio.</p>
+            </div>
+            <div class="tool-step">
+              <div class="step-num">3</div>
+              <h3>Save Image</h3>
+              <p>Click "Crop Image" and download the result instantly.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-bottom">
+      <p>&copy; 2026 FastConvert. Built with ❤️ for the open web.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <script src="../../js/shared.js"></script>
+  <script src="crop-image.js"></script>
+</body>
+</html>
