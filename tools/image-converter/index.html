@@ -16,15 +16,22 @@
       <span class="logo-icon" aria-hidden="true">⚡</span>
       fastconvert
     </a>
+    <nav class="header-nav" aria-label="Primary navigation">
+      <a class="header-nav-link" href="../../index.html#page-home">Home</a>
+      <a class="header-nav-link" href="../../index.html#page-about">About</a>
+      <a class="header-nav-link" href="../../index.html#page-privacy">Privacy</a>
+      <a class="header-nav-link" href="../../index.html#page-contact">Contact</a>
+    </nav>
     <div class="header-actions">
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
     </div>
   </header>
 
   <main class="main-layout" role="main">
-    <aside class="ad-sidebar" aria-label="Advertisement">
-      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-left">Ad Space</div>
-    </aside>
+
 
     <div class="content-center">
       <section class="page-view active" aria-label="Image Converter Tool">
@@ -103,11 +110,114 @@
 
         </div>
       </section>
+
+      <!-- SEO Content for AdSense -->
+      <div class="tool-seo-content">
+
+        <!-- How To Use -->
+        <div class="tool-how-to">
+          <h2>How to Convert Images Online</h2>
+          <p class="section-subtitle">Convert between PNG, JPG, WebP, and HEIC in three simple steps — no software required.</p>
+          <div class="tool-steps-grid">
+            <div class="tool-step">
+              <div class="step-num">1</div>
+              <div class="step-emoji" aria-hidden="true">📤</div>
+              <h3>Upload Your Image</h3>
+              <p>Drag and drop your PNG, JPG, WebP, or HEIC file into the box above, or click to browse.</p>
+            </div>
+            <div class="tool-step">
+              <div class="step-num">2</div>
+              <div class="step-emoji" aria-hidden="true">🎨</div>
+              <h3>Choose Output Format</h3>
+              <p>Select your target format from the dropdown and adjust quality if needed.</p>
+            </div>
+            <div class="tool-step">
+              <div class="step-num">3</div>
+              <div class="step-emoji" aria-hidden="true">⬇️</div>
+              <h3>Download Instantly</h3>
+              <p>Click "Convert Now" and download the result. Your file never leaves your device.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Educational Article -->
+        <div class="tool-article">
+          <h2>Understanding Image Formats</h2>
+          <p class="section-subtitle">Choosing the right format makes a big difference for file size, quality, and compatibility.</p>
+          <div class="tool-article-body">
+            <h3>When to Use JPG</h3>
+            <p>JPG (also called JPEG) is the most widely supported image format on the internet. It uses lossy compression, which means it reduces file size by discarding some image data. This makes JPG ideal for photographs, social media uploads, and email attachments where smaller file sizes matter more than pixel-perfect quality. Most government portals and online forms specifically request JPG files.</p>
+
+            <h3>When to Use PNG</h3>
+            <p>PNG uses lossless compression, preserving every pixel of your original image. This makes it perfect for graphics with text, logos, screenshots, and any image that needs transparency. PNG files are typically larger than JPGs, so they're best used when quality and transparency are priorities — for example, in web design, professional presentations, and digital artwork.</p>
+
+            <h3>When to Use WebP</h3>
+            <p>WebP is a modern format developed by Google that offers both lossy and lossless compression. It produces files that are 25–35% smaller than equivalent JPG or PNG files, making it the preferred format for website performance optimization. Most modern browsers support WebP, though some older software and devices may not open WebP files natively — which is why converting WebP to JPG or PNG is so common.</p>
+
+            <h3>What About HEIC?</h3>
+            <p>HEIC (High Efficiency Image Coding) is Apple's default photo format on iPhones and iPads running iOS 11 and later. HEIC files are roughly half the size of equivalent JPGs with no visible quality loss. The main drawback is compatibility: Windows PCs, Android devices, and many online services don't support HEIC natively. Converting HEIC to JPG ensures your iPhone photos can be opened and shared anywhere.</p>
+          </div>
+        </div>
+
+        <!-- Why FastConvert -->
+        <div class="tool-article">
+          <h2>Why Use FastConvert?</h2>
+          <div class="tool-features-grid">
+            <div class="tool-feature-card">
+              <span class="feature-icon" aria-hidden="true">🔒</span>
+              <h4>100% Private</h4>
+              <p>Files never leave your device. Zero server uploads.</p>
+            </div>
+            <div class="tool-feature-card">
+              <span class="feature-icon" aria-hidden="true">⚡</span>
+              <h4>Lightning Fast</h4>
+              <p>Browser-based processing means instant results.</p>
+            </div>
+            <div class="tool-feature-card">
+              <span class="feature-icon" aria-hidden="true">🆓</span>
+              <h4>Completely Free</h4>
+              <p>No registration, no watermarks, no hidden fees.</p>
+            </div>
+            <div class="tool-feature-card">
+              <span class="feature-icon" aria-hidden="true">📱</span>
+              <h4>Works Everywhere</h4>
+              <p>Desktop, tablet, or phone — any modern browser.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="tool-faq">
+          <h2>Frequently Asked Questions</h2>
+          <p class="section-subtitle">Common questions about image conversion answered.</p>
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-question">Is my image uploaded to a server? <span class="faq-toggle" aria-hidden="true">+</span></button>
+              <div class="faq-answer"><p>No. FastConvert processes everything directly in your web browser using the HTML5 Canvas API. Your images never leave your device and are discarded from memory the moment you close or refresh the tab.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">Does converting an image reduce its quality? <span class="faq-toggle" aria-hidden="true">+</span></button>
+              <div class="faq-answer"><p>It depends on the format and quality setting. Converting to PNG is lossless (no quality loss). Converting to JPG or WebP uses lossy compression, but at 90% quality the difference is imperceptible for most photographs. You can adjust the quality slider to find your ideal balance.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">Can I convert HEIC photos from my iPhone? <span class="faq-toggle" aria-hidden="true">+</span></button>
+              <div class="faq-answer"><p>Yes! FastConvert supports HEIC and HEIF files from iPhones and iPads. Simply upload your HEIC file and convert it to JPG or PNG for universal compatibility on Windows, Android, and online platforms.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">Is there a file size limit? <span class="faq-toggle" aria-hidden="true">+</span></button>
+              <div class="faq-answer"><p>Since processing happens in your browser, the limit depends on your device's available memory. Most modern devices handle images up to 50 MB without issues. For very large files (100 MB+), performance may vary depending on your device.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">What browsers are supported? <span class="faq-toggle" aria-hidden="true">+</span></button>
+              <div class="faq-answer"><p>FastConvert works on all modern browsers including Chrome, Firefox, Safari, Edge, and Opera on both desktop and mobile devices. For HEIC conversion, we recommend Chrome or Edge for the best experience.</p></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <aside class="ad-sidebar" aria-label="Advertisement">
-      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-right">Ad Space</div>
-    </aside>
+
   </main>
 
   <footer class="site-footer" role="contentinfo">

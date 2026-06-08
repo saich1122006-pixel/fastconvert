@@ -67,4 +67,33 @@
     return (bytes / 1048576).toFixed(2) + ' MB';
   };
 
+  // ============================================
+  // FAQ Accordion Toggle
+  // ============================================
+  // Handle FAQ toggles
+  const faqItems = document.querySelectorAll('.faq-item');
+  faqItems.forEach(item => {
+    const btn = item.querySelector('.faq-question');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        item.classList.toggle('open');
+      });
+    }
+  });
+
+  // Handle Mobile Menu Toggle
+  const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+  const headerNav = document.querySelector('.header-nav');
+  if (mobileMenuToggle && headerNav) {
+    mobileMenuToggle.addEventListener('click', () => {
+      headerNav.classList.toggle('nav-open');
+    });
+
+    // Close menu when clicking a link
+    headerNav.querySelectorAll('.header-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        headerNav.classList.remove('nav-open');
+      });
+    });
+  }
 })();

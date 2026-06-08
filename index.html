@@ -3,13 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FastConvert — Free Online Image &amp; PDF Tools | Convert, Compress, Merge</title>
-  <meta name="description" content="Convert images (PNG, JPG, WebP, HEIC) &amp; work with PDFs (merge, split, compress, images-to-PDF) — all free, all private. 100% in-browser processing." />
-  <meta name="keywords" content="image converter, png to jpg, webp to png, jpg to webp, heic to jpg, compress image, reduce file size, 20kb, 50kb, government portal photo, free converter, client-side, pdf merge, pdf split" />
+  <title>FastConvert — Free Image &amp; PDF Tools Online | Convert, Compress, Merge</title>
+  <meta name="description" content="Free online Image &amp; PDF tools. Convert PNG, JPG, WebP, HEIC. Merge, split &amp; compress PDFs. Compress photos to 20KB/50KB for exam portals. 100% private — runs in your browser." />
+  <meta name="keywords" content="image converter, png to jpg, webp to png, jpg to webp, heic to jpg, compress image, reduce file size, 20kb, 50kb, government portal photo, free converter, client-side, pdf merge, pdf split, pdf compress, images to pdf" />
   <meta name="robots" content="index, follow" />
-  <meta property="og:title" content="FastConvert — Free Online Image &amp; PDF Tools" />
-  <meta property="og:description" content="Convert PNG, JPG, WebP, and HEIC images instantly. Compress photos to 20KB/50KB for exam portals. Merge, split &amp; compress PDFs. 100% private." />
+
+  <!-- Open Graph / WhatsApp / Social Preview -->
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://fastconvert.tech/" />
+  <meta property="og:site_name" content="FastConvert" />
+  <meta property="og:title" content="FastConvert — Free Image &amp; PDF Tools | Convert, Compress &amp; More" />
+  <meta property="og:description" content="🖼️ Convert images (PNG, JPG, WebP, HEIC) &amp; 📄 PDF tools (Merge, Split, Compress, Images→PDF) — all free, 100% private. Everything runs in your browser. No uploads ever." />
+  <meta property="og:image" content="https://fastconvert.tech/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="FastConvert — Free Image &amp; PDF Tools" />
+  <meta name="twitter:description" content="Convert images &amp; work with PDFs for free. Merge, split, compress PDFs. Convert PNG/JPG/WebP/HEIC. Compress to 20KB for exam portals. 100% private." />
+  <meta name="twitter:image" content="https://fastconvert.tech/og-image.png" />
+
   <meta name="theme-color" content="#4f6df5" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
   <link rel="stylesheet" href="styles.css" />
@@ -34,12 +48,16 @@
       fastconvert
     </div>
     <nav class="header-nav" aria-label="Primary navigation">
+      <a class="header-nav-link" data-page="page-home" href="#page-home">Home</a>
       <a class="header-nav-link" data-page="page-about" href="#page-about">About</a>
       <a class="header-nav-link" data-page="page-privacy" href="#page-privacy">Privacy</a>
       <a class="header-nav-link" data-page="page-contact" href="#page-contact">Contact</a>
     </nav>
     <div class="header-actions">
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
     </div>
   </header>
 
@@ -48,10 +66,7 @@
        ============================================ -->
   <main class="main-layout" role="main">
 
-    <!-- Left Sidebar Ad -->
-    <aside class="ad-sidebar" aria-label="Advertisement">
-      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-left">Ad Space</div>
-    </aside>
+
 
     <!-- ==========================================
          CENTER CONTENT AREA
@@ -69,9 +84,20 @@
           <p>Image formats, PDF tools — convert, compress, merge &amp; more. 100% in your browser. Zero uploads.</p>
         </div>
 
+        <!-- ====== CATEGORY TABS ====== -->
+        <div class="category-tabs" role="tablist" style="margin-bottom: 24px;">
+          <button class="category-tab active" data-target="image-tools-section" role="tab" aria-selected="true">
+            <span aria-hidden="true">🖼️</span> Image Tools
+          </button>
+          <button class="category-tab" data-target="pdf-tools-section" role="tab" aria-selected="false">
+            <span aria-hidden="true">📄</span> PDF Utilities
+          </button>
+        </div>
+
+        <p class="conversions-section-title" id="dynamic-category-title" style="margin-bottom: 18px;">CHOOSE AN IMAGE TOOL</p>
+
         <!-- ====== IMAGE TOOLS SECTION ====== -->
-        <div class="conversions-section">
-          <p class="conversions-section-title">🖼️ Image Tools</p>
+        <div class="conversions-section category-panel active" id="image-tools-section" role="tabpanel">
           <div class="conversions-grid">
 
             <a href="tools/image-converter/index.html?mode=webp-jpg" class="conversion-card" id="card-webp-jpg" style="text-decoration:none;color:inherit;">
@@ -120,8 +146,7 @@
         </div>
 
         <!-- ====== PDF TOOLS SECTION ====== -->
-        <div class="pdf-tools-section" style="margin-top: 48px;">
-          <p class="conversions-section-title">📄 PDF Utilities</p>
+        <div class="pdf-tools-section category-panel" id="pdf-tools-section" role="tabpanel">
           <div class="pdf-tools-grid" id="pdf-tools-grid">
 
             <a href="tools/pdf-merge/index.html" class="pdf-tool-card" id="pdf-card-merge" style="text-decoration:none;color:inherit;">
@@ -151,8 +176,7 @@
           </div>
         </div>
 
-        <!-- Google AdSense Banner Ad Container -->
-        <div class="ad-placeholder ad-placeholder-banner" id="ad-banner-bottom">Ad Space</div>
+
 
         <!-- Trust Badge -->
         <div class="trust-badge">
@@ -313,10 +337,7 @@
 
     </div><!-- /.content-center -->
 
-    <!-- Right Sidebar Ad -->
-    <aside class="ad-sidebar" aria-label="Advertisement">
-      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-right">Ad Space</div>
-    </aside>
+
 
   </main>
 
@@ -408,6 +429,39 @@
 
       const initPage = location.hash.replace('#', '') || 'page-home';
       navigateTo(initPage);
+      
+      // ============================================
+      // Category Tabs Logic (Image vs PDF)
+      // ============================================
+      const catTabs = $$('.category-tab');
+      const catPanels = $$('.category-panel');
+      const catTitle = $('#dynamic-category-title');
+
+      if (catTabs.length && catPanels.length) {
+        catTabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+            // Update tabs
+            catTabs.forEach(t => {
+              t.classList.remove('active');
+              t.setAttribute('aria-selected', 'false');
+            });
+            tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
+
+            // Update title
+            const isPdf = tab.dataset.target === 'pdf-tools-section';
+            catTitle.textContent = isPdf ? 'CHOOSE A PDF TOOL' : 'CHOOSE AN IMAGE TOOL';
+
+            // Show panel
+            catPanels.forEach(p => p.classList.remove('active'));
+            const targetPanel = $('#' + tab.dataset.target);
+            if (targetPanel) {
+              targetPanel.classList.add('active');
+            }
+          });
+        });
+      }
+      
     })();
   </script>
 </body>

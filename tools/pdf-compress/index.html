@@ -16,15 +16,22 @@
       <span class="logo-icon" aria-hidden="true">⚡</span>
       fastconvert
     </a>
+    <nav class="header-nav" aria-label="Primary navigation">
+      <a class="header-nav-link" href="../../index.html#page-home">Home</a>
+      <a class="header-nav-link" href="../../index.html#page-about">About</a>
+      <a class="header-nav-link" href="../../index.html#page-privacy">Privacy</a>
+      <a class="header-nav-link" href="../../index.html#page-contact">Contact</a>
+    </nav>
     <div class="header-actions">
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
     </div>
   </header>
 
   <main class="main-layout" role="main">
-    <aside class="ad-sidebar" aria-label="Advertisement">
-      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-left">Ad Space</div>
-    </aside>
+
 
     <div class="content-center">
       <section class="page-view active" aria-label="Compress PDF Tool">
@@ -93,11 +100,110 @@
           </div>
         </div>
       </section>
+
+      <!-- SEO Content for AdSense -->
+      <div class="tool-seo-content">
+
+        <div class="tool-how-to">
+          <h2>How to Compress a PDF File Online</h2>
+          <p class="section-subtitle">Reduce PDF file size while maintaining quality — free and completely private.</p>
+          <div class="tool-steps-grid">
+            <div class="tool-step">
+              <div class="step-num">1</div>
+              <div class="step-emoji" aria-hidden="true">📤</div>
+              <h3>Upload Your PDF</h3>
+              <p>Drag and drop your PDF file into the upload area or click to browse your device.</p>
+            </div>
+            <div class="tool-step">
+              <div class="step-num">2</div>
+              <div class="step-emoji" aria-hidden="true">⚙️</div>
+              <h3>Choose Compression</h3>
+              <p>Select Low (best quality), Medium (balanced), or High (smallest size) compression.</p>
+            </div>
+            <div class="tool-step">
+              <div class="step-num">3</div>
+              <div class="step-emoji" aria-hidden="true">⬇️</div>
+              <h3>Download Compressed PDF</h3>
+              <p>Click "Compress PDF" and download the smaller file. Your data stays on your device.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-article">
+          <h2>Why Compress PDF Files?</h2>
+          <p class="section-subtitle">Smaller PDFs are easier to share, faster to load, and accepted by more portals.</p>
+          <div class="tool-article-body">
+            <h3>Email Attachment Limits</h3>
+            <p>Most email services impose attachment size limits — Gmail caps at 25 MB, Outlook at 20 MB. If your PDF exceeds these limits, you'll either need to use a cloud sharing link or compress the file. Our PDF compressor can significantly reduce file sizes, often by 40–70%, making it easy to attach documents directly to emails without any hassle.</p>
+
+            <h3>Online Form Uploads</h3>
+            <p>Many government portals, university applications, and job boards have strict upload limits for PDF documents — sometimes as low as 2 MB or 5 MB. Scanned documents and image-heavy PDFs often exceed these limits. Compressing your PDF ensures you can complete your submission without running into "file too large" errors.</p>
+
+            <h3>How PDF Compression Works</h3>
+            <p>PDF compression works by optimizing the internal structure of the document. This includes removing duplicate objects, compressing embedded images, eliminating unused metadata, and applying stream compression. Our tool uses the PDF-lib library to process the file directly in your browser. The "Low" setting applies minimal compression for near-original quality, while "High" applies aggressive optimization for the smallest possible file size.</p>
+
+            <h3>Tips for Maximum Compression</h3>
+            <ul>
+              <li><strong>Scanned documents</strong> benefit the most from compression — they often contain large embedded images that can be significantly reduced.</li>
+              <li><strong>Text-heavy PDFs</strong> are already compact — compression may only reduce their size by 10–20%.</li>
+              <li><strong>Start with "Medium"</strong> — it offers the best balance of size reduction and quality for most use cases.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tool-article">
+          <h2>Why Compress PDFs with FastConvert?</h2>
+          <div class="tool-features-grid">
+            <div class="tool-feature-card">
+              <span class="feature-icon" aria-hidden="true">🔒</span>
+              <h4>Fully Private</h4>
+              <p>Documents never leave your device. Zero server uploads.</p>
+            </div>
+            <div class="tool-feature-card">
+              <span class="feature-icon" aria-hidden="true">📊</span>
+              <h4>3 Quality Levels</h4>
+              <p>Low, medium, or high — choose the right balance.</p>
+            </div>
+            <div class="tool-feature-card">
+              <span class="feature-icon" aria-hidden="true">⚡</span>
+              <h4>Fast Processing</h4>
+              <p>Compress even large PDFs in just a few seconds.</p>
+            </div>
+            <div class="tool-feature-card">
+              <span class="feature-icon" aria-hidden="true">🆓</span>
+              <h4>Completely Free</h4>
+              <p>No watermarks, no file limits, no account needed.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-faq">
+          <h2>Frequently Asked Questions</h2>
+          <p class="section-subtitle">Common questions about PDF compression.</p>
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-question">How much smaller will my PDF get? <span class="faq-toggle" aria-hidden="true">+</span></button>
+              <div class="faq-answer"><p>Results vary based on the content. Image-heavy and scanned PDFs typically see 40–70% size reduction. Text-heavy documents with few images may see 10–30% reduction. The tool shows you the exact before and after sizes.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">Will compression reduce the quality of my PDF? <span class="faq-toggle" aria-hidden="true">+</span></button>
+              <div class="faq-answer"><p>At "Low" and "Medium" settings, quality loss is minimal and generally imperceptible for on-screen viewing and standard printing. "High" compression may produce visible quality reduction in images but keeps text perfectly sharp.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">Is my PDF uploaded to a server for compression? <span class="faq-toggle" aria-hidden="true">+</span></button>
+              <div class="faq-answer"><p>No. All compression is performed locally in your browser using JavaScript. Your PDF file never leaves your device, making this completely safe for confidential documents.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">Can I compress a PDF that's already been compressed? <span class="faq-toggle" aria-hidden="true">+</span></button>
+              <div class="faq-answer"><p>You can try, but the size reduction will be much smaller since the file is already optimized. If the original compression was aggressive, re-compressing may have negligible effect or could even slightly increase the file size.</p></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <aside class="ad-sidebar" aria-label="Advertisement">
-      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-right">Ad Space</div>
-    </aside>
+
   </main>
 
   <footer class="site-footer" role="contentinfo">

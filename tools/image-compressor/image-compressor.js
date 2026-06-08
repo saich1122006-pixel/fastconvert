@@ -19,6 +19,8 @@
   const imagePreview       = $('#image-preview');
   const previewImg         = $('#preview-img');
   const sizePills          = $$('.size-pill');
+  const customSizeContainer= $('#custom-size-container');
+  const customSizeInput    = $('#custom-size-input');
   const compressBtn        = $('#compress-btn');
   const progressWrapper    = $('#progress-wrapper');
   const progressFill       = $('#progress-fill');
@@ -166,7 +168,13 @@
     pill.addEventListener('click', () => {
       sizePills.forEach((p) => p.classList.remove('active'));
       pill.classList.add('active');
-      targetCompressSize = parseInt(pill.dataset.size, 10);
+      
+      if (pill.dataset.size === 'custom') {
+        customSizeContainer.style.display = 'flex';
+      } else {
+        customSizeContainer.style.display = 'none';
+        targetCompressSize = parseInt(pill.dataset.size, 10);
+      }
     });
   });
 
@@ -205,6 +213,17 @@
   // ============================================
   async function compressToSize() {
     if (!currentFile) return;
+
+    // Read custom size if applicable
+    const activePill = document.querySelector('.size-pill.active');
+    if (activePill && activePill.dataset.size === 'custom') {
+      const kbVal = parseInt(customSizeInput.value, 10);
+      if (!kbVal || kbVal < 1) {
+        showToast('Please enter a valid target size in KB', 'error');
+        return;
+      }
+      targetCompressSize = kbVal * 1024;
+    }
 
     compressBtn.classList.add('loading');
     compressBtn.disabled = true;

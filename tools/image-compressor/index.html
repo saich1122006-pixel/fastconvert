@@ -16,15 +16,22 @@
       <span class="logo-icon" aria-hidden="true">⚡</span>
       fastconvert
     </a>
+    <nav class="header-nav" aria-label="Primary navigation">
+      <a class="header-nav-link" href="../../index.html#page-home">Home</a>
+      <a class="header-nav-link" href="../../index.html#page-about">About</a>
+      <a class="header-nav-link" href="../../index.html#page-privacy">Privacy</a>
+      <a class="header-nav-link" href="../../index.html#page-contact">Contact</a>
+    </nav>
     <div class="header-actions">
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
     </div>
   </header>
 
   <main class="main-layout" role="main">
-    <aside class="ad-sidebar" aria-label="Advertisement">
-      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-left">Ad Space</div>
-    </aside>
+
 
     <div class="content-center">
       <section class="page-view active" aria-label="Image Compressor Tool">
@@ -73,6 +80,11 @@
               <button class="size-pill active" data-size="51200">Under 50 KB</button>
               <button class="size-pill" data-size="102400">Under 100 KB</button>
               <button class="size-pill" data-size="204800">Under 200 KB</button>
+              <button class="size-pill" id="custom-size-btn" data-size="custom">Custom</button>
+            </div>
+            <div id="custom-size-container" style="display: none; align-items: center; gap: 6px;">
+              <input type="number" id="custom-size-input" min="1" placeholder="e.g. 150" style="width: 80px; padding: 6px 10px; border-radius: var(--radius-sm); border: 1.5px solid var(--clr-border); background: var(--clr-surface); color: var(--clr-text-primary); text-align: center; font-size: 0.85rem;" />
+              <span style="font-size: 0.85rem; font-weight: 600; color: var(--clr-text-secondary);">KB</span>
             </div>
             <button class="btn-convert" id="compress-btn" disabled>
               <span class="spinner" aria-hidden="true"></span>
@@ -117,11 +129,116 @@
 
         </div>
       </section>
+
+      <!-- SEO Content for AdSense -->
+      <div class="tool-seo-content">
+
+        <!-- How To Use -->
+        <div class="tool-how-to">
+          <h2>How to Compress Images to a Specific Size</h2>
+          <p class="section-subtitle">Reduce your photo's file size to meet upload requirements for government portals and exam forms.</p>
+          <div class="tool-steps-grid">
+            <div class="tool-step">
+              <div class="step-num">1</div>
+              <div class="step-emoji" aria-hidden="true">📤</div>
+              <h3>Upload Your Photo</h3>
+              <p>Drag and drop any JPG, PNG, WebP, or HEIC image into the upload area above.</p>
+            </div>
+            <div class="tool-step">
+              <div class="step-num">2</div>
+              <div class="step-emoji" aria-hidden="true">📐</div>
+              <h3>Select Target Size</h3>
+              <p>Choose from preset limits (20 KB, 50 KB, 100 KB, 200 KB) or enter a custom target size.</p>
+            </div>
+            <div class="tool-step">
+              <div class="step-num">3</div>
+              <div class="step-emoji" aria-hidden="true">⬇️</div>
+              <h3>Download Result</h3>
+              <p>Click "Compress Now" and download the optimized file — guaranteed to meet your target size.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Educational Article -->
+        <div class="tool-article">
+          <h2>Why You Need Image Compression</h2>
+          <p class="section-subtitle">Understanding file size requirements for online applications and exam forms.</p>
+          <div class="tool-article-body">
+            <h3>Government Portal Photo Requirements</h3>
+            <p>Many government portals and competitive exam registration forms in India have strict photo upload limits — typically under 20 KB or 50 KB for photographs, and under 50 KB to 100 KB for signature scans. Common portals that require compressed photos include UPSC, SSC, IBPS bank exams, NEET, JEE, state PSC applications, and passport applications. Failing to meet these requirements can prevent you from completing your application.</p>
+
+            <h3>How Does Image Compression Work?</h3>
+            <p>Image compression reduces file size by adjusting two factors: image dimensions (width and height in pixels) and quality level. Our tool intelligently scales down your image and adjusts the compression quality in multiple passes until the file size falls below your target — while keeping the image as sharp as possible. The output is always a JPG file, since JPG offers the best compression ratio for photographs.</p>
+
+            <h3>Tips for Best Results</h3>
+            <ul>
+              <li><strong>Use a passport-style photo</strong> — cropped headshots compress more efficiently than full-body or landscape images.</li>
+              <li><strong>Start with a clear, well-lit photo</strong> — noisy or blurry images compress poorly and lose more quality at small sizes.</li>
+              <li><strong>Check the portal's requirements carefully</strong> — some portals specify exact pixel dimensions (e.g., 200×230 pixels) in addition to file size limits.</li>
+              <li><strong>Compare before and after</strong> — our tool shows you the original size, compressed size, and percentage saved so you can verify the result.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Features -->
+        <div class="tool-article">
+          <h2>Why Use FastConvert Compressor?</h2>
+          <div class="tool-features-grid">
+            <div class="tool-feature-card">
+              <span class="feature-icon" aria-hidden="true">🎯</span>
+              <h4>Precise Targeting</h4>
+              <p>Hit exact size limits — 20 KB, 50 KB, or any custom value.</p>
+            </div>
+            <div class="tool-feature-card">
+              <span class="feature-icon" aria-hidden="true">🔒</span>
+              <h4>Fully Private</h4>
+              <p>Your photo never leaves your device. Zero uploads.</p>
+            </div>
+            <div class="tool-feature-card">
+              <span class="feature-icon" aria-hidden="true">📊</span>
+              <h4>Size Comparison</h4>
+              <p>See original vs. compressed size and savings at a glance.</p>
+            </div>
+            <div class="tool-feature-card">
+              <span class="feature-icon" aria-hidden="true">📱</span>
+              <h4>Mobile Friendly</h4>
+              <p>Works on phones — compress photos right from your camera roll.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="tool-faq">
+          <h2>Frequently Asked Questions</h2>
+          <p class="section-subtitle">Common questions about compressing images for online forms.</p>
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-question">Will compressing my photo reduce its quality? <span class="faq-toggle" aria-hidden="true">+</span></button>
+              <div class="faq-answer"><p>There will be some quality reduction, but our tool uses an intelligent algorithm that minimizes quality loss. At 50 KB, passport-style photos remain perfectly clear. At 20 KB, there may be slight softening, but the image will still be fully acceptable for exam portals and government forms.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">What format will the compressed image be? <span class="faq-toggle" aria-hidden="true">+</span></button>
+              <div class="faq-answer"><p>The compressed image is always output as a JPG file. JPG provides the best compression ratio for photographs, and is the format required by virtually all government portals and exam registration websites.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">Can I compress an HEIC photo from my iPhone? <span class="faq-toggle" aria-hidden="true">+</span></button>
+              <div class="faq-answer"><p>Yes! Our compressor accepts HEIC files directly. It will convert and compress your iPhone photo in one step, outputting a small JPG file ready for uploading to any portal.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">How do I compress my photo to exactly 20 KB? <span class="faq-toggle" aria-hidden="true">+</span></button>
+              <div class="faq-answer"><p>Simply upload your photo, click the "Under 20 KB" pill, and hit "Compress Now." Our tool will automatically reduce the image quality and dimensions until the file is under 20 KB. You'll see the final file size before downloading.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">Is there a limit on photo dimensions? <span class="faq-toggle" aria-hidden="true">+</span></button>
+              <div class="faq-answer"><p>No strict limit — our tool handles images of any resolution. However, for very small target sizes (under 20 KB), the tool may scale down the image dimensions to achieve the target while maintaining acceptable quality.</p></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <aside class="ad-sidebar" aria-label="Advertisement">
-      <div class="ad-placeholder ad-placeholder-sidebar" id="ad-sidebar-right">Ad Space</div>
-    </aside>
+
   </main>
 
   <footer class="site-footer" role="contentinfo">
