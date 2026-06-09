@@ -125,26 +125,26 @@
         <div class="tool-workspace" style="margin-bottom: 24px;">
           <input type="file" id="smart-file-input" style="display: none" accept="image/png, image/jpeg, image/webp, image/heic, image/heif, application/pdf" multiple />
           
-          <div class="dropzone-wrapper" id="smart-dropzone" style="background: var(--clr-surface); border: 2px solid transparent; background-image: linear-gradient(var(--clr-surface), var(--clr-surface)), linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); background-origin: border-box; background-clip: padding-box, border-box; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);">
-            <div id="smart-dropzone-default" style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+          <div class="dropzone-wrapper smart-dropzone-styled" id="smart-dropzone">
+            <div id="smart-dropzone-default" class="smart-dropzone-default">
               
               <!-- Unique Animated Folder Icon -->
-              <div style="width: 56px; height: 56px; background: #eef2ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 4px;">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <div class="smart-dropzone-icon-bg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                   <polyline points="17 8 12 3 7 8"></polyline>
                   <line x1="12" y1="3" x2="12" y2="15"></line>
                 </svg>
               </div>
 
-              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--clr-text-primary); margin: 0; letter-spacing: -0.02em;">
-                Drop your <span style="color: #4f46e5;">Images</span> &amp; <span style="color: #4f46e5;">PDFs</span> here
+              <h2>
+                Drop your <span class="text-accent">Images</span> &amp; <span class="text-accent">PDFs</span> here
               </h2>
-              <p style="color: var(--clr-text-tertiary); font-size: 0.9rem; margin: 0; max-width: 400px;">
+              <p>
                 Process files instantly in your browser. Zero uploads, 100% private.
               </p>
 
-              <button class="btn-primary" style="background: #4f46e5; color: white; border: none; border-radius: 99px; padding: 10px 24px; font-size: 0.95rem; font-weight: 600; cursor: pointer; margin-top: 8px; box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.39); transition: all 0.2s ease;">
+              <button class="btn-primary smart-dropzone-btn">
                 Select Files
               </button>
             </div>

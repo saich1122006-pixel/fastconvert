@@ -492,6 +492,114 @@ input, textarea, select {
   box-shadow: 0 2px 8px rgba(239,68,68,0.35);
 }
 
+/* --- Smart Dropzone UI --- */
+.smart-dropzone-styled {
+  background: var(--clr-surface);
+  border: 2px dashed var(--clr-border-accent);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  box-shadow: 0 10px 25px -5px var(--clr-shadow);
+}
+
+.smart-dropzone-styled:hover,
+.smart-dropzone-styled.drag-over {
+  border-color: var(--clr-accent);
+  box-shadow: 0 10px 25px -5px var(--clr-accent-glow);
+}
+
+.smart-dropzone-default {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.smart-dropzone-icon-bg {
+  width: 56px;
+  height: 56px;
+  background: var(--clr-accent-subtle);
+  color: var(--clr-accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.smart-dropzone-icon-bg svg {
+  width: 28px;
+  height: 28px;
+}
+
+.smart-dropzone-default h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--clr-text-primary);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.smart-dropzone-default p {
+  color: var(--clr-text-tertiary);
+  font-size: 0.9rem;
+  margin: 0;
+  max-width: 400px;
+}
+
+.smart-dropzone-btn {
+  background: var(--clr-accent);
+  color: #fff;
+  border: none;
+  border-radius: 99px;
+  padding: 10px 24px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  box-shadow: 0 4px 14px 0 var(--clr-accent-glow);
+  transition: all 0.2s ease;
+}
+
+.smart-dropzone-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px 0 var(--clr-accent-glow);
+}
+
+.text-accent {
+  color: var(--clr-accent);
+}
+
+@media (max-width: 768px) {
+  .smart-dropzone-icon-bg {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 2px;
+  }
+  .smart-dropzone-icon-bg svg {
+    width: 20px;
+    height: 20px;
+  }
+  .smart-dropzone-default {
+    gap: 8px;
+  }
+  .smart-dropzone-default h2 {
+    font-size: 1.1rem;
+  }
+  .smart-dropzone-default p {
+    font-size: 0.82rem;
+    max-width: 280px;
+    line-height: 1.4;
+  }
+  .smart-dropzone-btn {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+    margin-top: 2px;
+  }
+  .dropzone-wrapper {
+    padding: 16px 12px;
+  }
+}
+
+
 /* --- Image Preview --- */
 .image-preview-container {
   display: none;
