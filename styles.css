@@ -2974,5 +2974,6 @@ input, textarea, select {
   .nav-dropdown:hover .dropdown-menu,
   .nav-dropdown.active .dropdown-menu {
     display: flex;
+    transform: none;
   }
 }
