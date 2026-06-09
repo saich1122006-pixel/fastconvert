@@ -112,7 +112,7 @@
         <span class="drag-handle" title="Drag to reorder">⠿</span>
         <span class="file-icon">${icon}</span>
         <div class="file-details">
-          <p class="file-name">${pf.name}</p>
+          <p class="file-name">${escapeHtml(pf.name)}</p>
           <p class="file-meta">${formatBytes(pf.size)}</p>
         </div>
         <button class="remove-btn" title="Remove file">✕</button>
@@ -492,6 +492,7 @@
         const c = cnv.getContext('2d');
         c.drawImage(imgEl, 0, 0);
         const pngBlob = await new Promise(resolve => cnv.toBlob(resolve, 'image/png'));
+        if (!pngBlob) throw new Error('Failed to create PNG from image');
         const pngBytes = new Uint8Array(await pngBlob.arrayBuffer());
         image = await pdfDoc.embedPng(pngBytes);
       }

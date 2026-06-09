@@ -67,6 +67,12 @@
     return (bytes / 1048576).toFixed(2) + ' MB';
   };
 
+  window.escapeHtml = function(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  };
+
   // ============================================
   // FAQ Accordion Toggle
   // ============================================

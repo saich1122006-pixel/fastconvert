@@ -14,6 +14,7 @@
   const dropzoneInfo       = $('#smart-dropzone-info');
   const fileListEl         = $('#smart-file-list');
   const clearBtn           = $('#smart-clear-files');
+  const addMoreBtn         = $('#smart-add-more-files');
   
   const actionsArea        = $('#smart-actions-area');
   const actionsImage       = $('#smart-actions-image');
@@ -129,15 +130,30 @@
     let hasImage = false;
     let hasPdf = false;
     
-    files.forEach(item => {
+    files.forEach((item, index) => {
       if (item.category === 'image') hasImage = true;
       if (item.category === 'pdf') hasPdf = true;
       
       const icon = item.category === 'pdf' ? '📄' : '🖼️';
-      fileListEl.innerHTML += `<div style="display:flex; justify-content:space-between; width:100%; max-width:300px; background:var(--clr-bg-primary); padding:8px 12px; border-radius:var(--radius-sm); border:1px solid var(--clr-border);">
-        <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:180px;">${icon} ${item.file.name}</span>
-        <span style="color:var(--clr-text-tertiary); font-size:0.85rem;">${formatBytes(item.file.size)}</span>
-      </div>`;
+      const fileDiv = document.createElement('div');
+      fileDiv.style.cssText = "display:flex; justify-content:space-between; align-items:center; width:100%; max-width:300px; background:var(--clr-bg-primary); padding:8px 12px; border-radius:var(--radius-sm); border:1px solid var(--clr-border);";
+      fileDiv.innerHTML = `
+        <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:180px;">${icon} ${escapeHtml(item.file.name)}</span>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="color:var(--clr-text-tertiary); font-size:0.85rem;">${formatBytes(item.file.size)}</span>
+          <button class="remove-individual-file" data-index="${index}" style="background:none; border:none; color:var(--clr-text-tertiary); cursor:pointer; font-size:1.1rem; padding:0 4px;" aria-label="Remove file">✕</button>
+        </div>
+      `;
+      fileListEl.appendChild(fileDiv);
+    });
+
+    document.querySelectorAll('.remove-individual-file').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const idx = parseInt(btn.dataset.index, 10);
+        files.splice(idx, 1);
+        updateUI();
+      });
     });
 
     // Show Smart Actions
@@ -196,10 +212,17 @@
 
   // Dropzone Events
   dropzone.addEventListener('click', e => {
-    if (e.target.closest('#smart-clear-files')) return;
+    if (e.target.closest('#smart-clear-files') || e.target.closest('#smart-add-more-files') || e.target.closest('.remove-individual-file')) return;
     fileInput.click();
   });
   
+  if (addMoreBtn) {
+    addMoreBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      fileInput.click();
+    });
+  }
+
   clearBtn.addEventListener('click', e => {
     e.stopPropagation();
     files = [];
@@ -277,10 +300,11 @@
         ctx.fillStyle = '#fff'; ctx.fillRect(0,0,canvas.width,canvas.height);
         ctx.drawImage(img,0,0,canvas.width,canvas.height);
         
-        let bestBlob = await toBlob('image/jpeg', 0.5); // Fast fallback
+        let bestBlob = await toBlob('image/jpeg', 0.9);
         // Basic reduction attempt
-        for(let q=0.9; q>0.1; q-=0.2) {
+        for(let q=0.9; q>=0.1; q-=0.2) {
           const b = await toBlob('image/jpeg', q);
+          if (b.size < bestBlob.size) bestBlob = b;
           if (b.size <= targetCompressSize) { bestBlob = b; break; }
         }
         

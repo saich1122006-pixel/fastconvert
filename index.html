@@ -151,7 +151,10 @@
 
             <div class="dropzone-file-info" id="smart-dropzone-info" style="display:none; flex-direction:column; gap:10px;">
               <div id="smart-file-list" style="display:flex; flex-direction:column; gap:8px; width:100%; align-items:center;"></div>
-              <button class="remove-file" id="smart-clear-files" aria-label="Clear files" style="margin-top:10px; padding:6px 16px; border-radius:20px; background:var(--clr-surface-hover); color:var(--clr-text-primary); border:1px solid var(--clr-border);">Clear Files</button>
+              <div style="display:flex; gap:10px; justify-content:center; margin-top:10px;">
+                <button class="add-more-files" id="smart-add-more-files" aria-label="Add more files" style="padding:6px 16px; border-radius:20px; background:var(--clr-surface-hover); color:var(--clr-text-primary); border:1px solid var(--clr-border);">+ Add More</button>
+                <button class="remove-file" id="smart-clear-files" aria-label="Clear files" style="padding:6px 16px; border-radius:20px; background:var(--clr-surface-hover); color:var(--clr-text-primary); border:1px solid var(--clr-border);">Clear All</button>
+              </div>
             </div>
           </div>
 
@@ -187,6 +190,7 @@
                 </div>
                 <button class="btn-convert" id="smart-compress-img-btn" style="background:var(--clr-success);">Compress Image</button>
               </div>
+              <p style="color:var(--clr-text-tertiary); font-size:0.9rem;">— OR —</p>
             </div>
 
             <!-- PDF Actions -->
@@ -197,7 +201,7 @@
             </div>
             
             <!-- Mixed Actions (Images -> PDF) -->
-            <div id="smart-actions-mixed" style="display:none; justify-content:center; margin-top:10px;">
+            <div id="smart-actions-mixed" style="display:none; justify-content:center; margin-top:16px;">
               <button class="btn-convert" id="smart-img-to-pdf" style="background:#8b5cf6;">Convert Images to PDF</button>
             </div>
 

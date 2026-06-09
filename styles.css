@@ -282,9 +282,7 @@ input, textarea, select {
     top: var(--header-height);
     left: 0;
     width: 100%;
-    background: var(--clr-bg-glass);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background: var(--clr-surface);
     flex-direction: column;
     padding: 16px;
     border-bottom: 1px solid var(--clr-border);
@@ -495,7 +493,7 @@ input, textarea, select {
 /* --- Smart Dropzone UI --- */
 .smart-dropzone-styled {
   background: var(--clr-surface);
-  border: 2px dashed var(--clr-border-accent);
+  border: 3px solid #8fa3f7; /* Thick solid border */
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   box-shadow: 0 10px 25px -5px var(--clr-shadow);
 }
