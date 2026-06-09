@@ -91,7 +91,15 @@
 
     // Close menu when clicking a link
     headerNav.querySelectorAll('.header-nav-link').forEach(link => {
-      link.addEventListener('click', () => {
+      link.addEventListener('click', (e) => {
+        if (link.classList.contains('dropdown-toggle')) {
+          e.preventDefault();
+          const dropdown = link.closest('.nav-dropdown');
+          if (dropdown) {
+            dropdown.classList.toggle('active');
+          }
+          return;
+        }
         headerNav.classList.remove('nav-open');
       });
     });

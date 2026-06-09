@@ -375,7 +375,7 @@ input, textarea, select {
    ============================================ */
 .converter-hero {
   text-align: center;
-  margin-bottom: 36px;
+  margin-bottom: 20px;
 }
 
 .converter-hero h1 {
@@ -401,7 +401,7 @@ input, textarea, select {
   background: var(--clr-surface);
   border: 2px dashed var(--clr-border);
   border-radius: var(--radius-lg);
-  padding: 48px 24px;
+  padding: 24px 16px;
   text-align: center;
   cursor: pointer;
   transition: all var(--transition-base);
@@ -1088,7 +1088,7 @@ input, textarea, select {
   }
 
   .dropzone-wrapper {
-    padding: 32px 16px;
+    padding: 16px 12px;
   }
   .dropzone-icon { font-size: 2.2rem; }
 
