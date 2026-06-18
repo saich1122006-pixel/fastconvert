@@ -6,6 +6,13 @@
   <title>Crop Image — FastConvert</title>
   <meta name="description" content="Crop images online for free. Adjust aspect ratios or trim unwanted edges from JPG, PNG, and WebP." />
   <meta name="theme-color" content="#4f6df5" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://fastconvert.tech/tools/crop-image/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://fastconvert.tech/tools/crop-image/" />
+  <meta property="og:title" content="Crop Image — FastConvert" />
+  <meta property="og:description" content="Crop images online for free. Adjust aspect ratios or trim unwanted edges from JPG, PNG, and WebP." />
+  <meta property="og:site_name" content="FastConvert" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="stylesheet" href="../../styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
@@ -18,7 +25,7 @@
 </head>
 <body>
   <header class="site-header" role="banner">
-    <a href="../../index.html" class="logo" role="button" tabindex="0" aria-label="Go to homepage" style="text-decoration:none;">
+    <a href="/" class="logo" role="button" tabindex="0" aria-label="Go to homepage" style="text-decoration:none;">
       <svg class="logo-icon-svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#logo-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; filter: drop-shadow(0 2px 4px rgba(79, 70, 229, 0.3));">
         <defs>
           <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -32,7 +39,7 @@
       <span style="color: var(--clr-text-primary); font-weight: 800; font-size: 1.4rem; letter-spacing: -0.02em;"><span style="color: #4f46e5;">Fast</span>Convert</span>
     </a>
     <nav class="header-nav" aria-label="Primary navigation">
-      <a class="header-nav-link" href="../../index.html#page-home">Home</a>
+      <a class="header-nav-link" href="/#page-home">Home</a>
       <!-- Tools Dropdown -->
       <div class="nav-dropdown">
         <button class="header-nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false" style="display:flex; align-items:center; gap:4px; background:none; outline:none; border:none; font-family:inherit;">
@@ -42,24 +49,24 @@
         <div class="dropdown-menu">
           <div class="dropdown-group">
             <span class="dropdown-header">Image</span>
-            <a href="../../tools/image-converter/index.html">Image Converter</a>
-            <a href="../../tools/image-compressor/index.html">Image Compressor</a>
-            <a href="../../tools/resize-image/index.html">Resize Image</a>
-            <a href="../../tools/crop-image/index.html">Crop Image</a>
+            <a href="/tools/image-converter/">Image Converter</a>
+            <a href="/tools/image-compressor/">Image Compressor</a>
+            <a href="/tools/resize-image/">Resize Image</a>
+            <a href="/tools/crop-image/">Crop Image</a>
           </div>
           <div class="dropdown-group">
             <span class="dropdown-header">PDF</span>
-            <a href="../../tools/pdf-merge/index.html">Merge PDF</a>
-            <a href="../../tools/pdf-split/index.html">Split PDF</a>
-            <a href="../../tools/pdf-compress/index.html">Compress PDF</a>
-            <a href="../../tools/image-to-pdf/index.html">Image to PDF</a>
-            <a href="../../tools/rotate-pdf/index.html">Rotate PDF</a>
+            <a href="/tools/pdf-merge/">Merge PDF</a>
+            <a href="/tools/pdf-split/">Split PDF</a>
+            <a href="/tools/pdf-compress/">Compress PDF</a>
+            <a href="/tools/image-to-pdf/">Image to PDF</a>
+            <a href="/tools/rotate-pdf/">Rotate PDF</a>
           </div>
         </div>
       </div>
-      <a class="header-nav-link" href="../../index.html#page-about">About</a>
-      <a class="header-nav-link" href="../../index.html#page-privacy">Privacy</a>
-      <a class="header-nav-link" href="../../index.html#page-contact">Contact</a>
+      <a class="header-nav-link" href="/#page-about">About</a>
+      <a class="header-nav-link" href="/#page-privacy">Privacy</a>
+      <a class="header-nav-link" href="/#page-contact">Contact</a>
     </nav>
     <div class="header-actions">
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
@@ -138,29 +145,97 @@
         </div>
       </section>
 
-      <!-- SEO Content for AdSense -->
+      <!-- SEO Content -->
       <div class="tool-seo-content">
         <div class="tool-how-to">
           <h2>How to Crop an Image Online</h2>
-          <p class="section-subtitle">Easily cut out unwanted edges or frame your photo for social media.</p>
+          <p class="section-subtitle">Easily cut out unwanted edges or frame your photo for social media — no software required.</p>
           <div class="tool-steps-grid">
             <div class="tool-step">
               <div class="step-num">1</div>
-              <h3>Upload Image</h3>
-              <p>Drag and drop any photo into the box above.</p>
+              <div class="step-emoji" aria-hidden="true">📤</div>
+              <h3>Upload Your Image</h3>
+              <p>Drag and drop any JPG, PNG, or WebP image into the upload area, or click to browse your device.</p>
             </div>
             <div class="tool-step">
               <div class="step-num">2</div>
-              <h3>Adjust the Box</h3>
-              <p>Drag the corners of the crop box or select an aspect ratio.</p>
+              <div class="step-emoji" aria-hidden="true">✂️</div>
+              <h3>Adjust the Crop Box</h3>
+              <p>Drag the corners to select the area you want to keep. Choose a preset aspect ratio like 1:1 (Square), 4:3, 16:9, or 9:16 for Stories.</p>
             </div>
             <div class="tool-step">
               <div class="step-num">3</div>
-              <h3>Save Image</h3>
-              <p>Click "Crop Image" and download the result instantly.</p>
+              <div class="step-emoji" aria-hidden="true">⬇️</div>
+              <h3>Download Result</h3>
+              <p>Click "Crop Image" and download your perfectly cropped photo instantly. All processing happens on your device.</p>
             </div>
           </div>
         </div>
+
+        <div class="tool-article">
+          <h2>When Do You Need to Crop Images?</h2>
+          <p class="section-subtitle">Common scenarios where cropping makes your photos look professional.</p>
+          <div class="tool-article-body">
+            <h3>Social Media Profile Pictures</h3>
+            <p>Every social media platform has specific requirements for profile photos and cover images. Instagram requires square (1:1) profile pictures, Facebook uses a circular crop, and LinkedIn has its own dimensions. Rather than uploading a full photo and letting the platform crop it unpredictably, you can use our tool to precisely select the best framing for your face or logo before uploading. This ensures you always look professional and intentional on every platform.</p>
+
+            <h3>Passport and ID Photos</h3>
+            <p>Government applications, visa submissions, and ID card services often require photos with very specific dimensions and framing — typically a centered headshot with specific margins above the head and below the chin. Our crop tool with aspect ratio presets lets you frame your passport photo precisely, and you can then use our Image Compressor to meet any file size requirements (like 20KB or 50KB) that portals enforce.</p>
+
+            <h3>Removing Unwanted Elements</h3>
+            <p>Sometimes a great photo has distracting elements at the edges — a passerby's arm in a vacation shot, a messy desk corner in a product photo, or black borders from scanning. Cropping lets you remove these distractions and focus attention on the subject that matters. Since our tool runs entirely in your browser, even sensitive personal photos remain completely private — nothing is ever uploaded to any server.</p>
+          </div>
+        </div>
+
+        <div class="tool-article">
+          <h2>Why Crop Images with FastConvert?</h2>
+          <div class="tool-features-grid">
+            <div class="tool-feature-card">
+              <span class="feature-icon" aria-hidden="true">📐</span>
+              <h4>Aspect Ratio Presets</h4>
+              <p>Quick presets for 1:1, 4:3, 16:9, and 9:16 — perfect for social media.</p>
+            </div>
+            <div class="tool-feature-card">
+              <span class="feature-icon" aria-hidden="true">🔒</span>
+              <h4>100% Private</h4>
+              <p>Your photos never leave your device. Zero server uploads, guaranteed.</p>
+            </div>
+            <div class="tool-feature-card">
+              <span class="feature-icon" aria-hidden="true">🖱️</span>
+              <h4>Visual Cropper</h4>
+              <p>Drag the crop box corners to select exactly the area you want to keep.</p>
+            </div>
+            <div class="tool-feature-card">
+              <span class="feature-icon" aria-hidden="true">🆓</span>
+              <h4>Completely Free</h4>
+              <p>No watermarks, no accounts, no limits. Crop as many images as you need.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-faq">
+          <h2>Frequently Asked Questions</h2>
+          <p class="section-subtitle">Common questions about cropping images online.</p>
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-question">Does cropping reduce image quality? <span class="faq-toggle" aria-hidden="true">+</span></button>
+              <div class="faq-answer"><p>Cropping itself does not reduce quality — it simply removes the areas outside your selection. The pixels within the cropped area remain at their original quality. The output file will be smaller because it contains fewer pixels, but each pixel retains full quality.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">What image formats can I crop? <span class="faq-toggle" aria-hidden="true">+</span></button>
+              <div class="faq-answer"><p>FastConvert's crop tool supports JPG, PNG, WebP, and HEIC (iPhone) images. The output is saved in the same format as the original, preserving transparency for PNG files.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">Can I crop to a specific pixel size? <span class="faq-toggle" aria-hidden="true">+</span></button>
+              <div class="faq-answer"><p>You can use the aspect ratio presets and manually adjust the crop box to get close to your desired dimensions. For exact pixel-specific resizing after cropping, use our Resize Image tool to set precise width and height values.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">Is my image uploaded to a server? <span class="faq-toggle" aria-hidden="true">+</span></button>
+              <div class="faq-answer"><p>No. All cropping happens directly in your browser using the HTML5 Canvas API. Your image stays on your device and is never transmitted anywhere. When you close the tab, all data is cleared from memory.</p></div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </main>
