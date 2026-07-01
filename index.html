@@ -132,7 +132,7 @@
        HEADER
        ============================================ -->
   <header class="site-header" role="banner">
-    <div class="logo" data-page="page-home" role="button" tabindex="0" aria-label="Go to homepage">
+    <a href="/" class="logo" aria-label="Go to homepage" style="text-decoration:none;">
       <svg class="logo-icon-svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#logo-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; filter: drop-shadow(0 2px 4px rgba(79, 70, 229, 0.3));">
         <defs>
           <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -144,9 +144,9 @@
         <polygon points="2 19 11 12 2 5 2 19"/>
       </svg>
       <span style="color: var(--clr-text-primary); font-weight: 800; font-size: 1.4rem; letter-spacing: -0.02em;"><span style="color: #4f46e5;">Fast</span>Convert</span>
-    </div>
+    </a>
     <nav class="header-nav" aria-label="Primary navigation">
-      <a class="header-nav-link" data-page="page-home" href="#page-home">Home</a>
+      <a class="header-nav-link active" href="/">Home</a>
       <!-- Tools Dropdown -->
       <div class="nav-dropdown">
         <button class="header-nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false" style="display:flex; align-items:center; gap:4px; background:none; outline:none; border:none; font-family:inherit;">
@@ -171,9 +171,9 @@
           </div>
         </div>
       </div>
-      <a class="header-nav-link" data-page="page-about" href="#page-about">About</a>
-      <a class="header-nav-link" data-page="page-privacy" href="#page-privacy">Privacy</a>
-      <a class="header-nav-link" data-page="page-contact" href="#page-contact">Contact</a>
+      <a class="header-nav-link" href="/about/">About</a>
+      <a class="header-nav-link" href="/privacy/">Privacy</a>
+      <a class="header-nav-link" href="/contact/">Contact</a>
     </nav>
     <div class="header-actions">
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
@@ -198,7 +198,7 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
            PAGE: HOME (Tool Dashboard)
            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <section class="page-view active" id="page-home" aria-label="FastConvert Dashboard">
+      <section class="page-view active" aria-label="FastConvert Dashboard">
 
         <!-- Hero -->
         <div class="converter-hero">
@@ -664,129 +664,22 @@
 
       </section>
 
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-           PAGE: ABOUT US
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <section class="page-view" id="page-about" aria-label="About Us">
-        <div class="page-content-card">
-          <h1>About Us</h1>
-          <p>
-            FastConvert is built by a small, passionate team of utility-software engineers who believe powerful tools should be free, fast, and private. We started this project with a simple mission: give everyone access to professional-grade image conversion without the bloatware, paywalls, or privacy invasions.
-          </p>
-
-          <h2>Our Philosophy</h2>
-          <p>
-            Every file you convert stays on your device — period. We don't run servers that touch your data, we don't store anything, and we never will. Our tool runs entirely in your browser using modern web standards like the HTML5 Canvas API. It's fast, it's secure, and it respects your privacy by design.
-          </p>
-
-          <h2>Meet the Team</h2>
-          <div class="team-grid">
-            <div class="team-member">
-              <div class="team-avatar">👨‍💻</div>
-              <h3>Sai Chadarasipalli</h3>
-              <span class="role">Full-Stack Developer</span>
-            </div>
-            <div class="team-member">
-              <div class="team-avatar">👩‍💻</div>
-              <h3>Sahithya</h3>
-              <span class="role">UI/UX Designer</span>
-            </div>
+      <!-- What is FastConvert - Intro Content for SEO -->
+      <div class="tool-seo-content">
+        <div class="tool-article">
+          <h2>What is FastConvert?</h2>
+          <p class="section-subtitle">A complete suite of image and PDF tools that run entirely in your browser.</p>
+          <div class="tool-article-body">
+            <p>FastConvert is a free online platform that provides a comprehensive collection of image conversion, compression, editing, and PDF manipulation tools. Unlike traditional online converters that require you to upload your files to remote servers, FastConvert processes everything locally using modern browser technologies like the HTML5 Canvas API and JavaScript libraries.</p>
+            <p>This privacy-first approach means your sensitive documents — passport photos, government ID scans, financial PDFs, personal images — never leave your device. There are no file size limits imposed by server constraints, no waiting in processing queues, and no risk of your files being stored on third-party servers.</p>
+            <h3>Built for Real-World Needs</h3>
+            <p>FastConvert was specifically designed to solve common, everyday problems that millions of people face. Students applying for competitive exams need to compress passport photos to exactly 20KB or 50KB. Web developers need to convert images to WebP format for better performance. iPhone users need to convert HEIC photos to JPG for compatibility. Professionals need to merge multiple PDFs into a single document for email. Our tools handle all of these scenarios and more, with a clean interface that works on any device.</p>
+            <p>Every tool on FastConvert is completely free to use — no hidden fees, no premium tiers, no watermarks, and no registration required. We believe powerful file utilities should be accessible to everyone, regardless of their budget or technical expertise.</p>
           </div>
-
-          <h2>Open Source Spirit</h2>
-          <p>
-            We're committed to transparency. FastConvert's entire front-end runs client-side, meaning you can inspect every line of code right in your browser's developer tools. What you see is exactly what runs — no hidden calls, no tracking scripts, no surprises.
-          </p>
         </div>
-      </section>
+      </div>
 
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-           PAGE: PRIVACY POLICY
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <section class="page-view" id="page-privacy" aria-label="Privacy Policy">
-        <div class="page-content-card">
-          <h1>Privacy Policy</h1>
-          <span class="policy-date">Last updated: June 7, 2026</span>
 
-          <p>
-            FastConvert ("we", "us", or "our") is committed to protecting and respecting your privacy. This Privacy Policy explains how we handle information when you visit and use our website.
-          </p>
-
-          <h2>1. No Data Collection on File Processing</h2>
-          <p>
-            All image conversion performed on FastConvert happens <strong>entirely within your web browser</strong> using client-side JavaScript and the HTML5 Canvas API. Your files are <strong>never uploaded to any server</strong>. We do not collect, store, transmit, or have access to any files you process using our tool. Once you close or refresh your browser tab, all file data is permanently discarded from memory.
-          </p>
-
-          <h2>2. Information We Do Not Collect</h2>
-          <ul>
-            <li>We do <strong>not</strong> collect personal identification information (name, email, address) unless voluntarily submitted via our Contact Us form.</li>
-            <li>We do <strong>not</strong> collect, store, or transmit your uploaded images or converted files.</li>
-            <li>We do <strong>not</strong> use server-side processing for file conversions.</li>
-          </ul>
-
-          <h2>3. Local Storage for User Preferences</h2>
-          <p>
-            We use your browser's local storage strictly to remember your user interface preferences, such as your choice of light or dark theme. We do not use local storage or first-party cookies to track your behavior across the website.
-          </p>
-
-          <h2>4. Google AdSense &amp; Cookies</h2>
-          <p>
-            We use Google AdSense to display advertisements on our website. Google AdSense and its partners may use cookies, web beacons, and similar technologies to serve ads based on your prior visits to this website or other websites on the Internet.
-          </p>
-          <p>
-            Google's use of advertising cookies enables it and its partners to serve ads to you based on your visit to our site and/or other sites on the Internet. You may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a>. Alternatively, you can opt out of third-party vendor cookies for personalized advertising by visiting <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">www.aboutads.info</a>.
-          </p>
-
-          <h2>5. Third-Party Services</h2>
-          <p>Apart from Google AdSense, we may use the following third-party services:</p>
-          <ul>
-            <li><strong>Google Analytics:</strong> We use Google Analytics to understand how visitors engage with our site. Google Analytics may use cookies to track visitor interactions. For more information, see <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>.</li>
-            <li><strong>Google Fonts:</strong> We load fonts from Google's servers, which may log standard web request data (IP address, browser type). See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>.</li>
-          </ul>
-
-          <h2>6. Log Data</h2>
-          <p>
-            Our hosting provider may collect standard server log information, including IP addresses, browser type, referring/exit pages, and timestamps. This data is used solely for website maintenance and security and is not linked to any personally identifiable information.
-          </p>
-
-          <h2>7. Contact Form Data</h2>
-          <p>
-            If you choose to reach out via our Contact Us page or email us directly, any information you provide (name, email, message) will be used solely to respond to your inquiry. We do not sell, share, or use this information for marketing purposes.
-          </p>
-
-          <h2>8. Children's Privacy</h2>
-          <p>
-            Our service is not directed to individuals under the age of 13. We do not knowingly collect personal information from children under 13.
-          </p>
-
-          <h2>9. Changes to This Privacy Policy</h2>
-          <p>
-            We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated revision date. Your continued use of the website after any changes constitutes acceptance of the new Privacy Policy.
-          </p>
-
-          <h2>10. Your Consent</h2>
-          <p>
-            By using our website, you consent to our Privacy Policy and agree to its terms.
-          </p>
-
-          <h2>11. Contact Us</h2>
-          <p>
-            If you have any questions about this Privacy Policy, please contact us via the <a href="#page-contact" data-page="page-contact">Contact Us</a> page or email us directly at <a href="mailto:support.paniapp@gmail.com">support.paniapp@gmail.com</a>.
-          </p>
-        </div>
-      </section>
-
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-           PAGE: CONTACT US
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <section class="page-view" id="page-contact" aria-label="Contact Us">
-        <div class="page-content-card">
-          <h1>Contact Us</h1>
-          <p>
-            Have questions, feedback, or a feature request? We'd love to hear from you. Email us directly at <a href="mailto:support.paniapp@gmail.com">support.paniapp@gmail.com</a> and we'll get back to you as soon as possible.
-          </p>
-        </div>
-      </section>
 
     </div><!-- /.content-center -->
 
@@ -819,19 +712,21 @@
         <div class="footer-nav-col">
           <h4>Pages</h4>
           <ul>
-            <li><a href="#page-home" data-page="page-home">Home</a></li>
-            <li><a href="#page-about" data-page="page-about">About Us</a></li>
-            <li><a href="#page-privacy" data-page="page-privacy">Privacy Policy</a></li>
-            <li><a href="#page-contact" data-page="page-contact">Contact Us</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About Us</a></li>
+            <li><a href="/privacy/">Privacy Policy</a></li>
+            <li><a href="/terms/">Terms of Service</a></li>
+            <li><a href="/contact/">Contact Us</a></li>
+            <li><a href="/disclaimer/">Disclaimer</a></li>
           </ul>
         </div>
         <div class="footer-nav-col">
           <h4>Image Tools</h4>
           <ul>
-            <li><a href="/tools/image-converter/?mode=webp-jpg">WebP to JPG</a></li>
-            <li><a href="/tools/image-converter/?mode=heic-jpg">HEIC to JPG</a></li>
-            <li><a href="/tools/image-converter/?mode=png-jpg">PNG to JPG</a></li>
-            <li><a href="/tools/image-compressor/">Compress to 20KB</a></li>
+            <li><a href="/tools/image-converter/">Image Converter</a></li>
+            <li><a href="/tools/image-compressor/">Image Compressor</a></li>
+            <li><a href="/tools/resize-image/">Resize Image</a></li>
+            <li><a href="/tools/crop-image/">Crop Image</a></li>
           </ul>
         </div>
         <div class="footer-nav-col">
@@ -841,6 +736,7 @@
             <li><a href="/tools/pdf-split/">Split PDF</a></li>
             <li><a href="/tools/pdf-compress/">Compress PDF</a></li>
             <li><a href="/tools/image-to-pdf/">Images to PDF</a></li>
+            <li><a href="/tools/rotate-pdf/">Rotate PDF</a></li>
           </ul>
         </div>
       </nav>
@@ -858,40 +754,11 @@
   <script src="js/homepage-smart-dropzone.js"></script>
   <script>
     // ============================================
-    // SPA Routing (for About / Privacy / Contact)
+    // Homepage Scripts (Category Tabs + FAQ)
     // ============================================
     (function () {
       const $ = window.$;
       const $$ = window.$$;
-
-      const navLinks = $$('[data-page]');
-      const pageViews = $$('.page-view');
-
-      function navigateTo(pageId) {
-        pageViews.forEach(v => v.classList.remove('active'));
-        const target = document.getElementById(pageId);
-        if (target) target.classList.add('active');
-        navLinks.forEach(link => {
-          link.classList.toggle('active', link.dataset.page === pageId);
-        });
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        history.pushState(null, '', '#' + pageId);
-      }
-
-      navLinks.forEach(link => {
-        link.addEventListener('click', e => {
-          e.preventDefault();
-          navigateTo(link.dataset.page);
-        });
-      });
-
-      window.addEventListener('popstate', () => {
-        const hash = location.hash.replace('#', '') || 'page-home';
-        navigateTo(hash);
-      });
-
-      const initPage = location.hash.replace('#', '') || 'page-home';
-      navigateTo(initPage);
       
       // ============================================
       // Category Tabs Logic (Image vs PDF)
@@ -903,7 +770,6 @@
       if (catTabs.length && catPanels.length) {
         catTabs.forEach(tab => {
           tab.addEventListener('click', () => {
-            // Update tabs
             catTabs.forEach(t => {
               t.classList.remove('active');
               t.setAttribute('aria-selected', 'false');
@@ -911,11 +777,9 @@
             tab.classList.add('active');
             tab.setAttribute('aria-selected', 'true');
 
-            // Update title
             const isPdf = tab.dataset.target === 'pdf-tools-section';
             catTitle.textContent = isPdf ? 'CHOOSE A PDF TOOL' : 'CHOOSE AN IMAGE TOOL';
 
-            // Show panel
             catPanels.forEach(p => p.classList.remove('active'));
             const targetPanel = $('#' + tab.dataset.target);
             if (targetPanel) {
@@ -934,12 +798,10 @@
         if (btn) {
           btn.addEventListener('click', () => {
             const isActive = item.classList.contains('active');
-            // Close all others
             faqItems.forEach(other => {
               other.classList.remove('active');
               other.querySelector('.faq-question')?.setAttribute('aria-expanded', 'false');
             });
-            // Toggle current
             if (!isActive) {
               item.classList.add('active');
               btn.setAttribute('aria-expanded', 'true');

@@ -17,9 +17,41 @@
   <link rel="stylesheet" href="../../styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
 
+  <!-- Google tag (gtag.js) - Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z21HFSG8NK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z21HFSG8NK');
+  </script>
+
   <!-- Google AdSense -->
   <meta name="google-adsense-account" content="ca-pub-7466073297339775">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7466073297339775" crossorigin="anonymous"></script>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Image Converter — FastConvert",
+    "url": "https://fastconvert.tech/tools/image-converter/",
+    "description": "Convert images between PNG, JPG, WebP, and HEIC for free. 100% in-browser processing.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "FastConvert",
+      "url": "https://fastconvert.tech"
+    }
+  }
+  </script>
 </head>
 <body>
   <header class="site-header" role="banner">
@@ -62,9 +94,9 @@
           </div>
         </div>
       </div>
-      <a class="header-nav-link" href="/#page-about">About</a>
-      <a class="header-nav-link" href="/#page-privacy">Privacy</a>
-      <a class="header-nav-link" href="/#page-contact">Contact</a>
+      <a class="header-nav-link" href="/about/">About</a>
+      <a class="header-nav-link" href="/privacy/">Privacy</a>
+      <a class="header-nav-link" href="/contact/">Contact</a>
     </nav>
     <div class="header-actions">
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">🌙</button>
@@ -78,6 +110,13 @@
 
 
     <div class="content-center">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="/">Image Tools</a>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current">Image Converter</span>
+      </nav>
       <section class="page-view active" aria-label="Image Converter Tool">
         <div class="converter-hero">
           <h1>Image Converter</h1>
@@ -258,15 +297,80 @@
           </div>
         </div>
 
+      <!-- Related Tools -->
+      <div class="related-tools-section">
+        <h2>You Might Also Need</h2>
+        <div class="related-tools-grid">
+          <a href="/tools/image-compressor/" class="related-tool-card">
+            <span class="related-icon" aria-hidden="true">📐</span>
+            <h3>Image Compressor</h3>
+            <p>Compress images to exact file sizes like 20KB or 50KB.</p>
+          </a>
+          <a href="/tools/resize-image/" class="related-tool-card">
+            <span class="related-icon" aria-hidden="true">📏</span>
+            <h3>Resize Image</h3>
+            <p>Change image dimensions to exact pixel values.</p>
+          </a>
+          <a href="/tools/crop-image/" class="related-tool-card">
+            <span class="related-icon" aria-hidden="true">✂️</span>
+            <h3>Crop Image</h3>
+            <p>Crop images to remove unwanted areas easily.</p>
+          </a>
+        </div>
+      </div>
+
       </div>
     </div>
-
 
   </main>
 
   <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo">
+          <svg class="logo-icon-svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#logo-grad-f)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
+            <defs><linearGradient id="logo-grad-f" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4f46e5" /><stop offset="100%" stop-color="#0ea5e9" /></linearGradient></defs>
+            <polygon points="13 19 22 12 13 5 13 19"/><polygon points="2 19 11 12 2 5 2 19"/>
+          </svg>
+          <span style="color: #f1f5f9; font-weight: 800; font-size: 1.4rem; letter-spacing: -0.02em;"><span style="color: #4f46e5;">Fast</span>Convert</span>
+        </div>
+        <p>Free, fast, and private image &amp; PDF tools — powered entirely by your browser.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <div class="footer-nav-col">
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About Us</a></li>
+            <li><a href="/privacy/">Privacy Policy</a></li>
+            <li><a href="/terms/">Terms of Service</a></li>
+            <li><a href="/contact/">Contact Us</a></li>
+            <li><a href="/disclaimer/">Disclaimer</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-col">
+          <h4>Image Tools</h4>
+          <ul>
+            <li><a href="/tools/image-converter/">Image Converter</a></li>
+            <li><a href="/tools/image-compressor/">Image Compressor</a></li>
+            <li><a href="/tools/resize-image/">Resize Image</a></li>
+            <li><a href="/tools/crop-image/">Crop Image</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-col">
+          <h4>PDF Tools</h4>
+          <ul>
+            <li><a href="/tools/pdf-merge/">Merge PDFs</a></li>
+            <li><a href="/tools/pdf-split/">Split PDF</a></li>
+            <li><a href="/tools/pdf-compress/">Compress PDF</a></li>
+            <li><a href="/tools/image-to-pdf/">Images to PDF</a></li>
+            <li><a href="/tools/rotate-pdf/">Rotate PDF</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
     <div class="footer-bottom">
-      <p>&copy; 2026 FastConvert. Built with ❤️ for the open web.</p>
+      <p>&copy; 2026 FastConvert. All rights reserved. Built with ❤️ for the open web.</p>
     </div>
   </footer>
 
