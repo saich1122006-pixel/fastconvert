@@ -14,7 +14,7 @@
   <meta property="og:description" content="Convert JPG, PNG, or WebP images into a single PDF document. Free and client-side." />
   <meta property="og:site_name" content="FastConvert" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="/styles.css" />
   <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 
   <!-- Google tag (gtag.js) - Analytics -->
@@ -50,6 +50,17 @@
       "name": "FastConvert",
       "url": "https://fastconvert.tech"
     }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://fastconvert.tech/" },
+      { "@type": "ListItem", "position": 2, "name": "PDF Tools", "item": "https://fastconvert.tech/#pdf-tools-section" },
+      { "@type": "ListItem", "position": 3, "name": "Images to PDF", "item": "https://fastconvert.tech/tools/image-to-pdf/" }
+    ]
   }
   </script>
 </head>
@@ -368,7 +379,7 @@
 
   <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
-  <script src="../../js/shared.js"></script>
-  <script src="../../js/pdf-tools.js"></script>
+  <script src="/js/shared.js"></script>
+  <script src="/js/pdf-tools.js"></script>
 </body>
 </html>

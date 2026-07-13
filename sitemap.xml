@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://fastconvert.tech/</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -10,31 +10,31 @@
   <!-- Content Pages -->
   <url>
     <loc>https://fastconvert.tech/about/</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://fastconvert.tech/privacy/</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://fastconvert.tech/contact/</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://fastconvert.tech/terms/</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://fastconvert.tech/disclaimer/</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
@@ -42,25 +42,25 @@
   <!-- Image Tools -->
   <url>
     <loc>https://fastconvert.tech/tools/image-converter/</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://fastconvert.tech/tools/image-compressor/</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://fastconvert.tech/tools/crop-image/</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://fastconvert.tech/tools/resize-image/</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -68,31 +68,31 @@
   <!-- PDF Tools -->
   <url>
     <loc>https://fastconvert.tech/tools/pdf-merge/</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://fastconvert.tech/tools/pdf-split/</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://fastconvert.tech/tools/pdf-compress/</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://fastconvert.tech/tools/image-to-pdf/</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://fastconvert.tech/tools/rotate-pdf/</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
