@@ -1,0 +1,93 @@
+{
+  "redirects": [
+    {
+      "source": "/tools/image-converter/index.html",
+      "destination": "/tools/image-converter/",
+      "statusCode": 301
+    },
+    {
+      "source": "/tools/image-compressor/index.html",
+      "destination": "/tools/image-compressor/",
+      "statusCode": 301
+    },
+    {
+      "source": "/tools/crop-image/index.html",
+      "destination": "/tools/crop-image/",
+      "statusCode": 301
+    },
+    {
+      "source": "/tools/resize-image/index.html",
+      "destination": "/tools/resize-image/",
+      "statusCode": 301
+    },
+    {
+      "source": "/tools/pdf-merge/index.html",
+      "destination": "/tools/pdf-merge/",
+      "statusCode": 301
+    },
+    {
+      "source": "/tools/pdf-split/index.html",
+      "destination": "/tools/pdf-split/",
+      "statusCode": 301
+    },
+    {
+      "source": "/tools/pdf-compress/index.html",
+      "destination": "/tools/pdf-compress/",
+      "statusCode": 301
+    },
+    {
+      "source": "/tools/image-to-pdf/index.html",
+      "destination": "/tools/image-to-pdf/",
+      "statusCode": 301
+    },
+    {
+      "source": "/tools/rotate-pdf/index.html",
+      "destination": "/tools/rotate-pdf/",
+      "statusCode": 301
+    },
+    {
+      "source": "/about/index.html",
+      "destination": "/about/",
+      "statusCode": 301
+    },
+    {
+      "source": "/contact/index.html",
+      "destination": "/contact/",
+      "statusCode": 301
+    },
+    {
+      "source": "/privacy/index.html",
+      "destination": "/privacy/",
+      "statusCode": 301
+    },
+    {
+      "source": "/terms/index.html",
+      "destination": "/terms/",
+      "statusCode": 301
+    },
+    {
+      "source": "/disclaimer/index.html",
+      "destination": "/disclaimer/",
+      "statusCode": 301
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ]
+}
