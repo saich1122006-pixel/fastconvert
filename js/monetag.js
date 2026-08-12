@@ -8,8 +8,8 @@
   // --- MONETAG CONFIGURATION ---
   const MONETAG_CONFIG = {
     // Primary Domain & Zone ID configured for FastConvert
-    domain: '5gvci.com',
-    zoneId: 11564181,
+    domain: '3nbf4.com',
+    zoneId: 11564244,
 
     // Enable/Disable specific ad features
     enableServiceWorkerPush: true, // Registers /sw.js for Push Notifications
