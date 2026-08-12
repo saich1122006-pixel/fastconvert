@@ -411,50 +411,139 @@
   // ============================================
   // COMPRESS PDF
   // ============================================
+
+  // Load pdf.js dynamically for rendering pages
+  let pdfjsReady = null;
+  function loadPdfJs() {
+    if (pdfjsReady) return pdfjsReady;
+    pdfjsReady = new Promise((resolve, reject) => {
+      if (window.pdfjsLib) { resolve(window.pdfjsLib); return; }
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      script.onload = () => {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        resolve(window.pdfjsLib);
+      };
+      script.onerror = () => reject(new Error('Failed to load PDF.js'));
+      document.head.appendChild(script);
+    });
+    return pdfjsReady;
+  }
+
   async function pdfCompress() {
-    pdfProgressLabel.textContent = 'Loading PDF…';
+    pdfProgressLabel.textContent = 'Loading PDF renderer…';
+    pdfProgressFill.style.width = '5%';
+
+    const pdfjsLib = await loadPdfJs();
+
+    const originalFile = pdfFiles[0].file;
     const originalSize = pdfFiles[0].size;
-    const arrayBuffer = await pdfFiles[0].file.arrayBuffer();
-    const srcPdf = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+    const arrayBuffer = await originalFile.arrayBuffer();
     const level = pdfCompressLevel ? pdfCompressLevel.value : 'medium';
 
-    pdfProgressLabel.textContent = 'Compressing…';
-    pdfProgressFill.style.width = '30%';
+    // Quality and scale settings per compression level
+    const qualityMap = { low: 0.75, medium: 0.50, high: 0.30 };
+    const scaleMap   = { low: 1.25, medium: 0.90, high: 0.70 };
 
-    const compressedPdf = await PDFDocument.create();
-    const allPages = await compressedPdf.copyPages(srcPdf, srcPdf.getPageIndices());
-    allPages.forEach(page => compressedPdf.addPage(page));
+    let jpegQuality = qualityMap[level] || 0.50;
+    let renderScale = scaleMap[level] || 0.90;
 
-    pdfProgressFill.style.width = '60%';
-    pdfProgressLabel.textContent = 'Optimizing…';
+    pdfProgressLabel.textContent = 'Loading PDF document…';
+    pdfProgressFill.style.width = '10%';
 
-    compressedPdf.setTitle('');
-    compressedPdf.setAuthor('');
-    compressedPdf.setSubject('');
-    compressedPdf.setKeywords([]);
-    compressedPdf.setProducer('FastConvert');
-    compressedPdf.setCreator('FastConvert');
+    const pdfDoc = await pdfjsLib.getDocument({ data: new Uint8Array(arrayBuffer) }).promise;
+    const pageCount = pdfDoc.numPages;
 
-    pdfProgressFill.style.width = '80%';
+    async function compressWithParams(scale, quality) {
+      const compressedPdf = await PDFDocument.create();
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
 
-    let saveOptions = {};
-    if (level === 'high' || level === 'medium') {
-      saveOptions = { useObjectStreams: true };
+      for (let i = 1; i <= pageCount; i++) {
+        const progress = 10 + ((i - 1) / pageCount) * 80;
+        pdfProgressFill.style.width = `${progress}%`;
+        pdfProgressLabel.textContent = `Compressing page ${i} of ${pageCount}…`;
+
+        const page = await pdfDoc.getPage(i);
+        const viewport = page.getViewport({ scale });
+
+        canvas.width = Math.max(1, Math.floor(viewport.width));
+        canvas.height = Math.max(1, Math.floor(viewport.height));
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        await page.render({ canvasContext: ctx, viewport }).promise;
+
+        const jpegBlob = await new Promise(resolve =>
+          canvas.toBlob(resolve, 'image/jpeg', quality)
+        );
+        if (!jpegBlob) throw new Error(`Failed to compress page ${i}`);
+
+        const jpegBytes = new Uint8Array(await jpegBlob.arrayBuffer());
+        const jpegImage = await compressedPdf.embedJpg(jpegBytes);
+
+        const origViewport = page.getViewport({ scale: 1.0 });
+        const pageWidth = origViewport.width;
+        const pageHeight = origViewport.height;
+
+        const newPage = compressedPdf.addPage([pageWidth, pageHeight]);
+        newPage.drawImage(jpegImage, {
+          x: 0,
+          y: 0,
+          width: pageWidth,
+          height: pageHeight,
+        });
+      }
+
+      compressedPdf.setProducer('FastConvert');
+      compressedPdf.setCreator('FastConvert');
+
+      const compressedBytes = await compressedPdf.save({ useObjectStreams: true });
+      return new Blob([compressedBytes], { type: 'application/pdf' });
     }
 
-    const compressedBytes = await compressedPdf.save(saveOptions);
-    const blob = new Blob([compressedBytes], { type: 'application/pdf' });
+    pdfProgressFill.style.width = '20%';
+    let blob = await compressWithParams(renderScale, jpegQuality);
 
-    const savedPct = ((1 - blob.size / originalSize) * 100).toFixed(1);
+    // Pass 2: Retry with aggressive scale/quality if first pass failed to reduce size
+    if (blob.size >= originalSize) {
+      pdfProgressLabel.textContent = 'Applying maximum compression pass…';
+      pdfProgressFill.style.width = '50%';
+      const retryScale = Math.max(0.5, renderScale * 0.7);
+      const retryQuality = Math.max(0.2, jpegQuality * 0.7);
+      const retryBlob = await compressWithParams(retryScale, retryQuality);
+      if (retryBlob.size < blob.size) {
+        blob = retryBlob;
+      }
+    }
+
+    pdfProgressFill.style.width = '98%';
+    pdfProgressLabel.textContent = 'Finalizing…';
+
+    const isSmaller = blob.size < originalSize;
+    const finalBlob = isSmaller ? blob : new Blob([arrayBuffer], { type: 'application/pdf' });
+    const finalSize = finalBlob.size;
     const baseName = pdfFiles[0].name.replace(/\.pdf$/i, '');
 
+    const savedPct = isSmaller ? ((1 - finalSize / originalSize) * 100).toFixed(1) : '0.0';
+
+    const titleText = isSmaller ? 'Compression Complete!' : 'PDF is Already Optimized!';
+    const metaHtml = isSmaller
+      ? `Original: <span>${formatBytes(originalSize)}</span> → Compressed: <span>${formatBytes(finalSize)}</span> · Saved: <span>${savedPct}%</span>`
+      : `Original: <span>${formatBytes(originalSize)}</span> · Status: <span>Your file is already at optimal file size</span>`;
+
+    const buttonLabel = isSmaller ? 'Download Compressed PDF' : 'Download Optimized PDF';
+
     showPdfResult(
-      'Compression Complete!',
-      `Original: <span>${formatBytes(originalSize)}</span> → Compressed: <span>${formatBytes(blob.size)}</span> · Saved: <span>${savedPct}%</span>`,
-      [{ blob, name: `${baseName}_compressed.pdf`, label: 'Download Compressed PDF' }]
+      titleText,
+      metaHtml,
+      [{ blob: finalBlob, name: isSmaller ? `${baseName}_compressed.pdf` : `${baseName}_optimized.pdf`, label: buttonLabel }]
     );
 
-    showToast(`Compressed! Saved ${savedPct}%`, 'success');
+    showToast(isSmaller ? `Compressed! Saved ${savedPct}%` : 'File is already fully optimized.', 'success');
   }
 
   // ============================================

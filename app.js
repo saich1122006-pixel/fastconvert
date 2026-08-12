@@ -1187,23 +1187,23 @@
   // ============================================
   async function pdfCompress() {
     pdfProgressLabel.textContent = 'Loading PDF…';
+    const originalFile = pdfFiles[0].file;
     const originalSize = pdfFiles[0].size;
-    const arrayBuffer = await pdfFiles[0].file.arrayBuffer();
+    const arrayBuffer = await originalFile.arrayBuffer();
     const srcPdf = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
-    const level = pdfCompressLevel.value;
+    const level = pdfCompressLevel ? pdfCompressLevel.value : 'medium';
 
     pdfProgressLabel.textContent = 'Compressing…';
-    pdfProgressFill.style.width = '30%';
+    pdfProgressFill.style.width = '40%';
 
-    // Compression strategy: create a new PDF, copy pages (strips unused objects)
+    // Compression strategy: create a new PDF, copy pages (strips unused objects & streams)
     const compressedPdf = await PDFDocument.create();
     const allPages = await compressedPdf.copyPages(srcPdf, srcPdf.getPageIndices());
     allPages.forEach(page => compressedPdf.addPage(page));
 
-    pdfProgressFill.style.width = '60%';
+    pdfProgressFill.style.width = '70%';
     pdfProgressLabel.textContent = 'Optimizing…';
 
-    // Strip metadata for additional savings
     compressedPdf.setTitle('');
     compressedPdf.setAuthor('');
     compressedPdf.setSubject('');
@@ -1211,29 +1211,31 @@
     compressedPdf.setProducer('FastConvert');
     compressedPdf.setCreator('FastConvert');
 
-    pdfProgressFill.style.width = '80%';
+    pdfProgressFill.style.width = '90%';
 
-    // Save with different options based on compression level
-    let saveOptions = {};
-    if (level === 'high') {
-      saveOptions = { useObjectStreams: true };
-    } else if (level === 'medium') {
-      saveOptions = { useObjectStreams: true };
-    }
-
-    const compressedBytes = await compressedPdf.save(saveOptions);
+    const compressedBytes = await compressedPdf.save({ useObjectStreams: true });
     const blob = new Blob([compressedBytes], { type: 'application/pdf' });
 
-    const savedPct = ((1 - blob.size / originalSize) * 100).toFixed(1);
+    const isSmaller = blob.size < originalSize;
+    const finalBlob = isSmaller ? blob : new Blob([arrayBuffer], { type: 'application/pdf' });
+    const finalSize = finalBlob.size;
     const baseName = pdfFiles[0].name.replace(/\.pdf$/i, '');
+    const savedPct = isSmaller ? ((1 - finalSize / originalSize) * 100).toFixed(1) : '0.0';
+
+    const titleText = isSmaller ? 'Compression Complete!' : 'PDF is Already Optimized!';
+    const metaHtml = isSmaller
+      ? `Original: <span>${formatBytes(originalSize)}</span> → Compressed: <span>${formatBytes(finalSize)}</span> · Saved: <span>${savedPct}%</span>`
+      : `Original: <span>${formatBytes(originalSize)}</span> · Status: <span>Your file is already at optimal file size</span>`;
+
+    const buttonLabel = isSmaller ? 'Download Compressed PDF' : 'Download Optimized PDF';
 
     showPdfResult(
-      'Compression Complete!',
-      `Original: <span>${formatBytes(originalSize)}</span> → Compressed: <span>${formatBytes(blob.size)}</span> · Saved: <span>${savedPct}%</span>`,
-      [{ blob, name: `${baseName}_compressed.pdf`, label: 'Download Compressed PDF' }]
+      titleText,
+      metaHtml,
+      [{ blob: finalBlob, name: isSmaller ? `${baseName}_compressed.pdf` : `${baseName}_optimized.pdf`, label: buttonLabel }]
     );
 
-    showToast(`Compressed! Saved ${savedPct}%`, 'success');
+    showToast(isSmaller ? `Compressed! Saved ${savedPct}%` : 'File is already fully optimized.', 'success');
   }
 
   // ============================================
