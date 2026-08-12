@@ -14,7 +14,7 @@
     // Enable/Disable specific ad features
     enableServiceWorkerPush: true, // Registers /sw.js for Push Notifications
     enableInPagePush: true,        // In-Page Push / Banner ads
-    enableVignetteBanner: false,   // Interstitial Vignette ads (Set true when zone tag added)
+    enableVignetteBanner: true,    // Interstitial Vignette ads (Zone 11564295 active)
     enableOnClickPopunder: false,  // OnClick / Popunder ads (Set true when zone tag added)
 
     // Optional Site Verification Tag (Paste verification code string if provided by Monetag)
