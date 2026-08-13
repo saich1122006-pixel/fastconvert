@@ -66,8 +66,34 @@
     '[download]'
   ].join(', ');
 
-  // Header / Navigation elements where popunder ads must NEVER occur
-  const MENU_EXCLUDE_SELECTORS = [
+  // Elements where popunder ads MUST NEVER trigger (File dropzones, file selectors, header, menu, nav, tool cards)
+  const NO_AD_EXCLUDE_SELECTORS = [
+    // 1. FILE SELECTION & DROPZONES (ALL TOOLS & HOMEPAGE)
+    '.dropzone-wrapper',
+    '#dropzone',
+    '.pdf-dropzone',
+    '#pdf-dropzone',
+    '#dropzone-default',
+    '#dropzone-file-info',
+    '.dropzone-icon',
+    '.dropzone-text',
+    '.dropzone-hint',
+    'input[type="file"]',
+    '#file-input',
+    '#pdf-file-input',
+    '#image-file-input',
+    '.select-files-btn',
+    '.btn-select-files',
+    '.upload-area',
+    '.upload-box',
+    '.tool-card',
+    '.tools-grid',
+    '.hero-cta',
+    '.remove-file',
+    '.size-pill',
+    '.split-pill',
+
+    // 2. HEADER, MENU & NAVIGATION
     '.site-header',
     'header',
     'nav',
@@ -91,18 +117,18 @@
           return listener.call(this, event);
         }
 
-        // 1. MUST be a Convert/Compress or Download button
+        // 1. Explicitly block popunder ads when selecting files, browsing dropzones, or navigating menus/tool cards
+        if (event.target.closest(NO_AD_EXCLUDE_SELECTORS)) {
+          return;
+        }
+
+        // 2. MUST be an explicit Convert/Compress or Download button
         const isTargetAction = event.target.closest(AD_TARGET_SELECTORS);
         if (!isTargetAction) {
           return; // Block popunder for all other clicks
         }
 
-        // 2. Block if somehow inside header/navigation menu
-        if (event.target.closest(MENU_EXCLUDE_SELECTORS)) {
-          return;
-        }
-
-        // 3. Trigger popunder ad for Convert and Download actions
+        // 3. Trigger popunder ad ONLY for Convert and Download actions
         listener.call(this, event);
       };
       return origAddEventListener.call(this, type, filteredListener, options);
@@ -119,7 +145,7 @@
         if (!fn) { _docOnClick = null; return; }
         _docOnClick = function (event) {
           if (event && event.target && event.target.closest) {
-            if (event.target.closest(MENU_EXCLUDE_SELECTORS)) return;
+            if (event.target.closest(NO_AD_EXCLUDE_SELECTORS)) return;
             if (event.target.closest(AD_TARGET_SELECTORS)) {
               fn.call(this, event);
             }

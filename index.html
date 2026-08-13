@@ -340,7 +340,16 @@
             <span class="site-search-icon" aria-hidden="true">🔍</span>
             <input type="search" id="tool-search-input" class="site-search-input"
               placeholder="Search tools (e.g., HEIC to JPG, Compress PDF, Merge)..." aria-label="Search tools" />
+            <button type="button" id="search-clear-btn" class="site-search-clear-btn" aria-label="Clear search" style="display: none;">✕</button>
           </div>
+        </div>
+
+        <!-- ====== NO SEARCH RESULTS ====== -->
+        <div id="no-search-results" class="no-search-results hidden">
+          <span class="no-search-results-icon" aria-hidden="true">🔍</span>
+          <h3 class="no-search-results-title">No tools found matching "<span id="search-query-text"></span>"</h3>
+          <p class="no-search-results-desc">Try checking for typos or searching for a broader term like "PDF", "Image", "Compress", or "Convert".</p>
+          <button type="button" id="no-results-reset-btn" class="btn-reset-search">Clear Search Filter</button>
         </div>
 
         <!-- ====== CATEGORY TABS ====== -->
@@ -361,6 +370,7 @@
           <div class="conversions-grid">
 
             <a href="/tools/image-converter/?mode=webp-jpg" class="conversion-card" id="card-webp-jpg"
+              data-keywords="webp jpg jpeg photo picture image convert format"
               style="text-decoration:none;color:inherit;">
               <div class="conversion-card-arrows" aria-hidden="true">🌐 → 📷</div>
               <h3>WebP to JPG</h3>
@@ -368,6 +378,7 @@
             </a>
 
             <a href="/tools/image-converter/?mode=webp-png" class="conversion-card" id="card-webp-png"
+              data-keywords="webp png transparent picture image convert format graphics"
               style="text-decoration:none;color:inherit;">
               <div class="conversion-card-arrows" aria-hidden="true">🌐 → 🎨</div>
               <h3>WebP to PNG</h3>
@@ -375,6 +386,7 @@
             </a>
 
             <a href="/tools/image-converter/?mode=heic-jpg" class="conversion-card" id="card-heic-jpg"
+              data-keywords="heic heif jpg jpeg iphone apple ios camera photo image convert format"
               style="text-decoration:none;color:inherit;">
               <div class="conversion-card-arrows" aria-hidden="true">📱 → 📷</div>
               <h3>HEIC to JPG</h3>
@@ -382,6 +394,7 @@
             </a>
 
             <a href="/tools/image-converter/?mode=jpg-png" class="conversion-card" id="card-jpg-png"
+              data-keywords="jpg jpeg png photo image convert format lossless quality"
               style="text-decoration:none;color:inherit;">
               <div class="conversion-card-arrows" aria-hidden="true">📷 → 🎨</div>
               <h3>JPG to PNG</h3>
@@ -389,6 +402,7 @@
             </a>
 
             <a href="/tools/image-converter/?mode=png-jpg" class="conversion-card" id="card-png-jpg"
+              data-keywords="png jpg jpeg photo image size compress convert format"
               style="text-decoration:none;color:inherit;">
               <div class="conversion-card-arrows" aria-hidden="true">🎨 → 📷</div>
               <h3>PNG to JPG</h3>
@@ -396,6 +410,7 @@
             </a>
 
             <a href="/tools/image-converter/?mode=to-webp" class="conversion-card" id="card-to-webp"
+              data-keywords="jpg png webp picture photo image optimize convert format website speed"
               style="text-decoration:none;color:inherit;">
               <div class="conversion-card-arrows" aria-hidden="true">📷 → 🌐</div>
               <h3>JPG / PNG to WebP</h3>
@@ -403,6 +418,7 @@
             </a>
 
             <a href="/tools/image-compressor/" class="conversion-card compress-highlight" id="card-compress"
+              data-keywords="compress image size kb 20kb 50kb 100kb reduce resize shrink government portal passport photo exam form portal portal upload"
               style="text-decoration:none;color:inherit;">
               <div class="conversion-card-arrows" aria-hidden="true">📐</div>
               <h3>Compress to 20KB / 50KB</h3>
@@ -410,6 +426,7 @@
             </a>
 
             <a href="/tools/crop-image/" class="conversion-card" id="card-crop"
+              data-keywords="crop trim cut border aspect ratio image photo avatar profile picture social media"
               style="text-decoration:none;color:inherit;">
               <div class="conversion-card-arrows" aria-hidden="true">✂️</div>
               <h3>Crop Image</h3>
@@ -417,6 +434,7 @@
             </a>
 
             <a href="/tools/resize-image/" class="conversion-card" id="card-resize"
+              data-keywords="resize scale dimensions width height pixels image photo scale resolution"
               style="text-decoration:none;color:inherit;">
               <div class="conversion-card-arrows" aria-hidden="true">📏</div>
               <h3>Resize Image</h3>
@@ -431,6 +449,7 @@
           <div class="pdf-tools-grid" id="pdf-tools-grid">
 
             <a href="/tools/pdf-merge/" class="pdf-tool-card" id="pdf-card-merge"
+              data-keywords="merge pdf combine join append pages documents file binder"
               style="text-decoration:none;color:inherit;">
               <span class="pdf-tool-icon" aria-hidden="true">🔗</span>
               <h3>Merge PDFs</h3>
@@ -438,6 +457,7 @@
             </a>
 
             <a href="/tools/pdf-split/" class="pdf-tool-card" id="pdf-card-split"
+              data-keywords="split pdf extract cut separate divide pages documents section chapter"
               style="text-decoration:none;color:inherit;">
               <span class="pdf-tool-icon" aria-hidden="true">✂️</span>
               <h3>Split PDF</h3>
@@ -445,6 +465,7 @@
             </a>
 
             <a href="/tools/pdf-compress/" class="pdf-tool-card" id="pdf-card-compress"
+              data-keywords="compress pdf reduce size shrink optimize document kb mb email upload"
               style="text-decoration:none;color:inherit;">
               <span class="pdf-tool-icon" aria-hidden="true">📐</span>
               <h3>Compress PDF</h3>
@@ -452,6 +473,7 @@
             </a>
 
             <a href="/tools/image-to-pdf/" class="pdf-tool-card" id="pdf-card-img2pdf"
+              data-keywords="images to pdf jpg to pdf png to pdf webp to pdf photo document conversion scan"
               style="text-decoration:none;color:inherit;">
               <span class="pdf-tool-icon" aria-hidden="true">🖼️</span>
               <h3>Images to PDF</h3>
@@ -459,6 +481,7 @@
             </a>
 
             <a href="/tools/rotate-pdf/" class="pdf-tool-card" id="pdf-card-rotate"
+              data-keywords="rotate pdf turn spin orientation landscape portrait pages document upside down"
               style="text-decoration:none;color:inherit;">
               <span class="pdf-tool-icon" aria-hidden="true">↻</span>
               <h3>Rotate PDF</h3>
@@ -963,18 +986,104 @@
       });
 
       // ============================================
-      // Live Tool Search Logic
+      // Enhanced Live Tool Search Logic
       // ============================================
       const searchInput = $('#tool-search-input');
-      if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-          const q = e.target.value.toLowerCase().trim();
-          const cards = $$('.conversion-card, .pdf-tool-card');
-          cards.forEach(card => {
-            const text = card.textContent.toLowerCase();
-            card.style.display = (!q || text.includes(q)) ? '' : 'none';
-          });
+      const clearBtn = $('#search-clear-btn');
+      const noResultsBox = $('#no-search-results');
+      const queryTextSpan = $('#search-query-text');
+      const resetBtn = $('#no-results-reset-btn');
+      const imageSection = $('#image-tools-section');
+      const pdfSection = $('#pdf-tools-section');
+      const dynamicTitle = $('#dynamic-category-title');
+
+      function performSearch() {
+        if (!searchInput) return;
+        const q = searchInput.value.toLowerCase().trim();
+
+        if (clearBtn) {
+          clearBtn.style.display = q ? 'flex' : 'none';
+        }
+
+        const cards = $$('.conversion-card, .pdf-tool-card');
+        let imageMatches = 0;
+        let pdfMatches = 0;
+
+        cards.forEach(card => {
+          const text = card.textContent.toLowerCase();
+          const keywords = (card.dataset.keywords || '').toLowerCase();
+          const isMatch = !q || text.includes(q) || keywords.includes(q);
+
+          card.style.display = isMatch ? '' : 'none';
+
+          if (isMatch) {
+            if (card.closest('#image-tools-section')) imageMatches++;
+            if (card.closest('#pdf-tools-section')) pdfMatches++;
+          }
         });
+
+        if (q) {
+          if (imageSection) {
+            imageSection.classList.toggle('search-visible', imageMatches > 0);
+          }
+          if (pdfSection) {
+            pdfSection.classList.toggle('search-visible', pdfMatches > 0);
+          }
+
+          const totalMatches = imageMatches + pdfMatches;
+
+          if (totalMatches === 0) {
+            if (noResultsBox) {
+              noResultsBox.classList.remove('hidden');
+              if (queryTextSpan) queryTextSpan.textContent = searchInput.value;
+            }
+            if (dynamicTitle) dynamicTitle.style.display = 'none';
+          } else {
+            if (noResultsBox) noResultsBox.classList.add('hidden');
+            if (dynamicTitle) {
+              dynamicTitle.style.display = '';
+              dynamicTitle.textContent = `SEARCH RESULTS (${totalMatches} TOOL${totalMatches === 1 ? '' : 'S'} FOUND)`;
+            }
+          }
+        } else {
+          if (imageSection) imageSection.classList.remove('search-visible');
+          if (pdfSection) pdfSection.classList.remove('search-visible');
+          if (noResultsBox) noResultsBox.classList.add('hidden');
+
+          const activeTab = $('.category-tab.active');
+          if (dynamicTitle) {
+            dynamicTitle.style.display = '';
+            const isPdf = activeTab && activeTab.dataset.target === 'pdf-tools-section';
+            dynamicTitle.textContent = isPdf ? 'CHOOSE A PDF TOOL' : 'CHOOSE AN IMAGE TOOL';
+          }
+        }
+      }
+
+      function clearSearch() {
+        if (searchInput) {
+          searchInput.value = '';
+          performSearch();
+          searchInput.focus();
+        }
+      }
+
+      if (searchInput) {
+        searchInput.addEventListener('input', performSearch);
+        searchInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') clearSearch();
+        });
+
+        if (clearBtn) clearBtn.addEventListener('click', clearSearch);
+        if (resetBtn) resetBtn.addEventListener('click', clearSearch);
+
+        try {
+          const urlParams = new URLSearchParams(window.location.search);
+          const urlQuery = urlParams.get('q');
+          if (urlQuery) {
+            searchInput.value = urlQuery;
+            performSearch();
+          }
+        } catch (err) { }
       }
 
     })();
