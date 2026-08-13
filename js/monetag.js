@@ -15,7 +15,7 @@
     zones: {
       inPagePush: { zoneId: '11564395', src: 'https://nap5k.com/tag.min.js' },
       vignette: { zoneId: '11564295', src: 'https://n6wxm.com/vignette.min.js' },
-      popunder: { zoneId: '11564242', src: 'https://quge5.com/88/tag.min.js' }
+      popunder: { zoneId: '269642', src: 'https://quge5.com/88/tag.min.js' }
     },
 
     // Enable/Disable specific ad features (All active)
