@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT_DIR = __dirname;
+const IN_PAGE_PUSH_TAG = "  <script>(function(s){s.dataset.zone='11564395',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>";
 const MONETAG_SCRIPT_TAG = '  <!-- Monetag Ad Manager -->\n  <script src="/js/monetag.js" defer></script>';
 
 function getHtmlFiles(dir, fileList = []) {
