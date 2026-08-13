@@ -1,3 +1,1 @@
-google.com, pub-7466073297339775, DIRECT, f08c47fec0942fa0
-
 # Monetag Sellers (Add lines provided by Monetag dashboard if applicable)
