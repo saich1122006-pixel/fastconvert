@@ -9,7 +9,7 @@
   const MONETAG_INDIVIDUAL_CONFIG = {
     popunder: { enabled: false, zoneId: '', src: '' },
     inPagePush: { enabled: true, zoneId: '11564395', src: 'https://nap5k.com/tag.min.js' },
-    vignetteBanner: { enabled: false, zoneId: '', src: '' },
+    vignetteBanner: { enabled: true, zoneId: '11564295', src: 'https://n6wxm.com/vignette.min.js' },
     webPush: { enabled: true, swPath: '/sw.js' }
   };
 
