@@ -47,26 +47,63 @@
   }
 
   // --- TARGETED POPUNDER AD TRIGGERING ---
-  // Only trigger popunder ads when clicking specific primary action buttons (Convert, Compress, Download, etc.)
+  // Trigger popunder ads ONLY on Convert/Compress buttons and Download buttons
   const AD_TARGET_SELECTORS = [
+    // 1. CONVERT / COMPRESS / PROCESS BUTTONS
     '#convert-btn',
     '#compress-btn',
     '.btn-convert',
     '#pdf-action-btn',
     '.btn-pdf-action',
+
+    // 2. DOWNLOAD BUTTONS
+    '#download-btn',
     '.btn-download',
-    '.download-btn'
+    '.download-btn',
+    '.download-all-btn',
+    '.pdf-result-downloads a',
+    '.pdf-result-downloads button',
+    '[download]'
   ].join(', ');
 
-  // Wrap addEventListener on window/document/body to filter ad click events
+  // Header / Navigation elements where popunder ads must NEVER occur
+  const MENU_EXCLUDE_SELECTORS = [
+    '.site-header',
+    'header',
+    'nav',
+    '.nav-menu',
+    '.header-nav',
+    '.header-nav-link',
+    '.dropdown-menu',
+    '.dropdown-toggle',
+    '.mobile-menu-toggle',
+    '.theme-toggle'
+  ].join(', ');
+
+  const AD_EVENT_TYPES = ['click', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'pointerdown'];
+
+  // Wrap addEventListener on window/document/body to filter ad click and touch events
   const origAddEventListener = EventTarget.prototype.addEventListener;
   EventTarget.prototype.addEventListener = function (type, listener, options) {
-    if (type === 'click' && (this === window || this === document || this === document.body)) {
+    if (AD_EVENT_TYPES.includes(type) && (this === window || this === document || this === document.body)) {
       const filteredListener = function (event) {
-        const isTargetAction = event.target && event.target.closest && event.target.closest(AD_TARGET_SELECTORS);
-        if (isTargetAction) {
-          listener.call(this, event);
+        if (!event || !event.target || !event.target.closest) {
+          return listener.call(this, event);
         }
+
+        // 1. MUST be a Convert/Compress or Download button
+        const isTargetAction = event.target.closest(AD_TARGET_SELECTORS);
+        if (!isTargetAction) {
+          return; // Block popunder for all other clicks
+        }
+
+        // 2. Block if somehow inside header/navigation menu
+        if (event.target.closest(MENU_EXCLUDE_SELECTORS)) {
+          return;
+        }
+
+        // 3. Trigger popunder ad for Convert and Download actions
+        listener.call(this, event);
       };
       return origAddEventListener.call(this, type, filteredListener, options);
     }
@@ -81,8 +118,11 @@
       set: function (fn) {
         if (!fn) { _docOnClick = null; return; }
         _docOnClick = function (event) {
-          if (event && event.target && event.target.closest && event.target.closest(AD_TARGET_SELECTORS)) {
-            fn.call(this, event);
+          if (event && event.target && event.target.closest) {
+            if (event.target.closest(MENU_EXCLUDE_SELECTORS)) return;
+            if (event.target.closest(AD_TARGET_SELECTORS)) {
+              fn.call(this, event);
+            }
           }
         };
       },
