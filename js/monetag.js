@@ -46,41 +46,61 @@
     return;
   }
 
-  // --- TARGETED POPUNDER AD TRIGGERING ---
-  // Trigger popunder ads ONLY on Convert/Compress buttons and Download buttons
+  // --- STRICT TARGETED AD ACTION ALLOWLIST ---
+  // Popunder ads MUST ONLY trigger when user explicitly clicks a Convert/Compress or Download action button
   const AD_TARGET_SELECTORS = [
-    // 1. CONVERT / COMPRESS / PROCESS BUTTONS
+    // 1. CONVERT / COMPRESS / PROCESS BUTTONS (HOMEPAGE & TOOL PAGES)
     '#convert-btn',
     '#compress-btn',
     '.btn-convert',
     '#pdf-action-btn',
     '.btn-pdf-action',
+    '#smart-convert-btn',
+    '#smart-compress-img-btn',
+    '#smart-pdf-compress',
+    '#smart-pdf-split',
+    '#smart-pdf-merge',
+    '#smart-img-to-pdf',
+    '#crop-btn',
+    '#resize-btn',
+    '#rotate-btn',
 
-    // 2. DOWNLOAD BUTTONS
+    // 2. DOWNLOAD BUTTONS (HOMEPAGE & TOOL PAGES)
     '#download-btn',
     '.btn-download',
     '.download-btn',
     '.download-all-btn',
     '.pdf-result-downloads a',
     '.pdf-result-downloads button',
-    '[download]'
+    '[download]',
+    'a[download]'
   ].join(', ');
 
-  // Elements where popunder ads MUST NEVER trigger (Search tool, file dropzones, file selectors, header, menu, nav, tool cards)
+  // Elements where popunder ads MUST NEVER trigger (Dropzones, File pickers, Search box, Header, Nav, Cards, Controls)
   const NO_AD_EXCLUDE_SELECTORS = [
-    // 1. SEARCH TOOL & INPUTS (HOMEPAGE & SITE-WIDE)
-    '.site-search-wrapper',
-    '.site-search-box',
-    '.site-search-input',
-    '#tool-search-input',
-    'input[type="search"]',
-    '#search-clear-btn',
-    '.site-search-clear-btn',
-    '#no-search-results',
-    '#no-results-reset-btn',
-    '.site-search-icon',
+    // 1. HOMEPAGE SMART DROPZONE & FILE SELECTION
+    '#smart-dropzone',
+    '.smart-dropzone-styled',
+    '#smart-dropzone-default',
+    '.smart-dropzone-default',
+    '.smart-dropzone-icon-bg',
+    '.smart-dropzone-btn',
+    '#smart-file-input',
+    '#smart-dropzone-info',
+    '#smart-file-list',
+    '#smart-add-more-files',
+    '#smart-clear-files',
+    '#smart-actions-area',
+    '#smart-actions-title',
+    '#smart-actions-image',
+    '#smart-actions-pdf',
+    '#smart-actions-mixed',
+    '.add-more-files',
+    '.remove-file',
+    '.size-pill',
+    '.split-pill',
 
-    // 2. FILE SELECTION & DROPZONES (ALL TOOLS & HOMEPAGE)
+    // 2. TOOL PAGES DROPZONES & FILE INPUTS
     '.dropzone-wrapper',
     '#dropzone',
     '.pdf-dropzone',
@@ -98,17 +118,36 @@
     '.btn-select-files',
     '.upload-area',
     '.upload-box',
-    '.tool-card',
-    '.tools-grid',
-    '.hero-cta',
-    '.remove-file',
-    '.size-pill',
-    '.split-pill',
 
-    // 3. HEADER, MENU & NAVIGATION & TOOL CARDS
+    // 3. SEARCH TOOL & INPUTS
+    '.site-search-wrapper',
+    '.site-search-box',
+    '.site-search-input',
+    '#tool-search-input',
+    'input[type="search"]',
+    '#search-clear-btn',
+    '.site-search-clear-btn',
+    '#no-search-results',
+    '#no-results-reset-btn',
+    '.site-search-icon',
+
+    // 4. CONTROLS, FORM SELECTORS, SLIDERS & OPTIONS
+    'select',
+    'input',
+    'textarea',
+    'option',
+    '#smart-format-select',
+    '#smart-quality-slider',
+    '.format-selector',
+    '.quality-control',
+    '.size-presets',
+    'label',
+
+    // 5. NAVIGATION, HEADER, FOOTER & TOOL CARDS
     '.site-header',
     'header',
     'nav',
+    'footer',
     '.nav-menu',
     '.header-nav',
     '.header-nav-link',
@@ -119,29 +158,61 @@
     '.conversion-card',
     '.pdf-tool-card',
     '.category-tab',
-    '.category-tabs'
+    '.category-tabs',
+    '#dynamic-category-title',
+    '#image-tools-section',
+    '#pdf-tools-section'
   ].join(', ');
 
   const AD_EVENT_TYPES = ['click', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'pointerdown', 'focus', 'focusin', 'input', 'keydown'];
 
-  // Wrap addEventListener on window/document/body to filter ad click and touch events
+  // Track timestamp of legitimate Convert/Download action clicks
+  let lastAllowedAdActionTime = 0;
+
+  window.addEventListener('click', function (e) {
+    if (e && e.target && e.target.closest && e.target.closest(AD_TARGET_SELECTORS)) {
+      lastAllowedAdActionTime = Date.now();
+    }
+  }, true);
+
+  // --- HARD POPUNDER SHIELD: PROXY window.open ---
+  // Monetag popunders open via window.open. Block window.open unless user clicked an explicit Convert/Download button.
+  const origWindowOpen = window.open;
+  window.open = function (...args) {
+    const now = Date.now();
+    const isRecentAdAction = (now - lastAllowedAdActionTime) < 1500;
+    const currentEvt = window.event;
+    const target = (currentEvt && currentEvt.target) || document.activeElement;
+
+    const isExcluded = target && target.closest && target.closest(NO_AD_EXCLUDE_SELECTORS);
+    const isAllowedTarget = target && target.closest && target.closest(AD_TARGET_SELECTORS);
+
+    if (isExcluded || (!isRecentAdAction && !isAllowedTarget)) {
+      console.log('[Monetag] POPUNDER BLOCKED on non-ad element:', target);
+      return null; // Block popunder window!
+    }
+
+    return origWindowOpen.apply(this, args);
+  };
+
+  // --- EVENT LISTENER SHIELD: INTERCEPT addEventListener ---
   const origAddEventListener = EventTarget.prototype.addEventListener;
   EventTarget.prototype.addEventListener = function (type, listener, options) {
-    if (AD_EVENT_TYPES.includes(type) && (this === window || this === document || this === document.body)) {
+    if (AD_EVENT_TYPES.includes(type)) {
       const filteredListener = function (event) {
         if (!event || !event.target || !event.target.closest) {
           return listener.call(this, event);
         }
 
-        // 1. Explicitly block popunder ads when using search, selecting files, browsing dropzones, or navigating menus/tool cards
-        if (event.target.closest(NO_AD_EXCLUDE_SELECTORS) || (event.target.tagName && event.target.tagName.toLowerCase() === 'input')) {
+        // 1. BLOCK popunder ad triggers on dropzones, file selection, search, header, nav, tool cards, sliders, selects
+        if (event.target.closest(NO_AD_EXCLUDE_SELECTORS) || (event.target.tagName && ['INPUT', 'SELECT', 'TEXTAREA'].includes(event.target.tagName.toUpperCase()))) {
           return;
         }
 
         // 2. MUST be an explicit Convert/Compress or Download button
         const isTargetAction = event.target.closest(AD_TARGET_SELECTORS);
         if (!isTargetAction) {
-          return; // Block popunder for all other clicks
+          return; // Block popunder for all non-action clicks
         }
 
         // 3. Trigger popunder ad ONLY for Convert and Download actions
@@ -152,39 +223,43 @@
     return origAddEventListener.call(this, type, listener, options);
   };
 
-  // Block popunder ad event propagation on search inputs site-wide
+  // Block popunder ad event propagation on search inputs and file dropzones site-wide
   document.addEventListener('DOMContentLoaded', function () {
-    const searchInputs = document.querySelectorAll('input[type="search"], .site-search-box, #tool-search-input');
-    searchInputs.forEach(function (el) {
-      AD_EVENT_TYPES.forEach(function (evtType) {
+    const protectedElements = document.querySelectorAll(NO_AD_EXCLUDE_SELECTORS);
+    protectedElements.forEach(function (el) {
+      ['click', 'mousedown', 'touchstart', 'focus'].forEach(function (evtType) {
         el.addEventListener(evtType, function (e) {
-          e.stopPropagation();
+          if (!e.target.closest(AD_TARGET_SELECTORS)) {
+            if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'A' && e.target.tagName !== 'BUTTON') {
+              e.stopPropagation();
+            }
+          }
         }, true);
       });
     });
   });
 
-  // Also proxy document.onclick / window.onclick if set by Monetag
-  let _docOnClick = null;
-  try {
-    Object.defineProperty(document, 'onclick', {
-      get: function () { return _docOnClick; },
-      set: function (fn) {
-        if (!fn) { _docOnClick = null; return; }
-        _docOnClick = function (event) {
-          if (event && event.target && event.target.closest) {
-            if (event.target.closest(NO_AD_EXCLUDE_SELECTORS)) return;
-            if (event.target.closest(AD_TARGET_SELECTORS)) {
-              fn.call(this, event);
+  // Proxy document.onclick / window.onclick if set by Monetag
+  ['onclick', 'onmousedown', 'ontouchstart'].forEach(function (prop) {
+    let _val = null;
+    try {
+      Object.defineProperty(document, prop, {
+        get: function () { return _val; },
+        set: function (fn) {
+          if (!fn) { _val = null; return; }
+          _val = function (event) {
+            if (event && event.target && event.target.closest) {
+              if (event.target.closest(NO_AD_EXCLUDE_SELECTORS)) return;
+              if (event.target.closest(AD_TARGET_SELECTORS)) {
+                fn.call(this, event);
+              }
             }
-          }
-        };
-      },
-      configurable: true
-    });
-  } catch (e) {
-    // Ignore if property redefinition is restricted by browser
-  }
+          };
+        },
+        configurable: true
+      });
+    } catch (e) { }
+  });
 
   // 1. Register Service Worker for Web Push Ads
   if (MONETAG_CONFIG.enableServiceWorkerPush && 'serviceWorker' in navigator) {
