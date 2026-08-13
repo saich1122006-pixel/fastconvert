@@ -46,6 +46,52 @@
     return;
   }
 
+  // --- TARGETED POPUNDER AD TRIGGERING ---
+  // Only trigger popunder ads when clicking specific primary action buttons (Convert, Compress, Download, etc.)
+  const AD_TARGET_SELECTORS = [
+    '#convert-btn',
+    '#compress-btn',
+    '.btn-convert',
+    '#pdf-action-btn',
+    '.btn-pdf-action',
+    '.btn-download',
+    '.download-btn'
+  ].join(', ');
+
+  // Wrap addEventListener on window/document/body to filter ad click events
+  const origAddEventListener = EventTarget.prototype.addEventListener;
+  EventTarget.prototype.addEventListener = function (type, listener, options) {
+    if (type === 'click' && (this === window || this === document || this === document.body)) {
+      const filteredListener = function (event) {
+        const isTargetAction = event.target && event.target.closest && event.target.closest(AD_TARGET_SELECTORS);
+        if (isTargetAction) {
+          listener.call(this, event);
+        }
+      };
+      return origAddEventListener.call(this, type, filteredListener, options);
+    }
+    return origAddEventListener.call(this, type, listener, options);
+  };
+
+  // Also proxy document.onclick / window.onclick if set by Monetag
+  let _docOnClick = null;
+  try {
+    Object.defineProperty(document, 'onclick', {
+      get: function () { return _docOnClick; },
+      set: function (fn) {
+        if (!fn) { _docOnClick = null; return; }
+        _docOnClick = function (event) {
+          if (event && event.target && event.target.closest && event.target.closest(AD_TARGET_SELECTORS)) {
+            fn.call(this, event);
+          }
+        };
+      },
+      configurable: true
+    });
+  } catch (e) {
+    // Ignore if property redefinition is restricted by browser
+  }
+
   // 1. Register Service Worker for Web Push Ads
   if (MONETAG_CONFIG.enableServiceWorkerPush && 'serviceWorker' in navigator) {
     window.addEventListener('load', function () {
