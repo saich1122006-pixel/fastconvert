@@ -35,6 +35,14 @@
 
   if (isLocalhost || isNoAdsEnabled) {
     console.log('[Monetag] Ads skipped (Localhost or ?noads=1 active)');
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function (registrations) {
+        for (let registration of registrations) {
+          registration.unregister();
+          console.log('[Monetag] Unregistered existing service worker for dev mode.');
+        }
+      });
+    }
     return;
   }
 
