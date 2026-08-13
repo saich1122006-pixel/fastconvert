@@ -7,8 +7,8 @@
 
   // --- MONETAG MULTITAG CONFIGURATION ---
   const MONETAG_CONFIG = {
-    domain: '3nbf4.com',
-    zoneId: 11564244,
+    zoneId: '269642',
+    src: 'https://quge5.com/88/tag.min.js',
     enableServiceWorkerPush: true
   };
 
@@ -25,19 +25,17 @@
     });
   }
 
-  // 2. Load Monetag Multitag Script (Handles In-Page Push, Vignette, Popunder, & Push)
+  // 2. Load Monetag Multitag Script
   window.Monetag = {
     config: MONETAG_CONFIG,
     init: function () {
-      if (MONETAG_CONFIG.zoneId && MONETAG_CONFIG.domain) {
-        const tagUrl = 'https://' + MONETAG_CONFIG.domain + '/pfe/current/tag.min.js?z=' + MONETAG_CONFIG.zoneId;
-        if (!document.querySelector(`script[src="${tagUrl}"]`)) {
-          const s = document.createElement('script');
-          s.src = tagUrl;
-          s.async = true;
-          s.setAttribute('data-cfasync', 'false');
-          (document.head || document.documentElement).appendChild(s);
-        }
+      if (!document.querySelector(`script[src="${MONETAG_CONFIG.src}"]`)) {
+        const s = document.createElement('script');
+        s.src = MONETAG_CONFIG.src;
+        s.async = true;
+        s.setAttribute('data-zone', MONETAG_CONFIG.zoneId);
+        s.setAttribute('data-cfasync', 'false');
+        (document.head || document.documentElement).appendChild(s);
       }
     }
   };
