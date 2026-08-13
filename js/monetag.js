@@ -13,7 +13,7 @@
 
     // Enable/Disable specific ad features
     enableServiceWorkerPush: true, // Registers /sw.js for Push Notifications
-    enableInPagePush: false,       // In-Page Push (Directly loaded in HTML via quge5.com tag)
+    enableInPagePush: true,        // In-Page Push (Load primary zone ads)
     enableVignetteBanner: true,    // Interstitial Vignette ads (Zone 11564295 active)
     enableOnClickPopunder: false,  // OnClick / Popunder ads (Set true when zone tag added)
 
