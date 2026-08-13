@@ -46,10 +46,10 @@
     return;
   }
 
-  // --- STRICT TARGETED AD ACTION ALLOWLIST ---
-  // Popunder ads MUST ONLY trigger when user explicitly clicks a Convert/Compress or Download action button
+  // --- ALLOWED AD ACTION BUTTON SELECTORS ---
+  // Popunder ads trigger ONLY when clicking Convert/Compress or Download action buttons
   const AD_TARGET_SELECTORS = [
-    // 1. CONVERT / COMPRESS / PROCESS BUTTONS (HOMEPAGE & TOOL PAGES)
+    // 1. Convert / Compress / Process buttons
     '#convert-btn',
     '#compress-btn',
     '.btn-convert',
@@ -65,7 +65,7 @@
     '#resize-btn',
     '#rotate-btn',
 
-    // 2. DOWNLOAD BUTTONS (HOMEPAGE & TOOL PAGES)
+    // 2. Download buttons
     '#download-btn',
     '.btn-download',
     '.download-btn',
@@ -76,96 +76,6 @@
     'a[download]'
   ].join(', ');
 
-  // Elements where popunder ads MUST NEVER trigger (Dropzones, File pickers, Search box, Header, Nav, Cards, Controls)
-  const NO_AD_EXCLUDE_SELECTORS = [
-    // 1. HOMEPAGE SMART DROPZONE & FILE SELECTION
-    '#smart-dropzone',
-    '.smart-dropzone-styled',
-    '#smart-dropzone-default',
-    '.smart-dropzone-default',
-    '.smart-dropzone-icon-bg',
-    '.smart-dropzone-btn',
-    '#smart-file-input',
-    '#smart-dropzone-info',
-    '#smart-file-list',
-    '#smart-add-more-files',
-    '#smart-clear-files',
-    '#smart-actions-area',
-    '#smart-actions-title',
-    '#smart-actions-image',
-    '#smart-actions-pdf',
-    '#smart-actions-mixed',
-    '.add-more-files',
-    '.remove-file',
-    '.size-pill',
-    '.split-pill',
-
-    // 2. TOOL PAGES DROPZONES & FILE INPUTS
-    '.dropzone-wrapper',
-    '#dropzone',
-    '.pdf-dropzone',
-    '#pdf-dropzone',
-    '#dropzone-default',
-    '#dropzone-file-info',
-    '.dropzone-icon',
-    '.dropzone-text',
-    '.dropzone-hint',
-    'input[type="file"]',
-    '#file-input',
-    '#pdf-file-input',
-    '#image-file-input',
-    '.select-files-btn',
-    '.btn-select-files',
-    '.upload-area',
-    '.upload-box',
-
-    // 3. SEARCH TOOL & INPUTS
-    '.site-search-wrapper',
-    '.site-search-box',
-    '.site-search-input',
-    '#tool-search-input',
-    'input[type="search"]',
-    '#search-clear-btn',
-    '.site-search-clear-btn',
-    '#no-search-results',
-    '#no-results-reset-btn',
-    '.site-search-icon',
-
-    // 4. CONTROLS, FORM SELECTORS, SLIDERS & OPTIONS
-    'select',
-    'input',
-    'textarea',
-    'option',
-    '#smart-format-select',
-    '#smart-quality-slider',
-    '.format-selector',
-    '.quality-control',
-    '.size-presets',
-    'label',
-
-    // 5. NAVIGATION, HEADER, FOOTER & TOOL CARDS
-    '.site-header',
-    'header',
-    'nav',
-    'footer',
-    '.nav-menu',
-    '.header-nav',
-    '.header-nav-link',
-    '.dropdown-menu',
-    '.dropdown-toggle',
-    '.mobile-menu-toggle',
-    '.theme-toggle',
-    '.conversion-card',
-    '.pdf-tool-card',
-    '.category-tab',
-    '.category-tabs',
-    '#dynamic-category-title',
-    '#image-tools-section',
-    '#pdf-tools-section'
-  ].join(', ');
-
-  const AD_EVENT_TYPES = ['click', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'pointerdown', 'focus', 'focusin', 'input', 'keydown'];
-
   // Track timestamp of legitimate Convert/Download action clicks
   let lastAllowedAdActionTime = 0;
 
@@ -175,93 +85,28 @@
     }
   }, true);
 
-  // --- HARD POPUNDER SHIELD: PROXY window.open ---
-  // Monetag popunders open via window.open. Block window.open unless user clicked an explicit Convert/Download button.
+  // --- POPUNDER AD CONTROL: PROXY window.open ---
+  // Block window.open popunder requests unless the user clicked an explicit Convert or Download button.
+  // This leaves all site event listeners completely untouched so all website buttons work natively.
   const origWindowOpen = window.open;
-  window.open = function (...args) {
+
+  window.open = function (url, name, specs) {
     const now = Date.now();
-    const isRecentAdAction = (now - lastAllowedAdActionTime) < 1500;
+    const isRecentAdAction = (now - lastAllowedAdActionTime) < 2000;
     const currentEvt = window.event;
     const target = (currentEvt && currentEvt.target) || document.activeElement;
 
-    const isExcluded = target && target.closest && target.closest(NO_AD_EXCLUDE_SELECTORS);
-    const isAllowedTarget = target && target.closest && target.closest(AD_TARGET_SELECTORS);
+    const isAllowedTarget = Boolean(target && target.closest && target.closest(AD_TARGET_SELECTORS));
 
-    if (isExcluded || (!isRecentAdAction && !isAllowedTarget)) {
-      console.log('[Monetag] POPUNDER BLOCKED on non-ad element:', target);
-      return null; // Block popunder window!
+    if (!isRecentAdAction && !isAllowedTarget) {
+      console.log('[Monetag] Popunder window.open blocked on non-ad element click:', target);
+      return null; // Block popunder ad window silently
     }
 
-    return origWindowOpen.apply(this, args);
+    return origWindowOpen.call(window, url, name, specs);
   };
 
-  // --- EVENT LISTENER SHIELD: INTERCEPT addEventListener ---
-  const origAddEventListener = EventTarget.prototype.addEventListener;
-  EventTarget.prototype.addEventListener = function (type, listener, options) {
-    if (AD_EVENT_TYPES.includes(type)) {
-      const filteredListener = function (event) {
-        if (!event || !event.target || !event.target.closest) {
-          return listener.call(this, event);
-        }
-
-        // 1. BLOCK popunder ad triggers on dropzones, file selection, search, header, nav, tool cards, sliders, selects
-        if (event.target.closest(NO_AD_EXCLUDE_SELECTORS) || (event.target.tagName && ['INPUT', 'SELECT', 'TEXTAREA'].includes(event.target.tagName.toUpperCase()))) {
-          return;
-        }
-
-        // 2. MUST be an explicit Convert/Compress or Download button
-        const isTargetAction = event.target.closest(AD_TARGET_SELECTORS);
-        if (!isTargetAction) {
-          return; // Block popunder for all non-action clicks
-        }
-
-        // 3. Trigger popunder ad ONLY for Convert and Download actions
-        listener.call(this, event);
-      };
-      return origAddEventListener.call(this, type, filteredListener, options);
-    }
-    return origAddEventListener.call(this, type, listener, options);
-  };
-
-  // Block popunder ad event propagation on search inputs and file dropzones site-wide
-  document.addEventListener('DOMContentLoaded', function () {
-    const protectedElements = document.querySelectorAll(NO_AD_EXCLUDE_SELECTORS);
-    protectedElements.forEach(function (el) {
-      ['click', 'mousedown', 'touchstart', 'focus'].forEach(function (evtType) {
-        el.addEventListener(evtType, function (e) {
-          if (!e.target.closest(AD_TARGET_SELECTORS)) {
-            if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'A' && e.target.tagName !== 'BUTTON') {
-              e.stopPropagation();
-            }
-          }
-        }, true);
-      });
-    });
-  });
-
-  // Proxy document.onclick / window.onclick if set by Monetag
-  ['onclick', 'onmousedown', 'ontouchstart'].forEach(function (prop) {
-    let _val = null;
-    try {
-      Object.defineProperty(document, prop, {
-        get: function () { return _val; },
-        set: function (fn) {
-          if (!fn) { _val = null; return; }
-          _val = function (event) {
-            if (event && event.target && event.target.closest) {
-              if (event.target.closest(NO_AD_EXCLUDE_SELECTORS)) return;
-              if (event.target.closest(AD_TARGET_SELECTORS)) {
-                fn.call(this, event);
-              }
-            }
-          };
-        },
-        configurable: true
-      });
-    } catch (e) { }
-  });
-
-  // 1. Register Service Worker for Web Push Ads
+  // --- 1. Register Service Worker for Web Push Ads ---
   if (MONETAG_CONFIG.enableServiceWorkerPush && 'serviceWorker' in navigator) {
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('/sw.js', { scope: '/' })
@@ -274,7 +119,7 @@
     });
   }
 
-  // 2. Load Monetag Multitag Script
+  // --- 2. Load Monetag Multitag Script ---
   window.Monetag = {
     config: MONETAG_CONFIG,
     init: function () {
