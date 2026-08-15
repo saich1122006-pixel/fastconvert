@@ -10,7 +10,7 @@
     popunder: { enabled: false, zoneId: '', src: '' },
     inPagePush: { enabled: true, zoneId: '11564395', src: 'https://nap5k.com/tag.min.js' },
     vignetteBanner: { enabled: true, zoneId: '11564295', src: 'https://n6wxm.com/vignette.min.js' },
-    directLink: { enabled: true, url: 'https://omg10.com/4/11564391' },
+    directLink: { enabled: false, url: '' },
     webPush: { enabled: true, swPath: '/sw.js' }
   };
 
@@ -192,34 +192,6 @@
   loadIndividualTag(MONETAG_INDIVIDUAL_CONFIG.popunder, 'Popunder');
   loadIndividualTag(MONETAG_INDIVIDUAL_CONFIG.inPagePush, 'In-Page Push');
   loadIndividualTag(MONETAG_INDIVIDUAL_CONFIG.vignetteBanner, 'Vignette Banner');
-
-  // 3. Direct Link Handler for Download Buttons
-  if (MONETAG_INDIVIDUAL_CONFIG.directLink && MONETAG_INDIVIDUAL_CONFIG.directLink.enabled) {
-    const DOWNLOAD_SELECTORS = [
-      '#download-btn',
-      '.btn-download',
-      '.download-btn',
-      '.download-all-btn',
-      '.btn-pdf-download',
-      '.pdf-result-downloads a',
-      '.pdf-result-downloads button',
-      '[download]'
-    ].join(', ');
-
-    document.addEventListener('click', function (e) {
-      if (e.target && e.target.closest) {
-        const downloadBtn = e.target.closest(DOWNLOAD_SELECTORS);
-        if (downloadBtn) {
-          try {
-            window.open(MONETAG_INDIVIDUAL_CONFIG.directLink.url, '_blank');
-            console.log('[Monetag] Opened Direct Link on Download button click');
-          } catch (err) {
-            console.warn('[Monetag] Direct link window.open error:', err);
-          }
-        }
-      }
-    }, true);
-  }
 
   window.Monetag = {
     config: MONETAG_INDIVIDUAL_CONFIG,
