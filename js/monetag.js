@@ -7,12 +7,7 @@
 
   // --- MONETAG INDIVIDUAL TAGS CONFIGURATION ---
   const MONETAG_INDIVIDUAL_CONFIG = {
-    popunder: {
-      enabled: true,
-      zoneId: '11577808',
-      src: 'https://zovidree.com/tag.min.js',
-      frequencyCappingHours: 24 // Frequency cap: Max 1 popunder per 24 hours per user
-    },
+    popunder: { enabled: false, zoneId: '', src: '' },
     inPagePush: { enabled: true, zoneId: '11564395', src: 'https://nap5k.com/tag.min.js' },
     vignetteBanner: { enabled: true, zoneId: '11564295', src: 'https://n6wxm.com/vignette.min.js' },
     directLink: { enabled: false, url: '' },
