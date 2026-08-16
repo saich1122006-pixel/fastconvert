@@ -7,7 +7,12 @@
 
   // --- MONETAG INDIVIDUAL TAGS CONFIGURATION ---
   const MONETAG_INDIVIDUAL_CONFIG = {
-    popunder: { enabled: false, zoneId: '', src: '' },
+    popunder: {
+      enabled: true,
+      zoneId: '11577808',
+      src: 'https://zovidree.com/tag.min.js',
+      frequencyCappingHours: 24 // Frequency cap: Max 1 popunder per 24 hours per user
+    },
     inPagePush: { enabled: true, zoneId: '11564395', src: 'https://nap5k.com/tag.min.js' },
     vignetteBanner: { enabled: true, zoneId: '11564295', src: 'https://n6wxm.com/vignette.min.js' },
     directLink: { enabled: false, url: '' },
@@ -46,6 +51,25 @@
       });
     }
     return;
+  }
+
+  // --- FREQUENCY CAPPING HELPER FOR POPUNDER ADS ---
+  function isPopunderFrequencyCapped() {
+    try {
+      const lastShown = localStorage.getItem('fastconvert_popunder_last_shown');
+      if (!lastShown) return false;
+      const capHours = MONETAG_INDIVIDUAL_CONFIG.popunder.frequencyCappingHours || 24;
+      const elapsedHours = (Date.now() - parseInt(lastShown, 10)) / (1000 * 60 * 60);
+      return elapsedHours < capHours;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function recordPopunderShown() {
+    try {
+      localStorage.setItem('fastconvert_popunder_last_shown', Date.now().toString());
+    } catch (e) {}
   }
 
   // --- TARGETED POPUNDER AD TRIGGERING ---
@@ -119,6 +143,11 @@
           return listener.call(this, event);
         }
 
+        // Block if frequency cap active (already shown in last 24h)
+        if (isPopunderFrequencyCapped()) {
+          return;
+        }
+
         // 1. Explicitly block popunder ads when selecting files, browsing dropzones, or navigating menus/tool cards
         if (event.target.closest(NO_AD_EXCLUDE_SELECTORS)) {
           return;
@@ -130,7 +159,8 @@
           return; // Block popunder for all other clicks
         }
 
-        // 3. Trigger popunder ad ONLY for Convert and Download actions
+        // 3. Trigger popunder ad ONLY for Convert and Download actions & record timestamp
+        recordPopunderShown();
         listener.call(this, event);
       };
       return origAddEventListener.call(this, type, filteredListener, options);
@@ -147,8 +177,10 @@
         if (!fn) { _docOnClick = null; return; }
         _docOnClick = function (event) {
           if (event && event.target && event.target.closest) {
+            if (isPopunderFrequencyCapped()) return;
             if (event.target.closest(NO_AD_EXCLUDE_SELECTORS)) return;
             if (event.target.closest(AD_TARGET_SELECTORS)) {
+              recordPopunderShown();
               fn.call(this, event);
             }
           }
@@ -176,6 +208,13 @@
   // 2. Helper to load individual Monetag scripts dynamically
   function loadIndividualTag(tagConfig, name) {
     if (tagConfig && tagConfig.enabled && tagConfig.src) {
+      if (tagConfig === MONETAG_INDIVIDUAL_CONFIG.popunder) {
+        if (isPopunderFrequencyCapped()) {
+          console.log('[Monetag] Popunder skipped: Frequency cap active (already shown in last 24h).');
+          return;
+        }
+      }
+
       if (!document.querySelector(`script[src="${tagConfig.src}"]`)) {
         const s = document.createElement('script');
         s.src = tagConfig.src;
@@ -195,7 +234,9 @@
 
   window.Monetag = {
     config: MONETAG_INDIVIDUAL_CONFIG,
-    loadTag: loadIndividualTag
+    loadTag: loadIndividualTag,
+    isPopunderFrequencyCapped: isPopunderFrequencyCapped
   };
 
 })();
+
