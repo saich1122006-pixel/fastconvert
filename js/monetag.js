@@ -50,19 +50,10 @@
 
 
 
-  // --- TARGETED POPUNDER AD TRIGGERING ---
-  // Trigger popunder ads ONLY on Download buttons (not Convert/Compress)
-  const AD_TARGET_SELECTORS = [
-    '#download-btn',
-    '.btn-download',
-    '.download-btn',
-    '.download-all-btn',
-    '.pdf-result-downloads a',
-    '.pdf-result-downloads button',
-    '[download]'
-  ].join(', ');
-
-  // Elements where popunder ads MUST NEVER trigger (File dropzones, file selectors, header, menu, nav, tool cards)
+  // --- BLOCK POPUNDER ON PROTECTED ELEMENTS ---
+  // Instead of proxying addEventListener (which breaks desktop popunders by
+  // disrupting the trusted user-gesture chain), we stop event propagation on
+  // protected elements so clicks on them never reach Monetag's global handlers.
   const NO_AD_EXCLUDE_SELECTORS = [
     // 1. FILE SELECTION & DROPZONES (ALL TOOLS & HOMEPAGE)
     '.dropzone-wrapper',
@@ -102,57 +93,27 @@
     '.theme-toggle'
   ].join(', ');
 
-  const AD_EVENT_TYPES = ['click', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'pointerdown'];
-
-  // Wrap addEventListener on window/document/body to filter ad click and touch events
-  const origAddEventListener = EventTarget.prototype.addEventListener;
-  EventTarget.prototype.addEventListener = function (type, listener, options) {
-    if (AD_EVENT_TYPES.includes(type) && (this === window || this === document || this === document.body)) {
-      const filteredListener = function (event) {
-        if (!event || !event.target || !event.target.closest) {
-          return listener.call(this, event);
-        }
-
-        // 1. Block popunder on dropzones, file inputs, menus, nav
-        if (event.target.closest(NO_AD_EXCLUDE_SELECTORS)) {
-          return;
-        }
-
-        // 2. MUST be a Download button
-        const isTargetAction = event.target.closest(AD_TARGET_SELECTORS);
-        if (!isTargetAction) {
-          return; // Block popunder for all other clicks
-        }
-
-        // 3. Trigger popunder ad for Download actions
-        listener.call(this, event);
-      };
-      return origAddEventListener.call(this, type, filteredListener, options);
-    }
-    return origAddEventListener.call(this, type, listener, options);
-  };
-
-  // Also proxy document.onclick / window.onclick if set by Monetag
-  let _docOnClick = null;
-  try {
-    Object.defineProperty(document, 'onclick', {
-      get: function () { return _docOnClick; },
-      set: function (fn) {
-        if (!fn) { _docOnClick = null; return; }
-        _docOnClick = function (event) {
-          if (event && event.target && event.target.closest) {
-            if (event.target.closest(NO_AD_EXCLUDE_SELECTORS)) return;
-            if (event.target.closest(AD_TARGET_SELECTORS)) {
-              fn.call(this, event);
-            }
-          }
-        };
-      },
-      configurable: true
+  function blockAdsOnProtectedElements() {
+    const protectedEls = document.querySelectorAll(NO_AD_EXCLUDE_SELECTORS);
+    protectedEls.forEach(function (el) {
+      if (el.dataset.adBlocked) return; // already handled
+      el.dataset.adBlocked = 'true';
+      el.addEventListener('click', function (e) { e.stopPropagation(); }, true);
+      el.addEventListener('mousedown', function (e) { e.stopPropagation(); }, true);
+      el.addEventListener('pointerdown', function (e) { e.stopPropagation(); }, true);
     });
-  } catch (e) {
-    // Ignore if property redefinition is restricted by browser
   }
+
+  // Run on load and observe for dynamically added elements
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', blockAdsOnProtectedElements);
+  } else {
+    blockAdsOnProtectedElements();
+  }
+
+  // Re-run when DOM changes (new elements added dynamically)
+  const observer = new MutationObserver(blockAdsOnProtectedElements);
+  observer.observe(document.documentElement, { childList: true, subtree: true });
 
   // 1. Register Service Worker for Web Push Ads
   if (MONETAG_INDIVIDUAL_CONFIG.webPush.enabled && 'serviceWorker' in navigator) {
@@ -185,7 +146,15 @@
 
   // Load active individual ad tags
   loadIndividualTag(MONETAG_INDIVIDUAL_CONFIG.popunder, 'Popunder');
-  loadIndividualTag(MONETAG_INDIVIDUAL_CONFIG.inPagePush, 'In-Page Push');
+
+  // In-Page Push ads cover too much screen on mobile — only load on desktop
+  const isMobile = window.innerWidth <= 768;
+  if (!isMobile) {
+    loadIndividualTag(MONETAG_INDIVIDUAL_CONFIG.inPagePush, 'In-Page Push');
+  } else {
+    console.log('[Monetag] In-Page Push skipped on mobile (screen too small).');
+  }
+
   loadIndividualTag(MONETAG_INDIVIDUAL_CONFIG.vignetteBanner, 'Vignette Banner');
 
   window.Monetag = {
