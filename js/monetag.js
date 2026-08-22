@@ -7,7 +7,7 @@
 
   // --- MONETAG INDIVIDUAL TAGS CONFIGURATION ---
   const MONETAG_INDIVIDUAL_CONFIG = {
-    popunder: { enabled: true, zoneId: '11577808', src: 'https://al5sm.com/tag.min.js' },
+    popunder: { enabled: false, zoneId: '', src: '' },
     inPagePush: { enabled: true, zoneId: '11564395', src: 'https://nap5k.com/tag.min.js' },
     vignetteBanner: { enabled: true, zoneId: '11564295', src: 'https://n6wxm.com/vignette.min.js' },
     directLink: { enabled: false, url: '' },
@@ -48,112 +48,6 @@
     return;
   }
 
-
-
-  // --- TARGETED POPUNDER AD TRIGGERING ---
-  // Trigger popunder ads ONLY on Download buttons (not Convert/Compress)
-  const AD_TARGET_SELECTORS = [
-    '#download-btn',
-    '.btn-download',
-    '.download-btn',
-    '.download-all-btn',
-    '.pdf-result-downloads a',
-    '.pdf-result-downloads button',
-    '[download]'
-  ].join(', ');
-
-  // Elements where popunder ads MUST NEVER trigger (File dropzones, file selectors, header, menu, nav, tool cards)
-  const NO_AD_EXCLUDE_SELECTORS = [
-    // 1. FILE SELECTION & DROPZONES (ALL TOOLS & HOMEPAGE)
-    '.dropzone-wrapper',
-    '#dropzone',
-    '.pdf-dropzone',
-    '#pdf-dropzone',
-    '#dropzone-default',
-    '#dropzone-file-info',
-    '.dropzone-icon',
-    '.dropzone-text',
-    '.dropzone-hint',
-    'input[type="file"]',
-    '#file-input',
-    '#pdf-file-input',
-    '#image-file-input',
-    '.select-files-btn',
-    '.btn-select-files',
-    '.upload-area',
-    '.upload-box',
-    '.tool-card',
-    '.tools-grid',
-    '.hero-cta',
-    '.remove-file',
-    '.size-pill',
-    '.split-pill',
-
-    // 2. HEADER, MENU & NAVIGATION
-    '.site-header',
-    'header',
-    'nav',
-    '.nav-menu',
-    '.header-nav',
-    '.header-nav-link',
-    '.dropdown-menu',
-    '.dropdown-toggle',
-    '.mobile-menu-toggle',
-    '.theme-toggle'
-  ].join(', ');
-
-  const AD_EVENT_TYPES = ['click', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'pointerdown'];
-
-  // Wrap addEventListener on window/document/body to filter ad click and touch events
-  const origAddEventListener = EventTarget.prototype.addEventListener;
-  EventTarget.prototype.addEventListener = function (type, listener, options) {
-    if (AD_EVENT_TYPES.includes(type) && (this === window || this === document || this === document.body)) {
-      const filteredListener = function (event) {
-        if (!event || !event.target || !event.target.closest) {
-          return listener.call(this, event);
-        }
-
-        // 1. Block popunder on dropzones, file inputs, menus, nav
-        if (event.target.closest(NO_AD_EXCLUDE_SELECTORS)) {
-          return;
-        }
-
-        // 2. MUST be a Download button
-        const isTargetAction = event.target.closest(AD_TARGET_SELECTORS);
-        if (!isTargetAction) {
-          return; // Block popunder for all other clicks
-        }
-
-        // 3. Trigger popunder ad for Download actions
-        listener.call(this, event);
-      };
-      return origAddEventListener.call(this, type, filteredListener, options);
-    }
-    return origAddEventListener.call(this, type, listener, options);
-  };
-
-  // Also proxy document.onclick / window.onclick if set by Monetag
-  let _docOnClick = null;
-  try {
-    Object.defineProperty(document, 'onclick', {
-      get: function () { return _docOnClick; },
-      set: function (fn) {
-        if (!fn) { _docOnClick = null; return; }
-        _docOnClick = function (event) {
-          if (event && event.target && event.target.closest) {
-            if (event.target.closest(NO_AD_EXCLUDE_SELECTORS)) return;
-            if (event.target.closest(AD_TARGET_SELECTORS)) {
-              fn.call(this, event);
-            }
-          }
-        };
-      },
-      configurable: true
-    });
-  } catch (e) {
-    // Ignore if property redefinition is restricted by browser
-  }
-
   // 1. Register Service Worker for Web Push Ads
   if (MONETAG_INDIVIDUAL_CONFIG.webPush.enabled && 'serviceWorker' in navigator) {
     window.addEventListener('load', function () {
@@ -184,7 +78,6 @@
   }
 
   // Load active individual ad tags
-  loadIndividualTag(MONETAG_INDIVIDUAL_CONFIG.popunder, 'Popunder');
   loadIndividualTag(MONETAG_INDIVIDUAL_CONFIG.inPagePush, 'In-Page Push');
   loadIndividualTag(MONETAG_INDIVIDUAL_CONFIG.vignetteBanner, 'Vignette Banner');
 

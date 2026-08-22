@@ -46,7 +46,7 @@ const MONETAG_CONFIG = {
   enableServiceWorkerPush: true, // Web Push Ads (/sw.js)
   enableInPagePush: true,        // In-Page Push Banners
   enableVignetteBanner: false,   // Set to true if active
-  enableOnClickPopunder: false,  // Set to true if active
+  enableOnClickPopunder: false,  // Disabled / Removed
 };
 ```
 
