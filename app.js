@@ -56,28 +56,6 @@
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
-  // ============================================
-  // Theme Toggle
-  // ============================================
-  function getPreferredTheme() {
-    const saved = localStorage.getItem('fc-theme');
-    if (saved) return saved;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
-
-  function applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('fc-theme', theme);
-    themeToggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
-    themeToggleBtn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-  }
-
-  applyTheme(getPreferredTheme());
-
-  themeToggleBtn.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    applyTheme(current === 'dark' ? 'light' : 'dark');
-  });
 
   // ============================================
   // SPA Routing

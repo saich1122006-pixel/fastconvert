@@ -12,35 +12,9 @@
   window.$ = $;
   window.$$ = $$;
 
-  const themeToggleBtn = $('#theme-toggle');
-  const toastEl = $('#toast');
-
-  // ============================================
-  // Theme Toggle
-  // ============================================
-  function getPreferredTheme() {
-    const saved = localStorage.getItem('fc-theme');
-    if (saved) return saved;
-    return 'dark';
-  }
-
-  function applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('fc-theme', theme);
-    if (themeToggleBtn) {
-      themeToggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
-      themeToggleBtn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-    }
-  }
-
-  applyTheme(getPreferredTheme());
-
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', () => {
-      const current = document.documentElement.getAttribute('data-theme');
-      applyTheme(current === 'dark' ? 'light' : 'dark');
-    });
-  }
+  // Theme: fixed dark — no toggle
+  document.documentElement.setAttribute('data-theme', 'dark');
+  localStorage.removeItem('fc-theme');
 
   // ============================================
   // Toast Notifications
@@ -110,4 +84,100 @@
       });
     });
   }
+
+  // ============================================
+  // Header Search — Independent Dropdown
+  // ============================================
+  const TOOLS = [
+    { icon: '🌐', name: 'WebP to JPG',        url: '/tools/image-converter/?mode=webp-jpg', tags: 'webp jpg jpeg convert image' },
+    { icon: '🌐', name: 'WebP to PNG',        url: '/tools/image-converter/?mode=webp-png', tags: 'webp png convert image transparent' },
+    { icon: '📱', name: 'HEIC to JPG',        url: '/tools/image-converter/?mode=heic-jpg', tags: 'heic heif jpg jpeg iphone apple convert' },
+    { icon: '📷', name: 'JPG to PNG',         url: '/tools/image-converter/?mode=jpg-png',  tags: 'jpg jpeg png convert lossless' },
+    { icon: '🎨', name: 'PNG to JPG',         url: '/tools/image-converter/?mode=png-jpg',  tags: 'png jpg jpeg convert compress' },
+    { icon: '📷', name: 'JPG / PNG to WebP',  url: '/tools/image-converter/?mode=to-webp',  tags: 'jpg png webp convert optimize web' },
+    { icon: '🔄', name: 'Image Converter',    url: '/tools/image-converter/',               tags: 'image convert format png jpg webp heic' },
+    { icon: '📐', name: 'Image Compressor',   url: '/tools/image-compressor/',              tags: 'compress image size kb 20kb 50kb 100kb reduce' },
+    { icon: '✂️', name: 'Crop Image',         url: '/tools/crop-image/',                    tags: 'crop trim cut aspect ratio image photo' },
+    { icon: '📏', name: 'Resize Image',       url: '/tools/resize-image/',                  tags: 'resize scale dimensions width height pixels' },
+    { icon: '🔗', name: 'Merge PDF',          url: '/tools/pdf-merge/',                     tags: 'merge pdf combine join append documents' },
+    { icon: '✂️', name: 'Split PDF',          url: '/tools/pdf-split/',                     tags: 'split pdf extract pages separate divide' },
+    { icon: '📉', name: 'Compress PDF',       url: '/tools/pdf-compress/',                  tags: 'compress pdf reduce size shrink' },
+    { icon: '🖼️', name: 'Image to PDF',      url: '/tools/image-to-pdf/',                  tags: 'image to pdf jpg png convert' },
+    { icon: '🔃', name: 'Rotate PDF',         url: '/tools/rotate-pdf/',                    tags: 'rotate pdf pages turn orientation fix' },
+  ];
+
+  const headerSearchWrapper = document.getElementById('header-search');
+  const headerSearchBtn     = document.getElementById('header-search-btn');
+  const headerSearchClose   = document.getElementById('header-search-close');
+  const headerSearchInput   = document.getElementById('header-search-input');
+
+  // Create dropdown container
+  const dropdown = document.createElement('div');
+  dropdown.className = 'hs-dropdown';
+  dropdown.setAttribute('role', 'listbox');
+  dropdown.setAttribute('aria-label', 'Tool search results');
+  headerSearchWrapper && headerSearchWrapper.appendChild(dropdown);
+
+  function renderDropdown(query) {
+    dropdown.innerHTML = '';
+    if (!query) { dropdown.classList.remove('open'); return; }
+
+    const q = query.toLowerCase();
+    const matches = TOOLS.filter(t =>
+      t.name.toLowerCase().includes(q) || t.tags.includes(q)
+    );
+
+    if (matches.length === 0) {
+      dropdown.innerHTML = '<div class="hs-no-result">No tools found</div>';
+    } else {
+      matches.forEach(t => {
+        const item = document.createElement('a');
+        item.href = t.url;
+        item.className = 'hs-item';
+        item.setAttribute('role', 'option');
+        item.innerHTML = `<span class="hs-icon">${t.icon}</span><span class="hs-name">${t.name}</span><span class="hs-arrow">→</span>`;
+        dropdown.appendChild(item);
+      });
+    }
+    dropdown.classList.add('open');
+  }
+
+  function openHeaderSearch() {
+    if (!headerSearchWrapper) return;
+    headerSearchWrapper.classList.add('open');
+    headerSearchBtn.setAttribute('aria-expanded', 'true');
+    setTimeout(() => headerSearchInput && headerSearchInput.focus(), 300);
+  }
+
+  function closeHeaderSearch() {
+    if (!headerSearchWrapper) return;
+    headerSearchWrapper.classList.remove('open');
+    headerSearchBtn.setAttribute('aria-expanded', 'false');
+    if (headerSearchInput) headerSearchInput.value = '';
+    dropdown.classList.remove('open');
+    dropdown.innerHTML = '';
+  }
+
+  if (headerSearchBtn) {
+    headerSearchBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      headerSearchWrapper.classList.contains('open') ? closeHeaderSearch() : openHeaderSearch();
+    });
+  }
+
+  if (headerSearchClose) {
+    headerSearchClose.addEventListener('click', (e) => { e.stopPropagation(); closeHeaderSearch(); });
+  }
+
+  if (headerSearchInput) {
+    headerSearchInput.addEventListener('input', () => renderDropdown(headerSearchInput.value.trim()));
+    headerSearchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeHeaderSearch();
+    });
+  }
+
+  document.addEventListener('click', (e) => {
+    if (headerSearchWrapper && !headerSearchWrapper.contains(e.target)) closeHeaderSearch();
+  });
+
 })();
