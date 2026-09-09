@@ -110,7 +110,6 @@
     { icon: '📉', name: 'Compress PDF',       url: '/tools/pdf-compress/',                  tags: 'compress pdf reduce size shrink' },
     { icon: '🖼️', name: 'Image to PDF',      url: '/tools/image-to-pdf/',                  tags: 'image to pdf jpg png convert' },
     { icon: '🔃', name: 'Rotate PDF',         url: '/tools/rotate-pdf/',                    tags: 'rotate pdf pages turn orientation fix' },
-    { icon: '✨', name: 'Remove Background',   url: '/tools/remove-bg/',                     tags: 'remove background transparent png bg remover cutout erase image photo product' },
   ];
 
   const headerSearchWrapper = document.getElementById('header-search');
