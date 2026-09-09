@@ -100,7 +100,13 @@
 
   function removeBackgroundInWorker(file, onProgress) {
     return new Promise(function (resolve, reject) {
-      var worker = removalWorker || new Worker('background-removal-worker.js', { type: 'module' });
+      var worker;
+      try {
+        worker = removalWorker || new Worker('background-removal-worker.js', { type: 'module' });
+      } catch (error) {
+        removeBackgroundDirectly(file, onProgress).then(resolve).catch(reject);
+        return;
+      }
       removalWorker = worker;
 
       worker.onmessage = function (event) {
@@ -119,7 +125,9 @@
       worker.onerror = function (event) {
         worker.terminate();
         removalWorker = null;
-        reject(event.error || new Error('Background removal worker failed.'));
+        removeBackgroundDirectly(file, onProgress).then(resolve).catch(function (fallbackError) {
+          reject(fallbackError || event.error || new Error('Background removal worker failed.'));
+        });
       };
 
       worker.postMessage({
@@ -127,6 +135,17 @@
         file: file,
         mobile: window.matchMedia('(pointer: coarse)').matches
       });
+    });
+  }
+
+  async function removeBackgroundDirectly(file, onProgress) {
+    var mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.6/+esm');
+    return mod.removeBackground(file, {
+      device: 'cpu',
+      model: 'isnet_quint8',
+      progress: function (key, current, total) {
+        if (key === 'compute:inference' && total) onProgress(current, total);
+      }
     });
   }
 
