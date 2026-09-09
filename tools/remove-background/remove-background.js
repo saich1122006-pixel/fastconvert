@@ -22,6 +22,7 @@
   const progressWrapper = document.getElementById('progress-wrapper');
   const progressFill   = document.getElementById('progress-fill');
   const progressLabel  = document.getElementById('progress-label');
+  const progressEta    = document.getElementById('progress-eta');
   const resultArea     = document.getElementById('result-area');
   const downloadBtn    = document.getElementById('download-btn');
   const resultFormat   = document.getElementById('result-format');
@@ -34,7 +35,13 @@
 
   let currentFile = null;
   let resultBlob = null;
+  let transparentResultBlob = null;
   let selectedBg = 'transparent';
+  let operationId = 0;
+  let completionTimer = null;
+  let removalWorker = null;
+  let progressEstimateStartedAt = 0;
+  let progressEstimateStartedAtPct = 0;
 
   /* ------------------------------------------
      Helpers
@@ -55,9 +62,68 @@
     setTimeout(function () { toast.classList.remove('visible'); }, 3500);
   }
 
-  function setProgress(pct, label) {
+  function formatRemaining(seconds) {
+    if (seconds < 60) return Math.max(1, Math.ceil(seconds)) + ' sec';
+    var minutes = Math.floor(seconds / 60);
+    var remainingSeconds = Math.ceil(seconds % 60);
+    return minutes + ' min' + (remainingSeconds ? ' ' + remainingSeconds + ' sec' : '');
+  }
+
+  function resetProgressEstimate() {
+    progressEstimateStartedAt = 0;
+    progressEstimateStartedAtPct = 0;
+    progressEta.textContent = 'Estimating remaining time…';
+  }
+
+  function setProgressEstimate(message) {
+    progressEta.textContent = message;
+  }
+
+  function setProgress(pct, label, estimateFromPct) {
     progressFill.style.width = pct + '%';
     if (label) progressLabel.textContent = label;
+
+    if (estimateFromPct && pct > estimateFromPct) {
+      if (!progressEstimateStartedAt) {
+        progressEstimateStartedAt = performance.now();
+        progressEstimateStartedAtPct = pct;
+      }
+
+      var elapsedSeconds = (performance.now() - progressEstimateStartedAt) / 1000;
+      var completedPct = pct - progressEstimateStartedAtPct;
+      var remainingPct = 100 - pct;
+      if (completedPct > 0 && elapsedSeconds > 0) {
+        progressEta.textContent = 'About ' + formatRemaining(elapsedSeconds * remainingPct / completedPct) + ' remaining';
+      }
+    }
+  }
+
+  function removeBackgroundInWorker(file, onProgress) {
+    return new Promise(function (resolve, reject) {
+      var worker = removalWorker || new Worker('background-removal-worker.js', { type: 'module' });
+      removalWorker = worker;
+
+      worker.onmessage = function (event) {
+        var message = event.data;
+        if (message.type === 'progress') {
+          onProgress(message.current, message.total);
+        } else if (message.type === 'complete') {
+          resolve(message.blob);
+        } else if (message.type === 'error') {
+          worker.terminate();
+          removalWorker = null;
+          reject(new Error(message.message));
+        }
+      };
+
+      worker.onerror = function (event) {
+        worker.terminate();
+        removalWorker = null;
+        reject(event.error || new Error('Background removal worker failed.'));
+      };
+
+      worker.postMessage({ type: 'remove-background', file: file });
+    });
   }
 
   /* ------------------------------------------
@@ -79,6 +145,7 @@
      Main: load image
      ------------------------------------------ */
   async function handleFile(file) {
+    var fileOperationId = ++operationId;
     var ext = file.name.split('.').pop().toLowerCase();
     if (!file.type.startsWith('image/') && ['heic', 'heif'].indexOf(ext) === -1) {
       showToast('Please select a valid image file.', 'error');
@@ -87,7 +154,7 @@
 
     if (file.name.match(/\.(heic|heif)$/i) || file.type === 'image/heic') {
       file = await decodeHeic(file);
-      if (!file) return;
+      if (!file || fileOperationId !== operationId) return;
     }
 
     currentFile = file;
@@ -101,6 +168,7 @@
     // Show preview
     var reader = new FileReader();
     reader.onload = function (e) {
+      if (fileOperationId !== operationId || currentFile !== file) return;
       previewImg.src = e.target.result;
       previewContainer.style.display = 'block';
       resultPreviewItem.style.display = 'none';
@@ -116,31 +184,29 @@
      ------------------------------------------ */
   removeBgBtn.addEventListener('click', async function () {
     if (!currentFile) return;
+    var currentOperationId = ++operationId;
 
     removeBgBtn.disabled = true;
+    removeBgBtn.classList.add('loading');
     progressWrapper.style.display = 'block';
     resultPreviewItem.style.display = 'none';
     resultArea.style.display = 'none';
     resultBlob = null;
+    transparentResultBlob = null;
+    resetProgressEstimate();
 
-    setProgress(5, 'Loading AI model — this may take a moment on first use…');
+    setProgress(5, 'Loading AI model — first use downloads it once…');
 
     try {
-      // Dynamically import the library (first load downloads ~30 MB model, cached after)
-      var mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.6/+esm');
+      setProgress(25, 'Analyzing original image with AI…');
+      setProgressEstimate('Estimated 10–45 sec remaining; first use may take longer');
 
-      setProgress(25, 'Analyzing image with AI…');
-
-      var config = {
-        progress: function (key, current, total) {
-          if (key === 'compute:inference') {
-            var pct = Math.round(25 + (current / total) * 60);
-            setProgress(pct, 'Removing background…');
-          }
-        }
-      };
-
-      var outputBlob = await mod.removeBackground(currentFile, config);
+      var outputBlob = await removeBackgroundInWorker(currentFile, function (current, total) {
+        var pct = Math.round(25 + (current / total) * 60);
+        setProgress(pct, 'Removing background…', 25);
+      });
+      if (currentOperationId !== operationId) return;
+      transparentResultBlob = outputBlob;
 
       setProgress(90, 'Applying background color…');
 
@@ -148,6 +214,7 @@
       if (selectedBg !== 'transparent') {
         outputBlob = await compositeOnColor(outputBlob, selectedBg);
       }
+      if (currentOperationId !== operationId) return;
 
       resultBlob = outputBlob;
 
@@ -168,10 +235,13 @@
       statOutput.textContent = formatBytes(outputBlob.size);
 
       setProgress(100, 'Done!');
-      setTimeout(function () {
+      progressEta.textContent = 'Complete';
+      completionTimer = setTimeout(function () {
+        if (currentOperationId !== operationId) return;
         progressWrapper.style.display = 'none';
         resultArea.style.display = 'block';
         removeBgBtn.disabled = false;
+        removeBgBtn.classList.remove('loading');
       }, 500);
 
       showToast('Background removed successfully!');
@@ -179,7 +249,9 @@
     } catch (err) {
       console.error('Background removal failed:', err);
       progressWrapper.style.display = 'none';
+      resetProgressEstimate();
       removeBgBtn.disabled = false;
+      removeBgBtn.classList.remove('loading');
       showToast('Failed to remove background. Try a smaller image.', 'error');
     }
   });
@@ -250,19 +322,21 @@
   }
 
   async function reprocessWithBg() {
-    if (!currentFile) return;
+    if (!currentFile || !transparentResultBlob) return;
+    var currentOperationId = operationId;
     try {
       progressWrapper.style.display = 'block';
-      setProgress(50, 'Changing background…');
+      removeBgBtn.classList.add('loading');
+      resetProgressEstimate();
+      setProgress(60, 'Applying background color…');
+      setProgressEstimate('Usually takes less than 2 sec');
 
-      var mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.6/+esm');
-
-      // Re-run removal to get fresh transparent output
-      var outputBlob = await mod.removeBackground(currentFile);
+      var outputBlob = transparentResultBlob;
 
       if (selectedBg !== 'transparent') {
         outputBlob = await compositeOnColor(outputBlob, selectedBg);
       }
+      if (currentOperationId !== operationId) return;
 
       resultBlob = outputBlob;
 
@@ -277,10 +351,13 @@
       statOutput.textContent = formatBytes(outputBlob.size);
 
       progressWrapper.style.display = 'none';
+      resetProgressEstimate();
+      removeBgBtn.classList.remove('loading');
       resultArea.style.display = 'block';
       showToast('Background updated!');
     } catch (err) {
       progressWrapper.style.display = 'none';
+      removeBgBtn.classList.remove('loading');
       showToast('Failed to update background.', 'error');
     }
   }
@@ -290,8 +367,18 @@
      ------------------------------------------ */
   removeFileBtn.addEventListener('click', function (e) {
     e.stopPropagation();
+    operationId += 1;
+    if (removalWorker) {
+      removalWorker.terminate();
+      removalWorker = null;
+    }
+    if (completionTimer) {
+      clearTimeout(completionTimer);
+      completionTimer = null;
+    }
     currentFile = null;
     resultBlob = null;
+    transparentResultBlob = null;
     fileInput.value = '';
 
     dropzoneDefault.style.display = 'flex';
@@ -299,10 +386,18 @@
     previewContainer.style.display = 'none';
     bgControls.style.display = 'none';
     progressWrapper.style.display = 'none';
+    progressFill.style.width = '0%';
+    progressLabel.textContent = 'Loading AI model — first use downloads it once…';
+    progressEta.textContent = '';
     resultArea.style.display = 'none';
     resultPreviewItem.style.display = 'none';
     previewImg.src = '';
     resultImg.src = '';
+    selectedBg = 'transparent';
+    bgOptions.forEach(function (option) { option.classList.remove('active'); });
+    document.querySelector('.bg-option[data-bg="transparent"]').classList.add('active');
+    removeBgBtn.disabled = false;
+    removeBgBtn.classList.remove('loading');
   });
 
   /* ------------------------------------------

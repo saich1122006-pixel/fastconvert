@@ -236,18 +236,6 @@
                   <span class="bg-swatch" style="background:#000;"></span>
                   <span>Black</span>
                 </button>
-                <button class="bg-option" data-bg="#3b82f6" title="Blue">
-                  <span class="bg-swatch" style="background:#3b82f6;"></span>
-                  <span>Blue</span>
-                </button>
-                <button class="bg-option" data-bg="#ef4444" title="Red">
-                  <span class="bg-swatch" style="background:#ef4444;"></span>
-                  <span>Red</span>
-                </button>
-                <button class="bg-option" data-bg="#22c55e" title="Green">
-                  <span class="bg-swatch" style="background:#22c55e;"></span>
-                  <span>Green</span>
-                </button>
                 <label class="bg-option bg-custom" title="Custom color">
                   <input type="color" id="custom-bg-color" value="#f59e0b" style="width:0;height:0;padding:0;border:none;position:absolute;opacity:0;pointer-events:none;" />
                   <span class="bg-swatch" id="custom-bg-swatch" style="background:#f59e0b; border:2px solid var(--clr-primary);"></span>
@@ -257,7 +245,6 @@
             </div>
 
             <button class="btn-convert" id="remove-bg-btn" style="align-self:center;">
-              <span class="spinner" aria-hidden="true"></span>
               <span class="btn-text">Remove Background</span>
               <span class="btn-loading-text">Processing with AI…</span>
             </button>
@@ -265,10 +252,17 @@
 
           <!-- Progress Bar -->
           <div class="progress-wrapper" id="progress-wrapper" style="display:none;">
+            <div class="progress-puzzle" aria-hidden="true">
+              <span class="puzzle-piece puzzle-piece-one"></span>
+              <span class="puzzle-piece puzzle-piece-two"></span>
+              <span class="puzzle-piece puzzle-piece-three"></span>
+              <span class="puzzle-piece puzzle-piece-four"></span>
+            </div>
             <div class="progress-bar-track">
               <div class="progress-bar-fill" id="progress-fill"></div>
             </div>
             <p class="progress-label" id="progress-label">Loading AI model — this may take a moment on first use…</p>
+            <p class="progress-eta" id="progress-eta" aria-live="polite"></p>
           </div>
 
           <!-- Result / Download -->
