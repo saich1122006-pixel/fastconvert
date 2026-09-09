@@ -21,10 +21,22 @@ self.onmessage = async function (event) {
       }
     };
 
-    // The quantized model uses much less memory on mobile devices.
-    if (message.mobile) config.model = 'isnet_quint8';
+    if (message.mobile) {
+      config.device = 'cpu';
+      config.model = 'isnet_quint8';
+    }
 
-    var outputBlob = await backgroundRemovalModule.removeBackground(message.file, config);
+    var outputBlob;
+    try {
+      outputBlob = await backgroundRemovalModule.removeBackground(message.file, config);
+    } catch (error) {
+      if (!message.mobile) throw error;
+
+      // Retry with the default model if the cached mobile model is unavailable.
+      delete config.model;
+      config.device = 'cpu';
+      outputBlob = await backgroundRemovalModule.removeBackground(message.file, config);
+    }
 
     self.postMessage({ type: 'complete', blob: outputBlob });
   } catch (error) {
