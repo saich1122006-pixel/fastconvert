@@ -9,7 +9,7 @@ self.onmessage = async function (event) {
       backgroundRemovalModule = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.6/+esm');
     }
 
-    var outputBlob = await backgroundRemovalModule.removeBackground(message.file, {
+    var config = {
       progress: function (key, current, total) {
         if (key === 'compute:inference' && total) {
           self.postMessage({
@@ -19,13 +19,18 @@ self.onmessage = async function (event) {
           });
         }
       }
-    });
+    };
+
+    // The quantized model uses much less memory on mobile devices.
+    if (message.mobile) config.model = 'isnet_quint8';
+
+    var outputBlob = await backgroundRemovalModule.removeBackground(message.file, config);
 
     self.postMessage({ type: 'complete', blob: outputBlob });
   } catch (error) {
     self.postMessage({
       type: 'error',
-      message: error && error.message ? error.message : 'Background removal failed.'
+      message: error && error.message ? error.message : 'Background removal failed on this device.'
     });
   }
 };

@@ -122,7 +122,11 @@
         reject(event.error || new Error('Background removal worker failed.'));
       };
 
-      worker.postMessage({ type: 'remove-background', file: file });
+      worker.postMessage({
+        type: 'remove-background',
+        file: file,
+        mobile: window.matchMedia('(pointer: coarse)').matches
+      });
     });
   }
 
@@ -252,7 +256,9 @@
       resetProgressEstimate();
       removeBgBtn.disabled = false;
       removeBgBtn.classList.remove('loading');
-      showToast('Failed to remove background. Try a smaller image.', 'error');
+      progressLabel.textContent = 'Processing failed';
+      progressEta.textContent = err.message || 'Your device could not complete this image.';
+      showToast(err.message || 'Your device could not complete this image.', 'error');
     }
   });
 
