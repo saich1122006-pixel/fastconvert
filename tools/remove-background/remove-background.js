@@ -3,13 +3,8 @@
 
   /* ============================================
      FastConvert — Remove Background Tool
-     Server-side removal (rembg / isnet-general-use)
-     + manual touch-up brush editor (erase / restore)
+     Uses @imgly/background-removal (client-side)
      ============================================ */
-
-  // Point this at your deployed server (see server/README.md).
- const API_ENDPOINT =
-  'https://fastconvert-backend-api.onrender.com/api/remove-background';
 
   const fileInput      = document.getElementById('file-input');
   const dropzone       = document.getElementById('dropzone');
@@ -44,10 +39,9 @@
   let selectedBg = 'transparent';
   let operationId = 0;
   let completionTimer = null;
+  let removalWorker = null;
   let progressEstimateStartedAt = 0;
   let progressEstimateStartedAtPct = 0;
-
-  const DEFAULT_PROGRESS_LABEL = 'Uploading image to our server…';
 
   /* ------------------------------------------
      Helpers
@@ -104,90 +98,59 @@
     }
   }
 
-  /* ------------------------------------------
-     Server call
-     ------------------------------------------
-     Uses XMLHttpRequest (not fetch) so we get real upload-progress
-     events. The server doesn't stream inference progress back, so once
-     the upload finishes we simulate a gentle ramp up to ~90% and jump
-     to 100% when the response actually arrives — this keeps the bar
-     moving instead of freezing while the model runs server-side.
-  */
-  function removeBackgroundOnServer(file, onProgress) {
+  function removeBackgroundInWorker(file, onProgress) {
     return new Promise(function (resolve, reject) {
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', API_ENDPOINT, true);
-      xhr.responseType = 'blob';
-
-      var simTimer = null;
-      var simPct = 0;
-
-      function stopSim() {
-        if (simTimer) {
-          clearInterval(simTimer);
-          simTimer = null;
-        }
+      var worker;
+      try {
+        worker = removalWorker || new Worker('background-removal-worker.js', { type: 'module' });
+      } catch (error) {
+        removeBackgroundDirectly(file, onProgress).then(resolve).catch(reject);
+        return;
       }
+      removalWorker = worker;
 
-      xhr.upload.onprogress = function (e) {
-        if (!e.lengthComputable) return;
-        var uploadPct = (e.loaded / e.total) * 30; // uploading = first 30% of the bar
-        onProgress(uploadPct, 'Uploading image to our server…');
-      };
-
-      xhr.upload.onload = function () {
-        simPct = 30;
-        onProgress(simPct, 'Removing background on the server…');
-        simTimer = setInterval(function () {
-          simPct = Math.min(simPct + 2 + Math.random() * 3, 90);
-          onProgress(simPct, 'Removing background on the server…');
-        }, 350);
-      };
-
-      xhr.onload = function () {
-        stopSim();
-        if (xhr.status >= 200 && xhr.status < 300) {
-          onProgress(100, 'Done!');
-          resolve(xhr.response);
-          return;
+      worker.onmessage = function (event) {
+        var message = event.data;
+        if (message.type === 'progress') {
+          onProgress(message.current, message.total);
+        } else if (message.type === 'complete') {
+          resolve(message.blob);
+        } else if (message.type === 'error') {
+          worker.terminate();
+          removalWorker = null;
+          reject(new Error(message.message));
         }
-
-        var reader = new FileReader();
-        reader.onload = function () {
-          var message = 'Background removal failed on this image.';
-          try {
-            var parsed = JSON.parse(reader.result);
-            if (parsed && parsed.detail) message = parsed.detail;
-          } catch (e) { /* not JSON, use default message */ }
-          reject(new Error(message));
-        };
-        reader.onerror = function () {
-          reject(new Error('Background removal failed on this image.'));
-        };
-        reader.readAsText(xhr.response);
       };
 
-      xhr.onerror = function () {
-        stopSim();
-        reject(new Error('The background removal server stopped while processing. It may need more memory; please try again shortly.'));
+      worker.onerror = function (event) {
+        worker.terminate();
+        removalWorker = null;
+        removeBackgroundDirectly(file, onProgress).then(resolve).catch(function (fallbackError) {
+          reject(fallbackError || event.error || new Error('Background removal worker failed.'));
+        });
       };
 
-      xhr.ontimeout = function () {
-        stopSim();
-        reject(new Error('The server took too long to respond. Please try again.'));
-      };
+      worker.postMessage({
+        type: 'remove-background',
+        file: file,
+        mobile: window.matchMedia('(pointer: coarse)').matches
+      });
+    });
+  }
 
-      xhr.timeout = 120000; // 2 min — large images / cold-started servers can be slow
-
-      var formData = new FormData();
-      formData.append('file', file, file.name);
-      xhr.send(formData);
+  async function removeBackgroundDirectly(file, onProgress) {
+    var mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.6/+esm');
+    return mod.removeBackground(file, {
+      device: 'cpu',
+      model: 'isnet_quint8',
+      progress: function (key, current, total) {
+        if (key === 'compute:inference' && total) onProgress(current, total);
+      }
     });
   }
 
   /* ------------------------------------------
-     HEIC decoding (client-side, so the browser can preview it —
-     the server also accepts HEIC directly if you skip this)
+     HEIC decoding
      ------------------------------------------ */
   async function decodeHeic(file) {
     showToast('Decoding HEIC…', 'success');
@@ -218,7 +181,6 @@
     }
 
     currentFile = file;
-    originalPixelsImg = null; // invalidate cached original for the touch-up "restore" brush
 
     // Show file info
     dropzoneDefault.style.display = 'none';
@@ -256,17 +218,20 @@
     transparentResultBlob = null;
     resetProgressEstimate();
 
-    setProgress(1, DEFAULT_PROGRESS_LABEL);
-    setProgressEstimate('Estimated 5–20 sec, depending on image size');
+    setProgress(5, 'Loading AI model — first use downloads it once…');
 
     try {
-      var outputBlob = await removeBackgroundOnServer(currentFile, function (pct, label) {
-        setProgress(Math.round(pct), label, 30);
+      setProgress(25, 'Analyzing original image with AI…');
+      setProgressEstimate('Estimated 10–45 sec remaining; first use may take longer');
+
+      var outputBlob = await removeBackgroundInWorker(currentFile, function (current, total) {
+        var pct = Math.round(25 + (current / total) * 60);
+        setProgress(pct, 'Removing background…', 25);
       });
       if (currentOperationId !== operationId) return;
       transparentResultBlob = outputBlob;
 
-      setProgress(95, 'Applying background color…');
+      setProgress(90, 'Applying background color…');
 
       // Apply selected background color
       if (selectedBg !== 'transparent') {
@@ -311,8 +276,8 @@
       removeBgBtn.disabled = false;
       removeBgBtn.classList.remove('loading');
       progressLabel.textContent = 'Processing failed';
-      progressEta.textContent = err.message || 'Something went wrong. Please try again.';
-      showToast(err.message || 'Something went wrong. Please try again.', 'error');
+      progressEta.textContent = err.message || 'Your device could not complete this image.';
+      showToast(err.message || 'Your device could not complete this image.', 'error');
     }
   });
 
@@ -423,192 +388,15 @@
   }
 
   /* ------------------------------------------
-     Touch-up editor — manual brush erase / restore
-     ------------------------------------------
-     Erase: punches transparent holes wherever the AI left background in.
-     Restore: paints the original photo's pixels back in, for spots the
-     AI mistakenly cut out of the subject.
-     Both edit `transparentResultBlob` directly (the master transparent
-     cutout); the on-screen result then goes through the normal
-     background-color compositing step, same as the color picker does.
-  */
-  const touchupBtn      = document.getElementById('touchup-btn');
-  const touchupModal    = document.getElementById('touchup-modal');
-  const touchupCloseBtn = document.getElementById('touchup-close-btn');
-  const touchupCanvas   = document.getElementById('touchup-canvas');
-  const modeEraseBtn    = document.getElementById('mode-erase-btn');
-  const modeRestoreBtn  = document.getElementById('mode-restore-btn');
-  const brushSizeInput  = document.getElementById('brush-size');
-  const touchupUndoBtn  = document.getElementById('touchup-undo-btn');
-  const touchupResetBtn = document.getElementById('touchup-reset-btn');
-  const touchupDoneBtn  = document.getElementById('touchup-done-btn');
-
-  let editCtx = null;
-  let brushMode = 'erase';
-  let brushSize = brushSizeInput ? parseInt(brushSizeInput.value, 10) : 32;
-  let isPainting = false;
-  let undoStack = [];
-  let originalPixelsImg = null; // cached full-res <img> of the ORIGINAL upload, for Restore
-  const MAX_UNDO = 20;
-
-  function loadOriginalPixels() {
-    return new Promise(function (resolve, reject) {
-      if (originalPixelsImg) return resolve(originalPixelsImg);
-      var img = new Image();
-      img.onload = function () {
-        originalPixelsImg = img;
-        resolve(img);
-      };
-      img.onerror = reject;
-      img.src = URL.createObjectURL(currentFile);
-    });
-  }
-
-  function openTouchUp() {
-    if (!touchupModal || !transparentResultBlob || !currentFile) return;
-
-    var cutoutImg = new Image();
-    cutoutImg.onload = function () {
-      loadOriginalPixels().then(function () {
-        touchupCanvas.width = cutoutImg.naturalWidth;
-        touchupCanvas.height = cutoutImg.naturalHeight;
-        editCtx = touchupCanvas.getContext('2d');
-        editCtx.drawImage(cutoutImg, 0, 0);
-        undoStack = [];
-        pushUndoSnapshot();
-        setBrushMode('erase');
-        touchupModal.style.display = 'flex';
-      }).catch(function () {
-        showToast('Could not load the original image for touch-up.', 'error');
-      });
-    };
-    cutoutImg.src = URL.createObjectURL(transparentResultBlob);
-  }
-
-  function closeTouchUp() {
-    touchupModal.style.display = 'none';
-  }
-
-  function pushUndoSnapshot() {
-    if (!editCtx) return;
-    var snap = editCtx.getImageData(0, 0, touchupCanvas.width, touchupCanvas.height);
-    undoStack.push(snap);
-    if (undoStack.length > MAX_UNDO) undoStack.shift();
-  }
-
-  function setBrushMode(mode) {
-    brushMode = mode;
-    if (modeEraseBtn) modeEraseBtn.classList.toggle('active', mode === 'erase');
-    if (modeRestoreBtn) modeRestoreBtn.classList.toggle('active', mode === 'restore');
-  }
-
-  function canvasPointFromEvent(evt) {
-    var rect = touchupCanvas.getBoundingClientRect();
-    var scaleX = touchupCanvas.width / rect.width;
-    var scaleY = touchupCanvas.height / rect.height;
-    var clientX = evt.touches && evt.touches.length ? evt.touches[0].clientX : evt.clientX;
-    var clientY = evt.touches && evt.touches.length ? evt.touches[0].clientY : evt.clientY;
-    return {
-      x: (clientX - rect.left) * scaleX,
-      y: (clientY - rect.top) * scaleY
-    };
-  }
-
-  function paintAt(point) {
-    if (!editCtx) return;
-    var radius = brushSize / 2;
-
-    if (brushMode === 'erase') {
-      editCtx.save();
-      editCtx.globalCompositeOperation = 'destination-out';
-      editCtx.beginPath();
-      editCtx.arc(point.x, point.y, radius, 0, Math.PI * 2);
-      editCtx.fill();
-      editCtx.restore();
-    } else {
-      editCtx.save();
-      editCtx.beginPath();
-      editCtx.arc(point.x, point.y, radius, 0, Math.PI * 2);
-      editCtx.clip();
-      editCtx.globalCompositeOperation = 'source-over';
-      editCtx.drawImage(originalPixelsImg, 0, 0, touchupCanvas.width, touchupCanvas.height);
-      editCtx.restore();
-    }
-  }
-
-  function startPaint(evt) {
-    if (!editCtx) return;
-    evt.preventDefault();
-    isPainting = true;
-    pushUndoSnapshot();
-    paintAt(canvasPointFromEvent(evt));
-  }
-  function movePaint(evt) {
-    if (!isPainting) return;
-    evt.preventDefault();
-    paintAt(canvasPointFromEvent(evt));
-  }
-  function endPaint() {
-    isPainting = false;
-  }
-
-  if (touchupCanvas) {
-    touchupCanvas.addEventListener('mousedown', startPaint);
-    touchupCanvas.addEventListener('mousemove', movePaint);
-    window.addEventListener('mouseup', endPaint);
-    touchupCanvas.addEventListener('touchstart', startPaint, { passive: false });
-    touchupCanvas.addEventListener('touchmove', movePaint, { passive: false });
-    touchupCanvas.addEventListener('touchend', endPaint);
-  }
-
-  if (modeEraseBtn) modeEraseBtn.addEventListener('click', function () { setBrushMode('erase'); });
-  if (modeRestoreBtn) modeRestoreBtn.addEventListener('click', function () { setBrushMode('restore'); });
-
-  if (brushSizeInput) {
-    brushSizeInput.addEventListener('input', function () {
-      brushSize = parseInt(brushSizeInput.value, 10);
-    });
-  }
-
-  if (touchupUndoBtn) {
-    touchupUndoBtn.addEventListener('click', function () {
-      if (undoStack.length <= 1) return;
-      undoStack.pop(); // discard the current state
-      var prev = undoStack[undoStack.length - 1];
-      editCtx.putImageData(prev, 0, 0);
-    });
-  }
-
-  if (touchupResetBtn) {
-    touchupResetBtn.addEventListener('click', function () {
-      if (!undoStack.length) return;
-      var first = undoStack[0];
-      editCtx.putImageData(first, 0, 0);
-      undoStack = [first];
-    });
-  }
-
-  if (touchupCloseBtn) touchupCloseBtn.addEventListener('click', closeTouchUp);
-  if (touchupBtn) touchupBtn.addEventListener('click', openTouchUp);
-
-  if (touchupDoneBtn) {
-    touchupDoneBtn.addEventListener('click', function () {
-      if (!touchupCanvas) return;
-      touchupCanvas.toBlob(function (blob) {
-        transparentResultBlob = blob;
-        closeTouchUp();
-        reprocessWithBg();
-        showToast('Touch-up applied!');
-      }, 'image/png');
-    });
-  }
-
-  /* ------------------------------------------
      Remove / reset
      ------------------------------------------ */
   removeFileBtn.addEventListener('click', function (e) {
     e.stopPropagation();
     operationId += 1;
+    if (removalWorker) {
+      removalWorker.terminate();
+      removalWorker = null;
+    }
     if (completionTimer) {
       clearTimeout(completionTimer);
       completionTimer = null;
@@ -616,8 +404,6 @@
     currentFile = null;
     resultBlob = null;
     transparentResultBlob = null;
-    originalPixelsImg = null;
-    undoStack = [];
     fileInput.value = '';
 
     dropzoneDefault.style.display = 'flex';
@@ -626,7 +412,7 @@
     bgControls.style.display = 'none';
     progressWrapper.style.display = 'none';
     progressFill.style.width = '0%';
-    progressLabel.textContent = DEFAULT_PROGRESS_LABEL;
+    progressLabel.textContent = 'Loading AI model — first use downloads it once…';
     progressEta.textContent = '';
     resultArea.style.display = 'none';
     resultPreviewItem.style.display = 'none';
@@ -637,7 +423,6 @@
     document.querySelector('.bg-option[data-bg="transparent"]').classList.add('active');
     removeBgBtn.disabled = false;
     removeBgBtn.classList.remove('loading');
-    if (touchupModal) touchupModal.style.display = 'none';
   });
 
   /* ------------------------------------------
