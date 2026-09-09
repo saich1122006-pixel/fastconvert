@@ -169,7 +169,7 @@
 
       xhr.onerror = function () {
         stopSim();
-        reject(new Error('Could not reach the background removal server. Check your connection and try again.'));
+        reject(new Error('The background removal server stopped while processing. It may need more memory; please try again shortly.'));
       };
 
       xhr.ontimeout = function () {
