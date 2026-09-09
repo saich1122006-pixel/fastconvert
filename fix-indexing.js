@@ -12,6 +12,7 @@ const toolMeta = {
   'image-compressor': { name: 'Image Compressor', category: 'Image Tools', categoryAnchor: '#image-tools-section' },
   'resize-image': { name: 'Resize Image', category: 'Image Tools', categoryAnchor: '#image-tools-section' },
   'crop-image': { name: 'Crop Image', category: 'Image Tools', categoryAnchor: '#image-tools-section' },
+  'remove-background': { name: 'Remove Background', category: 'Image Tools', categoryAnchor: '#image-tools-section' },
   'pdf-merge': { name: 'Merge PDFs', category: 'PDF Tools', categoryAnchor: '#pdf-tools-section' },
   'pdf-split': { name: 'Split PDF', category: 'PDF Tools', categoryAnchor: '#pdf-tools-section' },
   'pdf-compress': { name: 'Compress PDF', category: 'PDF Tools', categoryAnchor: '#pdf-tools-section' },
