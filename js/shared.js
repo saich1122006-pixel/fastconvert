@@ -104,6 +104,7 @@
     { icon: '🔄', name: 'Image Converter',    url: '/tools/image-converter/',               tags: 'image convert format png jpg webp heic' },
     { icon: '📐', name: 'Image Compressor',   url: '/tools/image-compressor/',              tags: 'compress image size kb 20kb 50kb 100kb reduce' },
     { icon: '✂️', name: 'Crop Image',         url: '/tools/crop-image/',                    tags: 'crop trim cut aspect ratio image photo' },
+    { icon: '🤖', name: 'Remove Background',  url: '/tools/remove-background/',             tags: 'remove background erase cutout transparent ai photo' },
     { icon: '📏', name: 'Resize Image',       url: '/tools/resize-image/',                  tags: 'resize scale dimensions width height pixels' },
     { icon: '🔗', name: 'Merge PDF',          url: '/tools/pdf-merge/',                     tags: 'merge pdf combine join append documents' },
     { icon: '✂️', name: 'Split PDF',          url: '/tools/pdf-split/',                     tags: 'split pdf extract pages separate divide' },
