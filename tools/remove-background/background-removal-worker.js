@@ -21,9 +21,6 @@ self.onmessage = async function (event) {
       }
     };
 
-    // The quantized model uses much less memory on mobile devices.
-    if (message.mobile) config.model = 'isnet_quint8';
-
     var outputBlob = await backgroundRemovalModule.removeBackground(message.file, config);
 
     self.postMessage({ type: 'complete', blob: outputBlob });
