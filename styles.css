@@ -4848,4 +4848,14 @@ select {
   font-size: 0.55rem;
   padding: 0 10px;
   letter-spacing: 2px;
+}
+
+/* ============================================
+   Remove Background Tool — Canvas Checkerboard
+   (indicates transparent areas in the result)
+   ============================================ */
+.canvas-checkerboard {
+  background-image: repeating-conic-gradient(#c8c8c8 0% 25%, #ffffff 0% 50%);
+  background-size: 16px 16px;
+  background-position: 0 0;
 }
